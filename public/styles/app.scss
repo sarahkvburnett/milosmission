@@ -1,0 +1,49 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: sans-serif;
+    background: #f8f8f8;
+}
+
+header {
+    text-align: center;
+}
+
+.posts {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    .post {
+        margin: 2vh;
+        img {
+            max-width: 100%;
+            width: 350px;
+            height: 350px;
+            object-fit: cover;
+            border: 2px solid #000;
+            border-radius: 5px;
+        }
+    }
+}
+
+.errors {
+    color: red;
+    border: 1px solid red;
+    padding: 3vh;
+}
+
+form {
+    width: 60%;
+    margin: auto;
+    padding: 4vh;
+}
+
+form > * {
+    display: block;
+    width: 88%;
+    margin: 4vh;
+}

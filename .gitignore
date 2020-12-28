@@ -1,0 +1,4 @@
+/.devilbox
+.env
+/vendor
+/node_modules

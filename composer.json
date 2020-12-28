@@ -1,0 +1,17 @@
+{
+  "name": "milosmission",
+  "authors": [
+    {
+      "name": "Sarah Burnett",
+      "email": "sarahkvburnett@btinternet.com"
+    }
+  ],
+  "require": {
+    "vlucas/phpdotenv": "^5.2"
+  },
+  "autoload": {
+    "psr-4": {
+      "app\\": "./"
+    }
+  }
+}
