@@ -3,7 +3,6 @@
 
 namespace app;
 
-
 class Middleware {
     //Auth middleware
     static public function isAuth(){
@@ -15,7 +14,7 @@ class Middleware {
 
     static public function isGuest(){
         if (isset($_COOKIE['auth-user'])) {
-            header('Location: /admin/login');
+            header('Location: /admin');
             exit();
         }
     }

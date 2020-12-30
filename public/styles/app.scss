@@ -1,3 +1,5 @@
+@import "../../node_modules/bootstrap/scss/bootstrap.scss";
+
 * {
     margin: 0;
     padding: 0;
@@ -5,12 +7,12 @@
 }
 
 body {
-    font-family: sans-serif;
     background: #f8f8f8;
 }
 
-header {
-    text-align: center;
+html, body {
+    overflow-x: hidden;
+    width: 100%;
 }
 
 .posts {
@@ -30,20 +32,74 @@ header {
     }
 }
 
-.errors {
-    color: red;
-    border: 1px solid red;
-    padding: 3vh;
+// form {
+//     width: 60%;
+//     margin: auto;
+//     padding: 4vh;
+// }
+
+.btn, input, select {
+    border-radius: 0;
 }
 
 form {
-    width: 60%;
-    margin: auto;
-    padding: 4vh;
+    label, input, select {
+        display: block;
+        width: 100%;
+        margin: 2vh 0;
+        padding: 1vh;
+    }
+    input, select {
+        border: 1px solid #ccc;
+    }
+    input[type="submit"]{
+        width: auto;
+        margin: 2vh auto;
+    }   
 }
 
-form > * {
-    display: block;
-    width: 88%;
-    margin: 4vh;
+#menu {
+    .list-group, .list-group-item {
+        background: transparent;
+        color: #000000;
+        border-radius: 0;
+    }
+    .list-group-item:hover {
+        opacity: 0.7;
+    }
+    i {
+        width: 30px;
+    }
+}
+
+#search {
+    width: 60%;
+    margin: 5vh auto;
+    display: flex;
+    & > * {
+        height: 2em;
+        padding: 0 2vw;
+        margin: 0;
+        border-radius: 0;
+        border: none;
+    }
+    select {
+        width: auto;
+    }
+    input[type="submit"], .btn {
+        flex: 0 0 auto;
+        padding: 0 2vw;
+        line-height: 2em;
+    }
+    select:first-child {
+        border-top-left-radius: 15px;
+        border-bottom-left-radius: 15px;
+        border-right: 1px solid #ccc;
+    }
+    .btn:last-child {
+        border-top-right-radius: 15px;
+        border-bottom-right-radius: 15px;
+    }
+    border-radius: 15px;
+    border: 1px solid #ccc;
 }

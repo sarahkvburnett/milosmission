@@ -12,6 +12,8 @@ class AuthController {
 
     }
 
+    //TODO: need to redirect on login back to the initial url
+
     static public function login($router){
         $errors = [];
         if ($_POST){
@@ -25,7 +27,7 @@ class AuthController {
             }
             if(empty($errors)){
                 $authHash = $data->createAuthHash();
-                setcookie("auth-user", $authHash);
+                setcookie("auth-user", $authHash, time() + (86400 * 30));
                 header( 'Location: /admin');
             }
         }

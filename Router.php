@@ -49,7 +49,11 @@ class Router {
         ob_start();
         include_once __DIR__."/views/$view.php";
         $content = ob_get_clean();
-        include_once __DIR__."/views/_layout.php";
+        if (str_contains($view, "admin")) {
+            include_once __DIR__."/views/admin/_layout.php";
+        } else {
+            include_once __DIR__."/views/_layout.php";
+        }
     }
 
 }

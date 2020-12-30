@@ -1,5 +1,6 @@
 <?php
 
+use app\controllers\admin\AnimalController;
 use app\controllers\admin\AuthController;
 use app\controllers\admin\Controller as AdminController;
 use app\controllers\PostsController;
@@ -24,5 +25,10 @@ $router->post('/admin/login', [AuthController::class, 'login', ['isGuest']]);
 $router->post('/admin/logout', [AuthController::class, 'logout', ['isAuth']]);
 
 $router->get('/admin', [AdminController::class, 'index', ['isAuth']]);
+
+$router->get('/admin/animals', [AnimalController::class, 'browse', ['isAuth']]);
+$router->get('/admin/animals/details', [AnimalController::class, 'save', ['isAuth']]);
+$router->post('/admin/animals/details', [AnimalController::class, 'save', ['isAuth']]);
+
 
 $router->resolve();
