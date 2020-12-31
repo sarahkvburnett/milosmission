@@ -9,7 +9,7 @@
     </head>
     <body>
         <header class="bg-primary px-4 d-flex justify-content-center align-items-center" style="height: 15vh">
-            <img src="/images/logo.png" style="max-height: 100%"/>
+            <?php $black = true; include __DIR__."../../_logo.php"?>
         </header>
         <div class="d-flex" style="min-height: 85vh">
             <aside class="bg-primary" style="flex: 0 0 300px">

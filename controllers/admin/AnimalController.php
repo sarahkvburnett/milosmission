@@ -3,14 +3,18 @@
 
 namespace app\controllers\admin;
 
-use app\Database;
+use app\database\Database;
 use app\models\Animal;
 
 class AnimalController {
     static public function browse($router){
         $searchColumn = $_GET['searchColumn'] ?? '';
         $searchItem = $_GET['searchItem'] ?? '';
-        $fields = Database::$db->getAnimals($searchColumn, $searchItem);
+        $search = [
+            'column' => $searchColumn,
+            'item' => $searchItem
+        ];
+        $fields = Database::$db->getAnimals($search);
         return $router->renderView('/admin/browse', [
             'fields' => $fields,
             'title' => 'Animals',
@@ -19,7 +23,7 @@ class AnimalController {
                 'get' =>'/admin/animals',
                 'create' =>'/admin/animals/details',
             ],
-            'search' => ['column' => $searchColumn, 'item' => $searchItem],
+            'search' => $search,
         ]);
     }
 
@@ -37,7 +41,7 @@ class AnimalController {
             $animal = new Animal($_POST);
             $errors = $animal->save();
             if(empty($errors)) {
-                header("Location: /animals");
+                header("Location: /admin/animals");
                 exit;
             }
         }
@@ -59,6 +63,9 @@ class AnimalController {
     }
 
     static public function delete($router){
-
+        $id = $_POST['id'];
+        Database::$db->deleteAnimalById($id);
+        header('Location: /admin/animals');
+        exit;
     }
 }

@@ -7,7 +7,7 @@
     <?php
     $columns = $fields[0];
     ?>
-    <form id="search" action="<?php echo $actions['get']?>" method="get" class="bg-white">
+    <form id="search" action="<?php echo $actions['get']?>" method="get" class="bg-light">
         <select name="searchColumn" id="searchColumn">
             <?php foreach ($searchables as $option) {
                 echo '<option value="' . $option . '">' . ucwords($option) . '</option>';
@@ -16,7 +16,7 @@
         </select>
         <input type="text" name="searchItem" value="<?php echo $search['item'] ?>" placeholder="Search">
         <?php if(isset($_GET['searchItem'])):?>
-            <a href="<?php echo $actions['get']?>" class="btn btn-danger">Clear</a>
+            <a href="<?php echo $actions['get']?>" class="btn btn-dark">Clear</a>
         <?php else:?>
             <button class="btn btn-dark"><i class="fas fa-search"></i> Search</button>
         <?php endif?>

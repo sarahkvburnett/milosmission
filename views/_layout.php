@@ -9,7 +9,7 @@
     </head>
     <body>
         <header class="bg-primary px-4 d-flex justify-content-center align-items-center">
-            <img src="/images/logo.png" width="100"/>
+            <?php $black = true; include __DIR__."/_logo.php"?>
 <!--            <h1>Milos Mission</h1>-->
 <!--            <i class="fas fa-bars"></i>-->
         </header>

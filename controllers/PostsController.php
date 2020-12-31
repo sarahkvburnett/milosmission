@@ -2,7 +2,7 @@
 
 namespace app\controllers;
 
-use app\Database;
+use app\database\Database;
 use app\models\Post;
 use app\Router;
 

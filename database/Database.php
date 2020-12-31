@@ -1,7 +1,8 @@
 <?php
 
-namespace app;
+namespace app\database;
 
+use app\database\SQL;
 use http\Env;
 use \PDO;
 
@@ -18,18 +19,18 @@ class Database {
     //POSTS
     public function getPosts($search = ''){
         if ($search) {
-            $statement = $this->pdo->prepare('SELECT * FROM photos WHERE label = :search');
+            $statement = $this->pdo->prepare(SQL::$getPostsWithSearch);
             $statement->bindValue(':search', $search);
         }
         else {
-            $statement = $this->pdo->prepare('SELECT * FROM photos');
+            $statement = $this->pdo->prepare(SQL::$getPosts);
         }
         $statement->execute();
         return $statement->fetchAll(PDO::FETCH_ASSOC);
     }
 
     public function getPostById($id){
-        $statement = $this->pdo->prepare('SELECT * FROM photos WHERE id=:id');
+        $statement = $this->pdo->prepare(SQL::$getPostById);
         $statement->bindValue(':id', $id);
         $statement->execute();
         return $statement->fetch(PDO::FETCH_ASSOC);
@@ -38,10 +39,10 @@ class Database {
     public function savePost($product){
             $statement;
            if (isset($product->id)){
-               $statement = $this->pdo->prepare("UPDATE photos SET label=:label, url=:url, caption=:caption) WHERE id=:id");
+               $statement = $this->pdo->prepare(SQL::$updatePost);
                $statement->bindValue(':id', $product->id);
            } else {
-               $statement = $this->pdo->prepare("INSERT INTO photos (label, url, caption) VALUES(:label, :url, :caption)");
+               $statement = $this->pdo->prepare(SQL::$createPost);
            }
             $statement->bindValue(':label', $product->label);
             $statement->bindValue(':url', $product->url);
@@ -50,33 +51,32 @@ class Database {
     }
 
     public function deletePostById($id){
-        $statement = $this->pdo->prepare('DELETE FROM photos WHERE id=:id');
+        $statement = $this->pdo->prepare(SQL::$deletePostById);
         $statement->bindValue(':id', $id);
         $statement->execute();
     }
     //USERS
     public function getUserByEmail($user){
-        $statement = $this->pdo->prepare("SELECT * FROM users where email=:email ");
+        $statement = $this->pdo->prepare(SQL::$getUserByEmail);
         $statement->bindValue(':email', $user->email);
         $statement->execute();
         return $statement->fetch(PDO::FETCH_ASSOC);
     }
 
     //ANIMALS
-    public function getAnimals($searchColumn = '', $searchItem = ''){
-        if ($searchColumn and $searchItem) {
-            $sql = 'SELECT * FROM animals WHERE '.$searchColumn.'=\''.$searchItem.'\'';
-            $statement = $this->pdo->prepare($sql);
+    public function getAnimals($search){
+        if (!empty($search['column']) and !empty($search['item'])) {
+            $statement = $this->pdo->prepare(SQL::getAnimalsWithSearch($search));
         }
         else {
-            $statement = $this->pdo->prepare("SELECT * FROM animals");
+            $statement = $this->pdo->prepare(SQL::$getAnimals);
         }
         $statement->execute();
         return $statement->fetchAll(PDO::FETCH_ASSOC);
     }
 
     public function getAnimalById($id){
-        $statement = $this->pdo->prepare('SELECT * FROM animals WHERE id=:id');
+        $statement = $this->pdo->prepare(SQL::$getAnimalById);
         $statement->bindValue(':id', $id);
         $statement->execute();
         return $statement->fetch(PDO::FETCH_ASSOC);
@@ -85,29 +85,20 @@ class Database {
     public function saveAnimal($animal){
         $statement;
         if (isset($animal->id)){
-            $updateSQL = "UPDATE animals SET";
-            foreach( $animal as $key => $value){
-                if (isset($key)) {
-                    $updateSQL = $updateSQL." ".$key."=:".$name;
-                }
-            }
-            $statement = $this->pdo->prepare($updateSQL." WHERE id=:id");
+            $statement = $this->pdo->prepare(SQL::updateAnimal($animal));
             $statement->bindValue(':id', $animal->id);
         } else {
-            $insertSQL="INSERT INTO animals (";
-            $valuesSQL="VALUES(";
-            foreach( $animal as $key => $value){
-                if (isset($key)) {
-                    $insertSQL = $insertSQL.$key.", ";
-                    $valuesSQL = $valuesSQL.":".$key.", ";
-                }
-            }
-            $statement = $this->pdo->prepare(insertSQL.") ".valuesSQL.")");
+            $statement = $this->pdo->prepare(SQL::createAnimal($animal));
         }
-        foreach( $animal as $key => $value){            if (isset($key)) {
-                $statement->bindValue(':'.$key, $value);
-            }
+        foreach( $animal as $key => $value){
+            $statement->bindValue(':'.$key, $value);
         }
         return $statement->execute();
+    }
+
+    public function deleteAnimalById($id){
+        $statement = $this->pdo->prepare(SQL::$deleteAnimalById);
+        $statement->bindValue(':id', $id);
+        $statement->execute();
     }
 }

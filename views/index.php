@@ -3,6 +3,7 @@
     <p class="lead">Milos mission is to provide a safe haven for rescued animals until we find them a new forever home</p>
 </div>
 <h1 class="text-center">Animals needing homes</h1>
+
 <section class="posts container">
     <?php
     foreach($posts as $i => $post){

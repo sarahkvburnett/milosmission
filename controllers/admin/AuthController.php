@@ -3,7 +3,7 @@
 
 namespace app\controllers\admin;
 
-use app\Database;
+use app\database\Database;
 use app\models\User;
 
 class AuthController {

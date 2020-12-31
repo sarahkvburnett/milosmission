@@ -4,7 +4,7 @@
 namespace app\models;
 
 
-use app\Database;
+use app\database\Database;
 
 class Post {
     public ?int $id;

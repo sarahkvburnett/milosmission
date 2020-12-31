@@ -6,21 +6,22 @@
     }
     ?>
 </h1>
+<!--TODO add * for the required fields :) -->
 <div>
     <a href="<?php echo $actions['browse']?>" class="btn btn-dark">Back</a>
 </div>
 <?php if(isset($_GET['id'])):?>
     <form action="<?php echo $actions['delete']?>" method="post">
         <input type="hidden" name="id" value="<?php echo $_GET['id']?>"/>
-        <input type="submit" value="Delete" class="btn btn-danger"></input>
+        <input type="submit" value="Delete" class="btn btn-danger"/>
     </form>
 <?php endif ?>
 <form action="<?php echo $actions['save']?>" method="post" class="bg-white mb-5 p-4 mx-auto" style="width: 70%">
     <?php
+    include __DIR__."../../_errors.php";
     foreach($fields as $key => $value){
         echo '<div class="form-group row">';
         echo '<label class="col-sm-3">'.ucwords($key).'</label>';
-//       TODO: bro need to include errors and you probably havent validated this yet
         include __DIR__."/_fields.php";
         echo '</div>';
     }

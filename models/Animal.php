@@ -4,7 +4,7 @@
 namespace app\models;
 
 
-use app\Database;
+use app\database\Database;
 
 class Animal {
     public ?int $id;
@@ -22,7 +22,7 @@ class Animal {
 
     static public $inputs = [
         'status' => "select",
-        'image' =>  "file",
+//        'image' =>  "file", TODO: file uploader
         'type' => "select"
     ];
 
@@ -37,7 +37,11 @@ class Animal {
 
     public function __construct($data) {
         foreach($data as $key => $value){
-            $this->$key = $value;
+            if (!empty($value)){
+                $this->$key = $value;
+            } else {
+                $this->$key = null;
+            }
         }
     }
 
