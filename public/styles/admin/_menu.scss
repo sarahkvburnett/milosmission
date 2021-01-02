@@ -1,0 +1,20 @@
+#menu {
+    .list-group, .list-group-item {
+        background: transparent;
+        color: #000;
+        border-radius: 0;
+    }
+    .list-group-item {
+        padding: 15px 0;
+        text-align: center;
+        font-weight: bold;
+    }
+    .list-group-item:hover {
+        background: $bg;
+        border-right: none;
+    }
+    i {
+        display: block;
+        text-align: center;
+    }
+}

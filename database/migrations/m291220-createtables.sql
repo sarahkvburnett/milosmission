@@ -21,15 +21,16 @@ CREATE TABLE animals (
     FOREIGN KEY (rehoming_id) REFERENCES rehomings(id)
 );
 
--- Images table
-CREATE TABLE images (
+-- Media table
+CREATE TABLE media (
     id INT NOT NULL AUTO_INCREMENT,
     filename VARCHAR(255) NOT NULL,
+    type ENUM('image', 'video') NOT NULL,
     PRIMARY KEY (id)
 );
 
--- Animal Images join table
-CREATE TABLE animal_images (
+-- Animal Media join table
+CREATE TABLE animal_media (
     id INT NOT NULL AUTO_INCREMENT,
     animal_id INT NOT NULL,
     image_id INT NOT NULL,

@@ -1,4 +1,4 @@
-<div class="container bg-white my-5 p-5">
+<div id="admin-login" class="w-50 bg-white mx-auto my-5 p-5">
     <h1 class="text-center mb-5">Login</h1>
     <form action="/admin/login" method="post" class="w-50 mx-auto">
         <?php include __DIR__ . "/../../_errors.php" ?>

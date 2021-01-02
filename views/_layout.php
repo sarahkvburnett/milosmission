@@ -4,15 +4,11 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>CodyMistyMilo</title>
-        <link href="/styles/app.css" rel="stylesheet">
+        <link href="/styles/main.css" rel="stylesheet">
         <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" rel="stylesheet">
     </head>
     <body>
-        <header class="bg-primary px-4 d-flex justify-content-center align-items-center">
-            <?php $black = true; include __DIR__."/_logo.php"?>
-<!--            <h1>Milos Mission</h1>-->
-<!--            <i class="fas fa-bars"></i>-->
-        </header>
+        <?php include __DIR__."/_header.php"?>
         <?php echo $content?>
     </body>
 </html>

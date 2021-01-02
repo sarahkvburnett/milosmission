@@ -1,0 +1,17 @@
+@import "_menu";
+@import "_home";
+@import "_browse";
+@import "_details";
+
+#admin-body {
+    main {
+        min-height: calc(100vh - $navHeight);
+        aside {
+            flex: 0 0 140px;
+        } 
+        #admin-content {
+            width: $contentWidth;
+        }
+    };
+
+}

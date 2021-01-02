@@ -101,4 +101,5 @@ class Database {
         $statement->bindValue(':id', $id);
         $statement->execute();
     }
+
 }

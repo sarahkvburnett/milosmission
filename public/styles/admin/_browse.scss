@@ -1,0 +1,38 @@
+#admin-browse {
+    img {
+        max-width: 200px;
+    }
+}
+
+#search {
+    width: 60%;
+    margin: 5vh auto;
+    display: flex;
+    & > * {
+        height: 2em;
+        padding: 0 2vw;
+        margin: 0;
+        border-radius: 0;
+        border: none;
+        background-clip: border-box;
+    }
+    select {
+        width: auto;
+    }
+    input[type="submit"], .btn {
+        flex: 0 0 auto;
+        padding: 0 2vw;
+        line-height: 2em;
+    }
+    select:first-child {
+        border-top-left-radius: 15px;
+        border-bottom-left-radius: 15px;
+        border-right: 1px solid $border;
+    }
+    .btn:last-child {
+        border-top-right-radius: 15px;
+        border-bottom-right-radius: 15px;
+    }
+    border-radius: 15px;
+    border: 1px solid $border;
+}

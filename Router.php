@@ -22,6 +22,20 @@ class Router {
         $this->postRoutes[$url] = $fn;
     }
 
+    public function renderView($view, $params = []){
+        foreach ($params as $key => $value){
+            $$key = $value;
+        }
+        ob_start();
+        include_once __DIR__."/views/$view.php";
+        $content = ob_get_clean();
+        if (str_contains($view, "admin") and !str_contains($view, "login")) {
+            include_once __DIR__."/views/admin/_layout.php";
+        } else {
+            include_once __DIR__."/views/_layout.php";
+        }
+    }
+
     public function resolve(){
         $method = strtolower($_SERVER['REQUEST_METHOD']);
         $uri = $_SERVER['REQUEST_URI'] ?? '/';
@@ -38,21 +52,7 @@ class Router {
             };
             $fn($this);
         } else {
-            echo "Page not found";
-        }
-    }
-
-    public function renderView($view, $params = []){
-        foreach ($params as $key => $value){
-            $$key = $value;
-        }
-        ob_start();
-        include_once __DIR__."/views/$view.php";
-        $content = ob_get_clean();
-        if (str_contains($view, "admin")) {
-            include_once __DIR__."/views/admin/_layout.php";
-        } else {
-            include_once __DIR__."/views/_layout.php";
+            $this->renderView("/404");
         }
     }
 

@@ -37,7 +37,8 @@ class AuthController {
     }
 
     static public function logout(){
-
+        setcookie("auth-user", "", time() - 3600);
+        header('Location: /');
     }
 
 }

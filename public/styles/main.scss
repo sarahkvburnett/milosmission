@@ -1,0 +1,58 @@
+@import "_variables";
+@import "../../node_modules/bootstrap/scss/bootstrap.scss";
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: $bg;
+}
+
+html, body {
+    overflow-x: hidden;
+    width: 100%;
+}
+
+.btn, input, select {
+    border-radius: 0;
+}
+
+form {
+    label, input, select {
+        display: block;
+        width: 100%;
+        margin: 2vh 0;
+    }
+    input, select {
+        padding: 1vh;
+        border: 1px solid $border;
+    }
+    input[type="submit"]{
+        width: auto;
+        margin: 2vh auto;
+    }   
+}
+
+@import "./_modal";
+@import "./admin/admin";
+
+.posts {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    .post {
+        margin: 2vh;
+        img {
+            max-width: 100%;
+            width: 350px;
+            height: 350px;
+            object-fit: cover;
+            border: 2px solid $black;
+            border-radius: 5px;
+        }
+    }
+}
+
