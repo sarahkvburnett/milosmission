@@ -3,6 +3,10 @@
 
 namespace app\database;
 
+$options = [
+    'where'
+]
+
 
 class SQL {
     //POSTS

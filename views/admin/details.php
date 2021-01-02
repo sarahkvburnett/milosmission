@@ -1,9 +1,9 @@
 <div id="admin-details">
     <h1 class="h1 text-center">
         <?php if(isset($_GET['id'])){
-            echo $titles['update'].': <span class="text-primary">'.$fields['name'].'</span>';
+            echo 'Update New '.$title.': <span class="text-primary">'.$fields['name'].'</span>';
         } else {
-            echo $titles['create'];
+            echo 'Create New '.$title;
         }
         ?>
     </h1>
@@ -12,14 +12,17 @@
         <a href="<?php echo $actions['browse']?>" class="btn btn-dark">Back</a>
         <button class="btn btn-danger" data-toggle="modal" data-target="#admin-delete">Delete</button>
     </div>
-    <form action="<?php echo $actions['save']?>" method="post" class="bg-white mb-5 p-4 mx-auto">
+    <form action="<?php echo $actions['details']?>" method="post" class="bg-white mb-5 p-4 mx-auto">
         <?php
         include __DIR__."../../_errors.php";
         foreach($fields as $key => $value){
-            echo '<div class="form-group row">';
-            echo '<label class="col-sm-3">'.ucwords($key).'</label>';
-            include __DIR__."/_fields.php";
-            echo '</div>';
+            $type = $inputs[$key] ?? 'text';
+            if ($type !== 'hidden'){
+                echo '<div class="form-group row">';
+                echo '<label class="col-sm-3">'.ucwords($key).'</label>';
+                include __DIR__."/_fields.php";
+                echo '</div>';
+            }
         }
         ?>
         <div class="text-center">

@@ -3,14 +3,15 @@
 
 namespace app\controllers\admin;
 
-use app\database\Database;
-use app\models\Animal;
 
-class AnimalController {
+use app\database\Database;
+use app\models\Owner;
+
+class OwnerController {
     static public $urls = [
-        'browse' => '/admin/animals',
-        'details' => '/admin/animals/details',
-        'delete' => 'admin/animals/delete'
+        'browse' => '/admin/owners',
+        'details' => '/admin/owners/details',
+        'delete' => 'admin/owners/delete'
     ];
 
     static public function browse($router){
@@ -20,11 +21,11 @@ class AnimalController {
             'column' => $searchColumn,
             'item' => $searchItem
         ];
-        $fields = Database::$db->findAll('animals', $search);
+        $fields = Database::$db->findAll('owners', $search);
         return $router->renderView('/admin/browse', [
             'fields' => $fields,
-            'title' => 'Animals',
-            'searchables' => Animal::$search,
+            'title' => 'Owners',
+            'searchables' => Owner::$search,
             'actions' => Self::$urls,
             'search' => $search,
         ]);
@@ -34,34 +35,34 @@ class AnimalController {
         $errors = [];
         $fields = [];
         $id = $_GET['id'] ?? 1;
-        $fields = Database::$db->findOneById('animals', $id);
+        $fields = Database::$db->findOneById('owners', $id);
         if (!isset($_GET['id'])) {
             foreach($fields as $key => $value){
                 $fields[$key] = null;
             }
         }
         if ($_POST) {
-            $animal = new Animal($_POST);
-            $errors = $animal->save();
+            $owner = new Owner($_POST);
+            $errors = $owner->save();
             if(empty($errors)) {
-                header("Location: /admin/animals");
+                header("Location: /admin/owners");
                 exit;
             }
         }
         return $router->renderView('/admin/details', [
             'fields' => $fields,
             'errors' => $errors,
-            'title' => 'Animal',
+            'title' => 'Owner',
             'actions' => Self::$urls,
-            'inputs' => Animal::$inputs,
-            'options' => Animal::$options
+            'inputs' => Owner::$inputs,
+            'options' => Owner::$options
         ]);
     }
 
     static public function delete($router){
         $id = $_POST['id'];
-        Database::$db->deleteOneById('animals', $id);
-        header('Location: /admin/animals');
+        Database::$db->deleteOneById('owners', $id);
+        header('Location: /admin/owners');
         exit;
     }
 }

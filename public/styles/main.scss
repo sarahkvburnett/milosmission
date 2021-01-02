@@ -1,6 +1,14 @@
 @import "_variables";
 @import "../../node_modules/bootstrap/scss/bootstrap.scss";
 
+@mixin responsive-grid{
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    grid-gap: 20px;
+    align-items: stretch;
+    grid-template-rows: 1fr;
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -36,23 +44,64 @@ form {
     }   
 }
 
+#logo {
+    font-family: 'Staatliches';
+    line-height: 0.9;
+    font-weight: bold;
+    padding: 5vw;
+    display: inline;
+}
+
 @import "./_modal";
 @import "./admin/admin";
 
-.posts {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    .post {
-        margin: 2vh;
-        img {
-            max-width: 100%;
-            width: 350px;
-            height: 350px;
-            object-fit: cover;
-            border: 2px solid $black;
-            border-radius: 5px;
+#main-home {
+    & > * {
+        min-height: 50vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    #logo {
+        position: absolute;
+        top: 0;
+        left: 0;
+        padding: 5vh;
+    }
+    section p {
+        width: 60vw;
+        margin: auto;
+    }
+    .jumbotron {
+        display: block;
+        padding: 5vh;
+        margin: 0;
+        background-image: url('../images/main-bg.png');
+        background-color: $gray-200;
+        height: 50vh;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover; 
+        color: $primary;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        font-family: 'Staatliches';
+    }
+    #animals {
+        display: block;
+        text-align: center;
+        & > div {
+            @include responsive-grid();
+            grid-template-rows: 1fr;
+        }
+        .card {
+            max-height: 300px;
+            border: none;
+            img {
+                max-height: 300px;
+                object-fit: cover;
+            }
         }
     }
 }
-

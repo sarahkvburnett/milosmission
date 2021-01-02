@@ -21,6 +21,7 @@ class Animal {
     public ?int $rehoming_id;
 
     static public $inputs = [
+        'id' => "hidden",
         'status' => "select",
 //        'image' =>  "file", TODO: file uploader
         'type' => "select"
@@ -61,7 +62,7 @@ class Animal {
         }
         if (empty($errors)){
             $db = Database::$db;
-            $db->saveAnimal($this);
+            $db->save('animals', $this);
         }
         return $errors;
     }
