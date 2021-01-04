@@ -1,4 +1,3 @@
-<!--TODO: handle having none -->
 <div id="admin-browse">
     <h1 class="h1 text-center"><?php echo $title?></h1>
     <?php if(!empty($fields)):?>
@@ -46,7 +45,7 @@
                             echo '<td>'.$value.'</td>';
                         }
                     }
-                    echo '<td class="text-right"><a class="btn btn-primary" href="'.$actions['details'].'"'.$field['id'].'">Edit</a></td>';
+                    echo '<td class="text-right"><a class="btn btn-primary" href="'.$actions['details'].'?id='.$field['id'].'">Edit</a></td>';
                     echo'</tr>';
                 }
                 ?>

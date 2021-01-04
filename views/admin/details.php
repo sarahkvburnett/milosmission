@@ -17,12 +17,12 @@
         include __DIR__."../../_errors.php";
         foreach($fields as $key => $value){
             $type = $inputs[$key] ?? 'text';
-            if ($type !== 'hidden'){
                 echo '<div class="form-group row">';
-                echo '<label class="col-sm-3">'.ucwords($key).'</label>';
+                if ($type !== 'hidden') {
+                    echo '<label class="col-sm-3">' . ucwords($key) . '</label>';
+                }
                 include __DIR__."/_fields.php";
                 echo '</div>';
-            }
         }
         ?>
         <div class="text-center">

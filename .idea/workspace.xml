@@ -2,38 +2,39 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="62c3d5e8-cebe-44e0-b413-726d6197501c" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/php.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/controllers/admin/OwnerController.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/controllers/admin/UserController.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/database/Query.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/models/Owner.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/controllers/PostsController.php" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/controllers/admin/AnimalController.php" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/admin/AnimalController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/controllers/admin/Controller.php" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/Controller.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/Database.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/Database.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/SQL.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/SQL.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/milosmission.pptx" beforeDir="false" afterPath="$PROJECT_DIR$/milosmission.pptx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/Animal.php" beforeDir="false" afterPath="$PROJECT_DIR$/models/Animal.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/Post.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/User.php" beforeDir="false" afterPath="$PROJECT_DIR$/models/User.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/images/cody4.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/public/images/cody4.jpg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/index.php" beforeDir="false" afterPath="$PROJECT_DIR$/public/index.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/styles/admin/_browse.scss" beforeDir="false" afterPath="$PROJECT_DIR$/public/styles/admin/_browse.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/styles/admin/_home.scss" beforeDir="false" afterPath="$PROJECT_DIR$/public/styles/admin/_home.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/styles/admin/admin.scss" beforeDir="false" afterPath="$PROJECT_DIR$/public/styles/admin/admin.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/SQL.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/images/animals/cody/1609271461218.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/public/images/animals/cody/1609271461218.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/images/animals/misty/1609271414806.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/public/images/animals/misty/1609271414806.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/images/cats1.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/images/cats2.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/images/cody1.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/images/cody2.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/images/cody3.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/images/cody4.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/images/cody5.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/images/cody6.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/images/main-bg.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/images/milo1.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/images/milo2.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/images/milo3.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/images/milo4.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/images/milo5.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/images/misty1.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/images/misty2.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/images/misty3.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/images/misty4.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/images/nala1.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/images/pets1.jpg" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/public/styles/main.css" beforeDir="false" afterPath="$PROJECT_DIR$/public/styles/main.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/public/styles/main.css.map" beforeDir="false" afterPath="$PROJECT_DIR$/public/styles/main.css.map" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/public/styles/main.scss" beforeDir="false" afterPath="$PROJECT_DIR$/public/styles/main.scss" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/views/_layout.php" beforeDir="false" afterPath="$PROJECT_DIR$/views/_layout.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/views/_logo.php" beforeDir="false" afterPath="$PROJECT_DIR$/views/_logo.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/views/admin/_fields.php" beforeDir="false" afterPath="$PROJECT_DIR$/views/admin/_fields.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/views/admin/_layout.php" beforeDir="false" afterPath="$PROJECT_DIR$/views/admin/_layout.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/views/admin/auth/logout.php" beforeDir="false" afterPath="$PROJECT_DIR$/views/admin/auth/logout.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/views/admin/browse.php" beforeDir="false" afterPath="$PROJECT_DIR$/views/admin/browse.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/views/admin/details.php" beforeDir="false" afterPath="$PROJECT_DIR$/views/admin/details.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/views/index.php" beforeDir="false" afterPath="$PROJECT_DIR$/views/index.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/views/posts/create.php" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -119,7 +120,7 @@
       <workItem from="1609169913719" duration="1674000" />
       <workItem from="1609172689276" duration="11401000" />
       <workItem from="1609339309989" duration="50596000" />
-      <workItem from="1609604993758" duration="2904000" />
+      <workItem from="1609604993758" duration="7131000" />
     </task>
     <servers />
   </component>

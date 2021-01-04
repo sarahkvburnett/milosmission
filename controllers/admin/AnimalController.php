@@ -10,7 +10,7 @@ class AnimalController {
     static public $urls = [
         'browse' => '/admin/animals',
         'details' => '/admin/animals/details',
-        'delete' => 'admin/animals/delete'
+        'delete' => '/admin/animals/delete'
     ];
 
     static public function browse($router){
@@ -52,7 +52,7 @@ class AnimalController {
             'fields' => $fields,
             'errors' => $errors,
             'title' => 'Animal',
-            'actions' => Self::$urls,
+            'actions' => self::$urls,
             'inputs' => Animal::$inputs,
             'options' => Animal::$options
         ]);

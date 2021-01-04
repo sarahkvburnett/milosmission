@@ -3,7 +3,7 @@
 
 @mixin responsive-grid{
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     grid-gap: 20px;
     align-items: stretch;
     grid-template-rows: 1fr;
@@ -48,7 +48,7 @@ form {
     font-family: 'Staatliches';
     line-height: 0.9;
     font-weight: bold;
-    padding: 5vw;
+    // padding: 5vw;
     display: inline;
 }
 
@@ -57,7 +57,7 @@ form {
 
 #main-home {
     & > * {
-        min-height: 50vh;
+        min-height: 30vh;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -72,21 +72,33 @@ form {
         width: 60vw;
         margin: auto;
     }
-    .jumbotron {
+    header {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 15vh;
+        display: flex;
+        justify-content: space-between;
+    }
+    #main {
         display: block;
         padding: 5vh;
         margin: 0;
-        background-image: url('../images/main-bg.png');
+        background-image: url('../images/main-bg.jpg');
         background-color: $gray-200;
-        height: 50vh;
+        height: 70vh;
         background-position: center;
         background-repeat: no-repeat;
         background-size: cover; 
-        color: $primary;
         display: flex;
         flex-direction: column;
         justify-content: flex-end;
+    }
+    #intro {
+        color: $primary;
         font-family: 'Staatliches';
+        height: 20vh;
     }
     #animals {
         display: block;

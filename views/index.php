@@ -1,15 +1,13 @@
 <div id="main-home">
-    <div class="jumbotron jumbotron-fluid">
+    <header>
         <?php include_once __DIR__."/_logo.php"?>
-        <h1>Animal Sanctuary</h1>
-        <p class="lead">Milos mission provides safe haven for rescued animals until we find them a new forever home</p>
-    </div>
-    <section class="mh-40 p-5">
-        <p class="lead">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquid beatae, omnis quod ipsam in rerum asperiores fugit ipsum,
-            atque aut temporibus earum. Corrupti odit voluptate amet quia error vel facilis! Lorem ipsum dolor sit amet consectetur
-            adipisicing elit. Magnam voluptatem quidem consequatur totam ipsam rem officiis, dolorum maiores sequi sint quas nam eum
-            vero doloremque suscipit error molestiae minima explicabo?
+<!--        <nav><i class="fas fa-bars"></i></nav>-->
+    </header>
+    <div id="main"></div>
+    <section id="intro" class="p-5">
+        <div class="lead">
+            <h1>Animal Sanctuary</h1>
+            <p class="lead">Milos mission provides safe haven for rescued animals until we find them a new forever home. </p>
         </p>
     </section>
     <section id="animals" class="p-5 bg-primary">

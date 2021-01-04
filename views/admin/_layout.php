@@ -23,7 +23,7 @@
                 <?php echo $content?>
             </div>
         </main>
-        <?php include_once __DIR__."/auth/logout"?>
+        <?php include_once __DIR__."/auth/logout.php"?>
     </body>
 </html>
 
