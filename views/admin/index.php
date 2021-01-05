@@ -19,9 +19,9 @@
         'title' => 'Animals',
         'links' => [
             ['/admin/animals', 'Browse all animals'],
-            ['/admin/animals/waiting', 'Browse animals waiting for homes'],
+            ['admin/animals?searchColumn=status&searchItem=Waiting', 'Browse animals waiting for homes'],
             ['/admin/animals/details', 'Create new animal'],
-            ['/admin/animals/rehomed', 'Browse rehomed animals']
+            ['admin/animals?searchColumn=status&searchItem=Rehomed', 'Browse rehomed animals']
         ]
     ];
 
@@ -31,9 +31,9 @@
         'title' => 'Owners',
         'links' => [
             ['/admin/owners', 'Browse all owners'],
-            ['/admin/owners/waiting', 'Browse owners waiting for home check'],
-            ['/admin/animals/details', 'Create new owner'],
-            ['/admin/owners/rehomed', 'Browse owners who have rehomed animal'],
+            ['admin/owners?searchColumn=status&searchItem=New', 'Browse owners waiting for home check'],
+            ['/admin/owners/details', 'Create new owner'],
+            ['admin/owners?searchColumn=status&searchItem=Rehomed', 'Browse owners who have rehomed animal'],
         ]
     ];
 
@@ -43,8 +43,8 @@
         'title' => 'Media',
         'links' => [
             ['/admin/media', 'Browse all media'],
-            ['/admin/media/images', 'Browse all images'],
-            ['/admin/media/videos', 'Browse all videos'],
+            ['admin/media?searchColumn=type&searchItem=Image', 'Browse all images'],
+            ['admin/media?searchColumn=type&searchItem=Video', 'Browse all videos'],
             ['/admin/media/details', 'Create new media'],
         ]
     ];
@@ -55,8 +55,8 @@
         'title' => 'Rooms',
         'links' => [
             ['/admin/rooms', 'Browse all rooms'],
-            ['/admin/rooms/occupied', 'Browse occupied rooms'],
-            ['/admin/rooms/vacant', 'Browse vacant rooms'],
+            ['/admin/rooms?searchColumn=occupied&searchItem=true', 'Browse occupied rooms'],
+            ['/admin/rooms?searchColumn=occupied&searchItem=false', 'Browse vacant rooms'],
             ['/admin/rooms/details', 'Create new rooms'],
         ]
     ];

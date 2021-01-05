@@ -3,4 +3,12 @@
       width: 70%;
   }
 
+  input:read-only{
+    background: $gray-200;
+    &:focus{
+      outline: none;
+    }
+    cursor: default;
+  }
+
 }

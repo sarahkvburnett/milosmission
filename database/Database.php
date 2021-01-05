@@ -16,94 +16,12 @@ class Database {
         self::$db = $this;
     }
 
-//    //POSTS
-//    public function getPosts($search = ''){
-//        if ($search) {
-//            $statement = $this->pdo->prepare(SQL::$getPostsWithSearch);
-//            $statement->bindValue(':search', $search);
-//        }
-//        else {
-//            $statement = $this->pdo->prepare(SQL::$getPosts);
-//        }
-//        $statement->execute();
-//        return $statement->fetchAll(PDO::FETCH_ASSOC);
-//    }
-//
-//    public function getPostById($id){
-//        $statement = $this->pdo->prepare(SQL::$getPostById);
-//        $statement->bindValue(':id', $id);
-//        $statement->execute();
-//        return $statement->fetch(PDO::FETCH_ASSOC);
-//    }
-//
-//    public function savePost($product){
-//            $statement;
-//           if (isset($product->id)){
-//               $statement = $this->pdo->prepare(SQL::$updatePost);
-//               $statement->bindValue(':id', $product->id);
-//           } else {
-//               $statement = $this->pdo->prepare(SQL::$createPost);
-//           }
-//            $statement->bindValue(':label', $product->label);
-//            $statement->bindValue(':url', $product->url);
-//            $statement->bindValue(':caption', $product->caption);
-//            return $statement->execute();
-//    }
-//
-//    public function deletePostById($id){
-//        $statement = $this->pdo->prepare(SQL::$deletePostById);
-//        $statement->bindValue(':id', $id);
-//        $statement->execute();
-//    }
-//    //USERS
-//    public function getUserByEmail($user){
-//        $statement = $this->pdo->prepare(SQL::$getUserByEmail);
-//        $statement->bindValue(':email', $user->email);
-//        $statement->execute();
-//        return $statement->fetch(PDO::FETCH_ASSOC);
-//    }
-//
-//    //ANIMALS
-//    public function getAnimals($search){
-//        if (!empty($search['column']) and !empty($search['item'])) {
-//            $statement = $this->pdo->prepare(SQL::getAnimalsWithSearch($search));
-//        }
-//        else {
-//            $statement = $this->pdo->prepare(SQL::$getAnimals);
-//        }
-//        $statement->execute();
-//        return $statement->fetchAll(PDO::FETCH_ASSOC);
-//    }
-//
-//    public function getAnimalById($id){
-//        $statement = $this->pdo->prepare(SQL::$getAnimalById);
-//        $statement->bindValue(':id', $id);
-//        $statement->execute();
-//        return $statement->fetch(PDO::FETCH_ASSOC);
-//    }
-//
-//    public function saveAnimal($animal){
-//        $statement;
-//        if (isset($animal->id)){
-//            $statement = $this->pdo->prepare(SQL::updateAnimal($animal));
-//            $statement->bindValue(':id', $animal->id);
-//        } else {
-//            $statement = $this->pdo->prepare(SQL::createAnimal($animal));
-//        }
-//        foreach( $animal as $key => $value){
-//            $statement->bindValue(':'.$key, $value);
-//        }
-//        return $statement->execute();
-//    }
-//
-//    public function deleteAnimalById($id){
-//        $statement = $this->pdo->prepare(SQL::$deleteAnimalById);
-//        $statement->bindValue(':id', $id);
-//        $statement->execute();
-//    }
-//
-//    //refactor
-
+    public function fineOneByEmail($table, $email){
+        $statement = $this->pdo->prepare(Query::$$table['findOneByEmail']);
+        $statement->bindValue(':email', $email);
+        $statement->execute();
+        return $statement->fetch(PDO::FETCH_ASSOC);
+    }
 
     public function findOneById($table, $id){
         $statement = $this->pdo->prepare(Query::$$table['findOne']);
@@ -112,12 +30,12 @@ class Database {
         return $statement->fetch(PDO::FETCH_ASSOC);
     }
 
-    public function findAll($table, $search = []){
-        if (!empty($search['column']) and !empty($search['item'])) {
-            $statement = $this->pdo->prepare(Query::findWithSearch($$table, $search));
-        }
-        else {
-            $statement = $this->pdo->prepare(Query::$$table['findAll']);
+    public function findAll($table, $search = [], $query = null){
+        $statement;
+        if (isset($query)) {
+            $statement = $this->pdo->prepare($query);
+        } else {
+            $statement = $this->pdo->prepare(Query::find($table, $search));
         }
         $statement->execute();
         return $statement->fetchAll(PDO::FETCH_ASSOC);
@@ -132,8 +50,11 @@ class Database {
             $statement = $this->pdo->prepare(Query::$$table['createOne']);
         }
         foreach( $model as $key => $value){
-            $statement->bindValue(':'.$key, $value);
+            if ($key !== 'id'){
+                $statement->bindValue(':'.$key, $value);
+            }
         }
+//        $statement->debugDumpParams();
         return $statement->execute();
     }
 

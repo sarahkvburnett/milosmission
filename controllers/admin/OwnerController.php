@@ -11,7 +11,7 @@ class OwnerController {
     static public $urls = [
         'browse' => '/admin/owners',
         'details' => '/admin/owners/details',
-        'delete' => 'admin/owners/delete'
+        'delete' => '/admin/owners/delete'
     ];
 
     static public function browse($router){
@@ -26,7 +26,7 @@ class OwnerController {
             'fields' => $fields,
             'title' => 'Owners',
             'searchables' => Owner::$search,
-            'actions' => Self::$urls,
+            'actions' => self::$urls,
             'search' => $search,
         ]);
     }
@@ -53,7 +53,7 @@ class OwnerController {
             'fields' => $fields,
             'errors' => $errors,
             'title' => 'Owner',
-            'actions' => Self::$urls,
+            'actions' => self::$urls,
             'inputs' => Owner::$inputs,
             'options' => Owner::$options
         ]);

@@ -5,6 +5,7 @@ namespace app\controllers\admin;
 
 use app\database\Database;
 use app\models\Animal;
+use app\Validator;
 
 class AnimalController {
     static public $urls = [
@@ -21,11 +22,17 @@ class AnimalController {
             'item' => $searchItem
         ];
         $fields = Database::$db->findAll('animals', $search);
+        $animals = [];
+        foreach( $fields as $field){
+           $image = Database::$db->findOneById('media', $field['image']);
+           $field["image"] = $image['filename'];
+           $animals[] = $field;
+        };
         return $router->renderView('/admin/browse', [
-            'fields' => $fields,
+            'fields' => $animals,
             'title' => 'Animals',
             'searchables' => Animal::$search,
-            'actions' => Self::$urls,
+            'actions' => self::$urls,
             'search' => $search,
         ]);
     }
@@ -41,7 +48,14 @@ class AnimalController {
             }
         }
         if ($_POST) {
-            $animal = new Animal($_POST);
+            $array = Validator::sanitiseAll($_POST);
+            $array['room_id'] = Validator::convertStrToInt( $array['room_id']);
+            $array['friend_id'] = Validator::convertStrToInt( $array['friend_id']);
+            $array['owner_id'] = Validator::convertStrToInt( $array['owner_id']);
+            $array['rehoming_id'] = Validator::convertStrToInt( $array['rehoming_id']);
+            unset($array['friend_name']);
+            //TODO: need to update other changed tables
+            $animal = new Animal($array);
             $errors = $animal->save();
             if(empty($errors)) {
                 header("Location: /admin/animals");
@@ -54,7 +68,7 @@ class AnimalController {
             'title' => 'Animal',
             'actions' => self::$urls,
             'inputs' => Animal::$inputs,
-            'options' => Animal::$options
+            'options' => Animal::options(),
         ]);
     }
 

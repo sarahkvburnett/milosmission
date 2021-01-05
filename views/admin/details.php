@@ -1,18 +1,20 @@
 <div id="admin-details">
     <h1 class="h1 text-center">
         <?php if(isset($_GET['id'])){
-            echo 'Update New '.$title.': <span class="text-primary">'.$fields['name'].'</span>';
+            echo 'Update '.$title;
+            if (isset($fields['name'])){
+                echo ': <span class="text-primary">'.$fields['name'].'</span>';
+            }
         } else {
             echo 'Create New '.$title;
         }
         ?>
     </h1>
-    <!--TODO add * for the required fields :) -->
     <div id="buttons" class="d-flex justify-content-between mx-auto my-3">
         <a href="<?php echo $actions['browse']?>" class="btn btn-dark">Back</a>
         <button class="btn btn-danger" data-toggle="modal" data-target="#admin-delete">Delete</button>
     </div>
-    <form action="<?php echo $actions['details']?>" method="post" class="bg-white mb-5 p-4 mx-auto">
+    <form action="<?php echo $actions['details']?>" method="post" enctype="multipart/form-data" class="bg-white mb-5 p-4 mx-auto">
         <?php
         include __DIR__."../../_errors.php";
         foreach($fields as $key => $value){
@@ -58,4 +60,3 @@
         </div>
     <?php endif?>
 </div>
-

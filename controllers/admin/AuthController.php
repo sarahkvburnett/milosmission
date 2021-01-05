@@ -18,7 +18,7 @@ class AuthController {
         $errors = [];
         if ($_POST){
            $data = new User($_POST);
-           $user = Database::$db->getUserByEmail($data);
+           $user = Database::$db->fineOneByEmail('users', $data->email);
             if(!$user) {
                 $errors[] = "Email address not found";
             }

@@ -14,21 +14,20 @@ class Owner {
     public ?string $postcode;
     public ?string $animal;
     public ?string $status;
-    public ?bool $new;
 
     static public $inputs = [
-        'id' => "hidden",
+        'id' => "id",
+        'animal' => 'select',
         'status' => "select",
-        'new' => "select"
     ];
 
     static public $options = [
+        'animal' => ['Cat', 'Dog'],
         'status' => ['New', 'Waiting', 'Rehomed'],
-        'new' => ['true', 'false']
     ];
 
     static public $search = [
-        'firstname', 'lastname', 'postcode', 'animal', 'status', 'new'
+        'id', 'firstname', 'lastname', 'postcode', 'animal', 'status'
     ];
 
     public function __construct($data) {
@@ -60,9 +59,6 @@ class Owner {
         }
          if (!$this->status) {
             $errors[] = "Please select the owner's status";
-        }
-         if (!$this->new) {
-            $errors[] = "Is the owner new to the sanctuary?";
         }
         if (empty($errors)){
             $db = Database::$db;

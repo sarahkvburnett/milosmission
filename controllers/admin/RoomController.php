@@ -5,13 +5,14 @@ namespace app\controllers\admin;
 
 
 use app\database\Database;
-use app\models\User;
+use app\models\Room;
+use app\Validator;
 
-class UserController {
+class RoomController {
     static public $urls = [
-        'browse' => '/admin/users',
-        'details' => '/admin/users/details',
-        'delete' => '/admin/users/delete'
+        'browse' => '/admin/rooms',
+        'details' => '/admin/rooms/details',
+        'delete' => '/admin/rooms/delete'
     ];
 
     static public function browse($router){
@@ -21,13 +22,14 @@ class UserController {
             'column' => $searchColumn,
             'item' => $searchItem
         ];
-        $fields = Database::$db->findAll('users', $search);
+        $fields = Database::$db->findAll('rooms', $search);
         return $router->renderView('/admin/browse', [
             'fields' => $fields,
-            'title' => 'Users',
-            'searchables' => User::$search,
+            'title' => 'Rooms',
+            'name' => 'Room',
+            'searchables' => Room::$search,
             'actions' => self::$urls,
-            'search' => $search
+            'search' => $search,
         ]);
     }
 
@@ -35,33 +37,35 @@ class UserController {
         $errors = [];
         $fields = [];
         $id = $_GET['id'] ?? 1;
-        $fields = Database::$db->findOneById('users', $id);
+        $fields = Database::$db->findOneById('rooms', $id);
         if (!isset($_GET['id'])) {
             foreach($fields as $key => $value){
                 $fields[$key] = null;
             }
         }
         if ($_POST) {
-            $user = new User($_POST);
-            $errors = $user->save();
+            $array = Validator::sanitiseAll($_POST);
+            $rooms = new Room($array);
+            $errors = $rooms->save();
             if(empty($errors)) {
-                header("Location: /admin/users");
+                header("Location: /admin/rooms");
                 exit;
             }
         }
         return $router->renderView('/admin/details', [
             'fields' => $fields,
             'errors' => $errors,
-            'title' => 'User',
+            'title' => 'Room',
             'actions' => self::$urls,
-            'inputs' => User::$inputs,
+            'inputs' => Room::$inputs,
+            'options' => Room::options(),
         ]);
     }
 
     static public function delete($router){
         $id = $_POST['id'];
-        Database::$db->deleteOneById('users', $id);
-        header('Location: /admin/users');
+        Database::$db->deleteOneById('rooms', $id);
+        header('Location: /admin/rooms');
         exit;
     }
 }

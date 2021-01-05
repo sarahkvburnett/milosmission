@@ -29,14 +29,14 @@ class User {
     }
 
     static public $inputs = [
-        'id' => "hidden",
+        'id' => "id",
         'password' => 'password',
-        'confirmpassword' => 'confirmpassword',
+        'confirmpassword' => 'password',
         'email' => 'email',
     ];
 
     static public $search = [
-        'firstname', 'lastname', 'email'
+        'id', 'firstname', 'lastname', 'email'
     ];
 
     public function save(){
