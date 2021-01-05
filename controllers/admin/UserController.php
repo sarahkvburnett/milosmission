@@ -34,11 +34,12 @@ class UserController {
     static public function save($router){
         $errors = [];
         $fields = [];
-        $id = $_GET['id'] ?? 1;
-        $fields = Database::$db->findOneById('users', $id);
-        if (!isset($_GET['id'])) {
-            foreach($fields as $key => $value){
-                $fields[$key] = null;
+        if (isset($_GET['id'])) {
+            $fields = Database::$db->findOneById('users', $_GET['id']);
+        } else {
+            $data = Database::$db->describe('users');
+            foreach ($data as $item){
+                $fields[$item['Field']] = '';
             }
         }
         if ($_POST) {

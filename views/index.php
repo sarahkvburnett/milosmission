@@ -1,8 +1,4 @@
 <div id="main-home">
-    <header>
-        <?php include_once __DIR__."/_logo.php"?>
-<!--        <nav><i class="fas fa-bars"></i></nav>-->
-    </header>
     <div id="main"></div>
     <section id="intro" class="p-5">
         <div class="lead">

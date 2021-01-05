@@ -5,39 +5,12 @@ namespace app\database;
 
 
 class Query {
-    static public function update($table, $model){
-        $sql = "UPDATE ".$table." SET";
-        foreach( $model as $key => $value){
-            if (isset($key)) {
-                $sql = $sql." ".$key."=:".$key.",";
-            }
-        }
-        $sql = substr($sql, 0, -1)." WHERE id=:id";
-        return $sql;
-    }
-
-    static public function create($table, $model){
-        $insertSQL="INSERT INTO ".$table." (";
-        $valuesSQL="VALUES(";
-        foreach( $model as $key => $value){
-            if (isset($key)) {
-                $insertSQL = $insertSQL.$key.", ";
-                $valuesSQL = $valuesSQL.":".$key.", ";
-            }
-        }
-        return substr($insertSQL, 0, -2).") ".substr($valuesSQL, 0, -2).")";
-    }
-
-    static public function find($table, $search){
+      static public function find($table, $search){
         if (!empty($search['column']) and !empty($search['item'])) {
             return self::$$table['findAll'].' WHERE ' . $search['column'] . '=\'' . $search['item'] . '\'';
         } else {
             return self::$$table['findAll'];
         }
-    }
-
-    static public function describe($table){
-        return 'DESCRIBE '.$table;
     }
 
     static public $animals = [

@@ -31,7 +31,7 @@ class Router {
         $content = ob_get_clean();
         if (str_contains($view, "admin") and !str_contains($view, "login")) {
             include_once __DIR__."/views/admin/_layout.php";
-        } elseif ($view !== "/index") {
+        } else {
             include_once __DIR__."/views/_layout.php";
         }
     }

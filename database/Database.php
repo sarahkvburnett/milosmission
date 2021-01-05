@@ -16,6 +16,12 @@ class Database {
         self::$db = $this;
     }
 
+    public function describe($table){
+        $statement = $this->pdo->prepare('DESCRIBE '.$table);
+        $statement->execute();
+        return $statement->fetchAll(PDO::FETCH_ASSOC);
+    }
+
     public function fineOneByEmail($table, $email){
         $statement = $this->pdo->prepare(Query::$$table['findOneByEmail']);
         $statement->bindValue(':email', $email);

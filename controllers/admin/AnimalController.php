@@ -40,11 +40,12 @@ class AnimalController {
     static public function save($router){
         $errors = [];
         $fields = [];
-        $id = $_GET['id'] ?? 1;
-        $fields = Database::$db->findOneById('animals', $id);
-        if (!isset($_GET['id'])) {
-            foreach($fields as $key => $value){
-                $fields[$key] = null;
+        if (isset($_GET['id'])) {
+            $fields = Database::$db->findOneById('animals', $_GET['id']);
+        } else {
+            $data = Database::$db->describe('animals');
+            foreach ($data as $item){
+                $fields[$item['Field']] = '';
             }
         }
         if ($_POST) {
@@ -53,7 +54,6 @@ class AnimalController {
             $array['friend_id'] = Validator::convertStrToInt( $array['friend_id']);
             $array['owner_id'] = Validator::convertStrToInt( $array['owner_id']);
             $array['rehoming_id'] = Validator::convertStrToInt( $array['rehoming_id']);
-            unset($array['friend_name']);
             //TODO: need to update other changed tables
             $animal = new Animal($array);
             $errors = $animal->save();

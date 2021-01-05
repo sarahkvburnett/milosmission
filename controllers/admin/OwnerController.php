@@ -34,11 +34,12 @@ class OwnerController {
     static public function save($router){
         $errors = [];
         $fields = [];
-        $id = $_GET['id'] ?? 1;
-        $fields = Database::$db->findOneById('owners', $id);
-        if (!isset($_GET['id'])) {
-            foreach($fields as $key => $value){
-                $fields[$key] = null;
+        if (isset($_GET['id'])) {
+            $fields = Database::$db->findOneById('owners', $_GET['id']);
+        } else {
+            $data = Database::$db->describe('owners');
+            foreach ($data as $item){
+                $fields[$item['Field']] = '';
             }
         }
         if ($_POST) {

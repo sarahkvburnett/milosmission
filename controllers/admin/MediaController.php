@@ -42,11 +42,12 @@ class MediaController {
     static public function save($router){
         $errors = [];
         $fields = [];
-        $id = $_GET['id'] ?? 1;
-        $fields = Database::$db->findOneById('media', $id);
-        if (!isset($_GET['id'])) {
-            foreach($fields as $key => $value){
-                $fields[$key] = null;
+        if (isset($_GET['id'])) {
+            $fields = Database::$db->findOneById('media', $_GET['id']);
+        } else {
+            $data = Database::$db->describe('media');
+            foreach ($data as $item){
+                $fields[$item['Field']] = '';
             }
         }
         if ($_POST) {
