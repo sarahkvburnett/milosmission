@@ -28,7 +28,7 @@ class MediaController extends BaseController {
         if ($_POST) {
             $array = Validator::sanitiseAll($_POST);
             $filename = $array['category']."/".$array['subcategory'];
-            $errors = self::uploadFile($filename);
+            $errors = $this->uploadFile($filename);
             if (empty($errors) or errors[0] === "Sorry, file already exists."){
                 $array['filename'] = $filename."/".$_FILES['filename']['name'];
                 $media = new Media($array);

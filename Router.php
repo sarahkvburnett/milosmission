@@ -28,18 +28,20 @@ class Router {
         $this->postRoutes[$url] = $fn;
     }
 
-    public function renderView($view, $params = []){
-        foreach ($params as $key => $value){
-            $$key = $value;
-        }
-        ob_start();
-        include_once __DIR__."/views/$view.php";
-        $content = ob_get_clean();
-        if (str_contains($view, "admin") and !str_contains($view, "login")) {
-            include_once __DIR__."/views/admin/_layout.php";
-        } else {
-            include_once __DIR__."/views/_layout.php";
-        }
+    public function renderView($view, $params = [], $status = 200){
+//        foreach ($params as $key => $value){
+//            $$key = $value;
+//        }
+//        ob_start();
+//        include_once __DIR__."/views/$view.php";
+//        $content = ob_get_clean();
+//        if (str_contains($view, "admin") and !str_contains($view, "login")) {
+//            include_once __DIR__."/views/admin/_layout.php";
+//        } else {
+//            include_once __DIR__."/views/_layout.php";
+//        }
+        header('Content-type: application/json', true, $status);
+        echo json_encode($params);
     }
 
     public function resolve(){
@@ -58,7 +60,7 @@ class Router {
             }
             $fn($this);
         } else {
-            $this->renderView("/404");
+            $this->renderView("/404", [], 404);
         }
     }
 

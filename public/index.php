@@ -28,6 +28,7 @@ $room = new RoomController();
 $user = new UserController();
 
 $router->get('/', [$controller, 'index']);
+$router->get('/animals', [$controller, 'animals']);
 
 $router->get('/admin/login', [$auth, 'login', ['isGuest']]);
 $router->post('/admin/login', [$auth, 'login', ['isGuest']]);
