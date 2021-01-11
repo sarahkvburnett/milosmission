@@ -60,7 +60,10 @@ class Router {
             }
             $fn($this);
         } else {
-            $this->renderView("/404", [], 404);
+            $this->renderView("/404", ['errors' => [
+                'code' => 404,
+                'message' => 'Page Not Found'
+            ]], 404);
         }
     }
 
