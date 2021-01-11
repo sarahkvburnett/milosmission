@@ -5,22 +5,34 @@ namespace app\models;
 
 
 use app\database\Database;
+use app\Validator;
 
-class User {
-    public string $firstname;
-    public string $lastname;
-    public string $email;
-    public string $password;
-    public string $confirmpassword;
+class User extends Base {
 
-    public function __construct($data) {
-        foreach($data as $key => $value){
-            if (!empty($value)){
-                $this->$key = $value;
-            } else {
-                $this->$key = null;
-            }
+    public ?string $_table = 'users';
+
+    public ?array $_searchFields = [
+        'id' => "id",
+        'password' => 'password',
+        'confirmpassword' => 'password',
+        'email' => 'email',
+    ];
+
+    public ?array $_detailsTypes = [
+        'id', 'firstname', 'lastname', 'email'
+    ];
+
+    public function getAllOptions($db) {
+    }
+
+    public function save($router){
+        $fields = $this->getFields();
+        $errors = $validator->validate($fields);
+        if (empty($errors)){
+            $this->password = password_hash($data['password'], PASSWORD_DEFAULT);
+            $db->save($this->_table, $fields);
         }
+        return $errors;
     }
 
     public function createAuthHash(){
@@ -28,18 +40,7 @@ class User {
         return password_hash($auth, PASSWORD_DEFAULT);
     }
 
-    static public $inputs = [
-        'id' => "id",
-        'password' => 'password',
-        'confirmpassword' => 'password',
-        'email' => 'email',
-    ];
-
-    static public $search = [
-        'id', 'firstname', 'lastname', 'email'
-    ];
-
-    public function save(){
+    public function validate($fields) {
         $errors = [];
         if (!$this->firstname) {
             $errors[] = "Please add a firstname";
@@ -59,13 +60,7 @@ class User {
         if ($this->password !== $this->confirmpassword ) {
             $errors[] = "Your passwords do not match";
         }
-        if (empty($errors)){
-            $this->password = password_hash($data['password'], PASSWORD_DEFAULT);
-            $db = Database::$db;
-            $db->save('users', $this);
-        }
         return $errors;
     }
-
 
 }

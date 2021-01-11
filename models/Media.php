@@ -6,33 +6,19 @@ namespace app\models;
 
 use app\database\Database;
 
-class Media {
-    public ?int $id;
-    public ?string $filename;
-    public ?string $type;
-    public ?string $category;
-    public ?string $subcategory;
+class Media extends Base {
 
-    static public $inputs = [
+    public ?string $_table = 'media';
+
+    public ?array $_detailsTypes = [
         'id' => "id",
         'filename' =>  "file",
         'type' => "select",
     ];
 
-
-    static public function options() {
-        function getOptions($table, $column){
-            $options = ['N/A'];
-            $query = 'SELECT '.$column.' FROM '.$table;
-            $data = Database::$db->findAll($table, [], $query);
-            if (empty($data)) return $options;
-            foreach($data as $row){
-                $options[] = $row[$column];
-            };
-            return $options;
-        }
-        $animalNames = getOptions('animals',  'name');
-        $animalIds = getOptions('animals', 'id');
+    public function getAlloptions($db) {
+        $animalNames = $this->getOptions($db,'animals',  'name');
+        $animalIds = $this->getOptions($db,'animals', 'id');
         return [
             'type' => ['Image', 'Video'],
             'animal_name' => $animalNames,
@@ -40,21 +26,11 @@ class Media {
         ];
     }
 
-    static public $search = [
+    public ?array $_searchFields = [
         'id', 'filename', 'type', 'category', 'subcategory'
     ];
 
-    public function __construct($data) {
-        foreach($data as $key => $value){
-            if (!empty($value)){
-                $this->$key = $value;
-            } else {
-                $this->$key = null;
-            }
-        }
-    }
-
-    public function save(){
+    public function validate($fields) {
         $errors = [];
         if (!$this->filename) {
             $errors[] = "Please add a file";
@@ -68,12 +44,7 @@ class Media {
         if (!$this->subcategory) {
             $errors[] = "Please indicate the subcategory";
         }
-        if (empty($errors)){
-            $db = Database::$db;
-            $db->save('media', $this);
-        }
         return $errors;
     }
-
 
 }

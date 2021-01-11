@@ -8,6 +8,12 @@ class Router {
     public $getRoutes = [];
     public $postRoutes = [];
 
+    public $db;
+
+    public function __construct($db) {
+        $this->db = $db;
+    }
+
     public function executeMiddleware($mw = []){
         foreach($mw as $fn){
             Middleware::$fn();
@@ -49,11 +55,15 @@ class Router {
             if (isset($fn[2])) {
                 $this->executeMiddleware($fn[2]);
                 unset($fn[2]);
-            };
+            }
             $fn($this);
         } else {
             $this->renderView("/404");
         }
     }
 
+    public function redirect($url){
+        header("Location: ".$url);
+        exit;
+    }
 }

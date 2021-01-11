@@ -6,41 +6,28 @@ namespace app\models;
 
 use app\database\Database;
 
-class Owner {
-    public ?int $id;
-    public ?string $firstname;
-    public ?string $lastname;
-    public ?string $address;
-    public ?string $postcode;
-    public ?string $animal;
-    public ?string $status;
+class Owner extends Base {
 
-    static public $inputs = [
+    public ?string $_table = 'owners';
+
+    public ?array $_detailsTypes = [
         'id' => "id",
         'animal' => 'select',
         'status' => "select",
     ];
 
-    static public $options = [
-        'animal' => ['Cat', 'Dog'],
-        'status' => ['New', 'Waiting', 'Rehomed'],
-    ];
+    public function getAllOptions($db) {
+        return [
+            'animal' => ['Cat', 'Dog'],
+            'status' => ['New', 'Waiting', 'Rehomed']
+        ];
+    }
 
-    static public $search = [
+    public ?array $_searchFields = [
         'id', 'firstname', 'lastname', 'postcode', 'animal', 'status'
     ];
 
-    public function __construct($data) {
-        foreach($data as $key => $value){
-            if (!empty($value)){
-                $this->$key = $value;
-            } else {
-                $this->$key = null;
-            }
-        }
-    }
-
-    public function save(){
+    public function validate($fields) {
         $errors = [];
         if (!$this->firstname) {
             $errors[] = "Please add a firstname";
@@ -57,13 +44,10 @@ class Owner {
         if (!$this->animal) {
             $errors[] = "Select the animal type to be rehomed";
         }
-         if (!$this->status) {
+        if (!$this->status) {
             $errors[] = "Please select the owner's status";
-        }
-        if (empty($errors)){
-            $db = Database::$db;
-            $db->save('owners', $this);
         }
         return $errors;
     }
+
 }

@@ -4,6 +4,7 @@ use app\controllers\admin\AnimalController;
 use app\controllers\admin\AuthController;
 use app\controllers\admin\MediaController;
 use app\controllers\admin\OwnerController;
+use app\controllers\admin\RehomingController;
 use app\controllers\admin\RoomController;
 use app\controllers\admin\UserController;
 use app\controllers\Controller;
@@ -15,39 +16,53 @@ $dotenv = Dotenv\Dotenv::createImmutable(dirname(__DIR__));
 $dotenv->load();
 
 $database = new Database();
-$router = new Router();
+$router = new Router($database);
 
-$router->get('/', [Controller::class, 'index']);
+$controller = new Controller();
+$auth = new AuthController();
+$rehoming = new RehomingController();
+$animal = new AnimalController();
+$media = new MediaController();
+$owner = new OwnerController();
+$room = new RoomController();
+$user = new UserController();
 
-$router->get('/admin/login', [AuthController::class, 'login', ['isGuest']]);
-$router->post('/admin/login', [AuthController::class, 'login', ['isGuest']]);
-$router->post('/admin/logout', [AuthController::class, 'logout', ['isAuth']]);
+$router->get('/', [$controller, 'index']);
 
-$router->get('/admin', [Controller::class, 'admin', ['isAuth']]);
+$router->get('/admin/login', [$auth, 'login', ['isGuest']]);
+$router->post('/admin/login', [$auth, 'login', ['isGuest']]);
+$router->post('/admin/logout', [$auth, 'logout', ['isAuth']]);
 
-$router->get('/admin/animals', [AnimalController::class, 'browse', ['isAuth']]);
-$router->get('/admin/animals/details', [AnimalController::class, 'save', ['isAuth']]);
-$router->post('/admin/animals/details', [AnimalController::class, 'save', ['isAuth']]);
-$router->post('/admin/animals/delete', [AnimalController::class, 'delete', ['isAuth']]);
+$router->get('/admin', [$controller, 'admin', ['isAuth']]);
 
-$router->get('/admin/users', [UserController::class, 'browse', ['isAuth']]);
-$router->get('/admin/users/details', [UserController::class, 'save', ['isAuth']]);
-$router->post('/admin/users/details', [UserController::class, 'save', ['isAuth']]);
-$router->post('/admin/users/delete', [UserController::class, 'delete', ['isAuth']]);
+$router->get('/admin/animals', [$animal, 'browse', ['isAuth']]);
+$router->get('/admin/animals/details', [$animal, 'save', ['isAuth']]);
+$router->post('/admin/animals/details', [$animal, 'save', ['isAuth']]);
+$router->post('/admin/animals/delete', [$animal, 'delete', ['isAuth']]);
 
-$router->get('/admin/owners', [OwnerController::class, 'browse', ['isAuth']]);
-$router->get('/admin/owners/details', [OwnerController::class, 'save', ['isAuth']]);
-$router->post('/admin/owners/details', [OwnerController::class, 'save', ['isAuth']]);
-$router->post('/admin/owners/delete', [OwnerController::class, 'delete', ['isAuth']]);
+$router->get('/admin/users', [$user, 'browse', ['isAuth']]);
+$router->get('/admin/users/details', [$user, 'save', ['isAuth']]);
+$router->post('/admin/users/details', [$user, 'save', ['isAuth']]);
+$router->post('/admin/users/delete', [$user, 'delete', ['isAuth']]);
 
-$router->get('/admin/media', [MediaController::class, 'browse', ['isAuth']]);
-$router->get('/admin/media/details', [MediaController::class, 'save', ['isAuth']]);
-$router->post('/admin/media/details', [MediaController::class, 'save', ['isAuth']]);
-$router->post('/admin/media/delete', [MediaController::class, 'delete', ['isAuth']]);
+$router->get('/admin/owners', [$owner, 'browse', ['isAuth']]);
+$router->get('/admin/owners/details', [$owner, 'save', ['isAuth']]);
+$router->post('/admin/owners/details', [$owner, 'save', ['isAuth']]);
+$router->post('/admin/owners/delete', [$owner, 'delete', ['isAuth']]);
 
-$router->get('/admin/rooms', [RoomController::class, 'browse', ['isAuth']]);
-$router->get('/admin/rooms/details', [RoomController::class, 'save', ['isAuth']]);
-$router->post('/admin/rooms/details', [RoomController::class, 'save', ['isAuth']]);
-$router->post('/admin/rooms/delete', [RoomController::class, 'delete', ['isAuth']]);
+$router->get('/admin/media', [$media, 'browse', ['isAuth']]);
+$router->get('/admin/media/details', [$media, 'save', ['isAuth']]);
+$router->post('/admin/media/details', [$media, 'save', ['isAuth']]);
+$router->post('/admin/media/delete', [$media, 'delete', ['isAuth']]);
+
+$router->get('/admin/rooms', [$room, 'browse', ['isAuth']]);
+$router->get('/admin/rooms/details', [$room, 'save', ['isAuth']]);
+$router->post('/admin/rooms/details', [$room, 'save', ['isAuth']]);
+$router->post('/admin/rooms/delete', [$room, 'delete', ['isAuth']]);
+
+$router->get('/admin/rehomings', [$rehoming, 'browse', ['isAuth']]);
+$router->get('/admin/rehomings/details', [$rehoming, 'save', ['isAuth']]);
+$router->post('/admin/rehomings/details', [$rehoming, 'save', ['isAuth']]);
+$router->post('/admin/rehomings/delete', [$rehoming, 'delete', ['isAuth']]);
 
 $router->resolve();

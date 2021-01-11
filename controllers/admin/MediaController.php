@@ -6,50 +6,25 @@ namespace app\controllers\admin;
 
 use app\database\Database;
 use app\models\Media;
+use app\Router;
 use app\Validator;
 
-class MediaController {
-    static public $urls = [
+class MediaController extends BaseController {
+    public $name = 'Media';
+    public $table = 'media';
+    public $urls = [
         'browse' => '/admin/media',
         'details' => '/admin/media/details',
         'delete' => '/admin/media/delete'
     ];
 
-    static public function browse($router){
-        $searchColumn = $_GET['searchColumn'] ?? '';
-        $searchItem = $_GET['searchItem'] ?? '';
-        $search = [
-            'column' => $searchColumn,
-            'item' => $searchItem
-        ];
-        $fields = Database::$db->findAll('media', $search);
-        $updatedFields = [];
-        foreach( $fields as $field){
-            $newField = array_slice($field, 0, 2, true) +
-                array('preview' => $field['filename']) +
-                array_slice($field, 2, NULL, true);
-            $updatedFields[] = $newField;
-        };
-        return $router->renderView('/admin/browse', [
-            'fields' => $updatedFields,
-            'title' => 'Media',
-            'searchables' => Media::$search,
-            'actions' => self::$urls,
-            'search' => $search,
-        ]);
+    public function __construct(){
+        $this->model = new Media();
     }
 
-    static public function save($router){
+    public function save($router){
         $errors = [];
-        $fields = [];
-        if (isset($_GET['id'])) {
-            $fields = Database::$db->findOneById('media', $_GET['id']);
-        } else {
-            $data = Database::$db->describe('media');
-            foreach ($data as $item){
-                $fields[$item['Field']] = '';
-            }
-        }
+        $fields = $this->getDetailsFields($this->table, $router);
         if ($_POST) {
             $array = Validator::sanitiseAll($_POST);
             $filename = $array['category']."/".$array['subcategory'];
@@ -59,29 +34,21 @@ class MediaController {
                 $media = new Media($array);
                 $errors = $media->save();
                 if(empty($errors)) {
-                    header("Location: /admin/media");
-                    exit;
+                    $router->redirect('/admin/media');
                 }
             }
         }
         return $router->renderView('/admin/details', [
             'fields' => $fields,
             'errors' => $errors,
-            'title' => 'Media',
-            'actions' => self::$urls,
-            'inputs' => Media::$inputs,
-            'options' => Media::options(),
+            'title' => $this->name,
+            'actions' => $this->urls,
+            'inputs' => $this->model->_detailsTypes,
+            'options' => $this->model->getAllOptions($router->db)
         ]);
     }
 
-    static public function delete($router){
-        $id = $_POST['id'];
-        Database::$db->deleteOneById('media', $id);
-        header('Location: /admin/media');
-        exit;
-    }
-
-    static protected function uploadFile($filepath) {
+    protected function uploadFile($filepath) {
         $target_dir = $filepath;
         $target_file = $_SERVER['DOCUMENT_ROOT']."/images/".$target_dir .'/'.basename($_FILES["filename"]["name"]);
         $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));

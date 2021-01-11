@@ -7,75 +7,22 @@ use app\database\Database;
 use app\models\Animal;
 use app\Validator;
 
-class AnimalController {
-    static public $urls = [
+class AnimalController extends BaseController {
+    public $name = 'Animal'; //titlecase
+    public $table = 'animals';
+    public $model;
+    public $urls = [
         'browse' => '/admin/animals',
         'details' => '/admin/animals/details',
         'delete' => '/admin/animals/delete'
     ];
 
-    static public function browse($router){
-        $searchColumn = $_GET['searchColumn'] ?? '';
-        $searchItem = $_GET['searchItem'] ?? '';
-        $search = [
-            'column' => $searchColumn,
-            'item' => $searchItem
-        ];
-        $fields = Database::$db->findAll('animals', $search);
-        $animals = [];
-        foreach( $fields as $field){
-           $image = Database::$db->findOneById('media', $field['image']);
-           $field["image"] = $image['filename'];
-           $animals[] = $field;
-        };
-        return $router->renderView('/admin/browse', [
-            'fields' => $animals,
-            'title' => 'Animals',
-            'searchables' => Animal::$search,
-            'actions' => self::$urls,
-            'search' => $search,
-        ]);
+    public function __construct() {
+        $this->model = new Animal();
     }
 
-    static public function save($router){
-        $errors = [];
-        $fields = [];
-        if (isset($_GET['id'])) {
-            $fields = Database::$db->findOneById('animals', $_GET['id']);
-        } else {
-            $data = Database::$db->describe('animals');
-            foreach ($data as $item){
-                $fields[$item['Field']] = '';
-            }
-        }
-        if ($_POST) {
-            $array = Validator::sanitiseAll($_POST);
-            $array['room_id'] = Validator::convertStrToInt( $array['room_id']);
-            $array['friend_id'] = Validator::convertStrToInt( $array['friend_id']);
-            $array['owner_id'] = Validator::convertStrToInt( $array['owner_id']);
-            $array['rehoming_id'] = Validator::convertStrToInt( $array['rehoming_id']);
-            //TODO: need to update other changed tables
-            $animal = new Animal($array);
-            $errors = $animal->save();
-            if(empty($errors)) {
-                header("Location: /admin/animals");
-                exit;
-            }
-        }
-        return $router->renderView('/admin/details', [
-            'fields' => $fields,
-            'errors' => $errors,
-            'title' => 'Animal',
-            'actions' => self::$urls,
-            'inputs' => Animal::$inputs,
-            'options' => Animal::options(),
-        ]);
-    }
-
-    static public function delete($router){
-        $id = $_POST['id'];
-        Database::$db->deleteOneById('animals', $id);
-        header('Location: /admin/animals');
-        exit;
+    public function getBrowseFields($table, $router, $search = []){
+        $query = 'SELECT a.id, a.name, a.type, a.breed, a.colour, a.age, a.status, m.filename as image, a.room_id as room_id, a.friend_id, a.owner_id, a.rehoming_id FROM animals a LEFT JOIN media m ON m.id = a.image_id';
+        return $router->db->executeQuery($query);
     }
 }

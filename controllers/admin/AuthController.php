@@ -8,17 +8,13 @@ use app\models\User;
 
 class AuthController {
 
-    static public function register(){
+       //TODO: need to redirect on login back to the initial url
 
-    }
-
-    //TODO: need to redirect on login back to the initial url
-
-    static public function login($router){
+    public function login($router){
         $errors = [];
         if ($_POST){
            $data = new User($_POST);
-           $user = Database::$db->fineOneByEmail('users', $data->email);
+           $user = $router->db->fineOneByEmail('users', $data->email);
             if(!$user) {
                 $errors[] = "Email address not found";
             }
@@ -36,7 +32,7 @@ class AuthController {
        ]);
     }
 
-    static public function logout(){
+    public function logout(){
         setcookie("auth-user", "", time() - 3600);
         header('Location: /');
     }

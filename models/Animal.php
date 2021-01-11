@@ -6,21 +6,10 @@ namespace app\models;
 
 use app\database\Database;
 
-class Animal {
-    public ?int $id;
-    public ?string $name;
-    public ?string $type;
-    public ?string $breed;
-    public ?string $colour;
-    public ?int $age;
-    public ?string $image_id;
-    public ?string $status;
-    public ?int $room_id;
-    public ?int $friend_id;
-    public ?int $owner_id;
-    public ?int $rehoming_id;
+class Animal extends Base {
+    public ?string $_table = 'animals';
 
-    static public $inputs = [
+    public ?array $_detailsTypes = [
         'id' => "id",
         'status' => "select",
         'type' => "select",
@@ -31,26 +20,12 @@ class Animal {
         'rehoming_id' => "select",
     ];
 
-
-    static public function options() {
-        function getOptions($table, $column, $where = null){
-            $options = ['N/A'];
-            $query = 'SELECT '.$column.' FROM '.$table;
-            if (!empty($where)){
-                $query = $query." ".$where;
-            }
-            $data = Database::$db->findAll($table, [], $query);
-            if (empty($data)) return $options;
-            foreach($data as $row){
-                $options[] = $row[$column];
-            };
-            return $options;
-        }
-        $imageIds = getOptions('media', 'id', 'WHERE type="image"');
-        $friendIds = getOptions('animals',  'id');
-        $roomIds = getOptions('rooms', 'id');
-        $ownerIds = getOptions('owners', 'id');
-        $rehomingIds = getOptions('owners', 'id');
+    public function getAllOptions($db) {
+        $imageIds = $this->getOptions($db,'media', 'id', 'WHERE type="image"');
+        $friendIds = $this->getOptions($db, 'animals',  'id');
+        $roomIds = $this->getOptions($db,'rooms', 'id');
+        $ownerIds = $this->getOptions($db,'owners', 'id');
+        $rehomingIds = $this->getOptions($db,'owners', 'id');
         return [
             'status' => ['New', 'Waiting', 'Rehomed'],
             'type' => ['Cat', 'Dog'],
@@ -62,21 +37,11 @@ class Animal {
         ];
     }
 
-    static public $search = [
+    public ?array $_searchFields = [
         'id', 'name', 'type', 'breed', 'age', 'status'
     ];
 
-    public function __construct($data) {
-        foreach($data as $key => $value){
-            if (!empty($value)){
-                $this->$key = $value;
-            } else {
-                $this->$key = null;
-            }
-        }
-    }
-
-    public function save(){
+    public function validate($fields) {
         $errors = [];
         if (!$this->name) {
             $errors[] = "Please add a name";
@@ -90,13 +55,7 @@ class Animal {
         if (!$this->status) {
             $errors[] = "Please indicate the animal's current status";
         }
-        if (empty($errors)){
-            $db = Database::$db;
-            $db->save('animals', $this);
-        }
         return $errors;
     }
-
-
 
 }

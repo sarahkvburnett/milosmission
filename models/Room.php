@@ -6,61 +6,31 @@ namespace app\models;
 
 use app\database\Database;
 
-class Room {
-    public ?int $id;
-    public ?string $type;
-    public ?string $occupied;
+class Room extends Base {
 
-    static public $inputs = [
+    public ?string $_table = 'rooms';
+
+    public ?array $_detailsTypes = [
         'id' => "id",
         'type' => "select",
-        'occupied' => "select"
     ];
 
-
-    static public function options() {
-        function getOptions($table, $column){
-            $options = ['N/A'];
-            $query = 'SELECT '.$column.' FROM '.$table;
-            $data = Database::$db->findAll($table, [], $query);
-            if (empty($data)) return $options;
-            foreach($data as $row){
-                $options[] = $row[$column];
-            };
-            return $options;
-        }
+    public function getAllOptions($db) {
         return [
-            'type' => ['Cat', 'Dog'],
-            'occupied' => ['true', 'false']
-        ];
+            'type' => ['Cat', 'Dog']
+            ];
     }
 
-    static public $search = [
-        'id', 'type', 'occupied'
+    public ?array $_searchFields = [
+        'id', 'type'
     ];
 
-    public function __construct($data) {
-        foreach($data as $key => $value){
-            if (!empty($value)){
-                $this->$key = $value;
-            } else {
-                $this->$key = null;
-            }
-        }
-    }
-
-    public function save(){
+    public function validate($fields) {
         $errors = [];
         if (!$this->type) {
-            $errors[] = "Please indicate the filetype";
-        }
-        if (!$this->type) {
-            $errors[] = "Please indicate the current occupancy";
-        }
-        if (empty($errors)){
-            $db = Database::$db;
-            $db->save('rooms', $this);
+            $errors[] = "Please indicate the animal type";
         }
         return $errors;
     }
+
 }

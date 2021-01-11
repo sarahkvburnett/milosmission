@@ -9,10 +9,10 @@ use app\database\Database;
 class Controller {
 
     static public function index($router){
-        $fields = Database::$db->findAll('animals');
+        $fields = $router->db->findAll('animals');
         $animals = [];
         foreach( $fields as $field){
-            $image = Database::$db->findOneById('media', $field['image']);
+            $image = $router->db->findOneById('media', $field['image']);
             $field["image"] = $image['filename'];
             $animals[] = $field;
         };

@@ -55,9 +55,17 @@
         'title' => 'Rooms',
         'links' => [
             ['/admin/rooms', 'Browse all rooms'],
-            ['/admin/rooms?searchColumn=occupied&searchItem=true', 'Browse occupied rooms'],
-            ['/admin/rooms?searchColumn=occupied&searchItem=false', 'Browse vacant rooms'],
             ['/admin/rooms/details', 'Create new rooms'],
+        ]
+    ];
+
+    $rehomingsCard = [
+        'url' => '/admin/rehomings',
+        'icon' => 'house-user',
+        'title' => 'Rehomings',
+        'links' => [
+            ['/admin/rehomings', 'Browse all rehoming'],
+            ['/admin/rehomings/details', 'Create new rehoming'],
         ]
     ];
 
@@ -76,6 +84,7 @@
         $ownersCard,
         $mediaCard,
         $roomsCard,
+        $rehomingsCard,
         $usersCard
     ];
 ?>
@@ -86,6 +95,5 @@
                 createIndexCard($card['url'], $card['icon'], $card['title'], $card['links']);
             }
         ?>
-<!--        styling problem here div isn't full width -->
     </div>
 </div>

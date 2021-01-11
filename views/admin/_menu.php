@@ -18,6 +18,7 @@
         addMenuItem('/admin/media', 'photo-video', 'Media');
         addMenuItem('/admin/rooms', 'warehouse', 'Rooms');
         addMenuItem('/admin/users', 'user', 'Users');
+        addMenuItem('/admin/rehomings', 'house-user', 'Rehomings');
         addMenuItem('/admin/logout', 'sign-out-alt', 'Logout');
         ?>
     </div>
