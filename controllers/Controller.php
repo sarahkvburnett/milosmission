@@ -9,13 +9,8 @@ use app\database\Database;
 class Controller {
 
     static public function index($router){
-        $fields = $router->db->findAll('animals');
-        $animals = [];
-        foreach( $fields as $field){
-            $image = $router->db->findOneById('media', $field['image']);
-            $field["image"] = $image['filename'];
-            $animals[] = $field;
-        };
+        $query = 'SELECT a.id, a.name, a.type, a.breed, a.colour, a.age, a.status, m.filename as image, a.room_id as room_id, a.friend_id, a.owner_id, a.rehoming_id FROM animals a LEFT JOIN media m ON m.id = a.image_id';
+        $animals = $router->db->executeQuery($query);
         $router->renderView('/index', ['animals' => $animals]);
     }
 
