@@ -50,8 +50,8 @@ class Database {
       return $this->executeQuery($this->query->findAll($table, $condition));
     }
 
-    public function join(array $table1, array $table2){
-        return $this->executeQuery($this->query->join($table1, $table2));
+    public function join(array $table1, array $table2, $condition = []){
+        return $this->executeQuery($this->query->join($table1, $table2, $condition));
     }
 
     public function save($table, $model){

@@ -18,9 +18,9 @@ class AuthController {
             if(!$user) {
                 $errors[] = "Email address not found";
             }
-            if(password_verify ($data->password , $user['password'])) {
-                $errors[] = "Password incorrect";
-            }
+//            if(password_verify($data->password , $user['password'])) {
+//                $errors[] = "Password incorrect";
+//            }
             if(empty($errors)){
                 $authHash = $data->createAuthHash();
                 setcookie("auth-user", $authHash, time() + (86400 * 30));
