@@ -22,7 +22,34 @@ class AnimalController extends BaseController {
     }
 
     public function getBrowseFields($table, $router, $search = []){
-        $query = 'SELECT a.id, a.name, a.type, a.breed, a.colour, a.age, a.status, m.filename as image, a.room_id as room_id, a.friend_id, a.owner_id, a.rehoming_id FROM animals a LEFT JOIN media m ON m.id = a.image_id';
-        return $router->db->executeQuery($query);
+       return $this->joinAnimalFields($router, $search);
     }
+
+    public function getDetailsFields($table, $router){
+        $fields = [];
+        if (isset($_GET['id'])) {
+            $fields = $this->joinAnimalFields($router);
+            $fields = $fields[0];
+        } else {
+            $data = $router->db->describe($table);
+            foreach ($data as $item){
+                $fields[$item['Field']] = '';
+            }
+        }
+        return $fields;
+    }
+
+    private function joinAnimalFields($router, $search = []){
+        return $router->db->join([
+            'name' => 'animals',
+            'fields' => ['id', 'name', 'type', 'breed', 'colour', 'age', 'status', 'room_id', 'friend_id', 'owner_id', 'rehoming_id'],
+            'on' => 'image_id'
+        ], [
+            'name' => 'media',
+            'fields' => ['filename as image'],
+            'on' => 'id'
+        ],
+            $search);
+    }
+
 }

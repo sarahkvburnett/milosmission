@@ -8,8 +8,8 @@ class Query {
 
     public function findAll(string $table, ?array $condition){
         $sql = 'SELECT * FROM '.$table;
-        if (!empty($condition['field']) and !empty($condition['value'])){
-            $sql = $sql . ' WHERE ' . $condition['field'] . '=\'' . $condition['value'] . '\'';
+        if (!empty($condition['column']) and !empty($condition['item'])) {
+            $sql = $sql . ' WHERE ' . $condition['column'] . '=\'' . $condition['item'] . '\'';
         }
         return $sql;
     }
@@ -38,10 +38,11 @@ class Query {
         foreach ($table2['fields'] as $field){
             $sql .= 't2.'.$field.', ';
         }
-        $sql = substr($sql, 0, -1);
-        $sql .= 'FROM '.$table1['name'].' t1 LEFT JOIN on '.$table2['name'].' t2';
-        if (isset($condition)) {
-            $sql .= $condition;
+        $sql = substr($sql, 0, -2);
+        $sql .= ' FROM '.$table1['name'].' t1 LEFT JOIN '.$table2['name'].' t2';
+        $sql .= ' ON t1.'.$table1['on'].' = t2.'.$table2['on'];
+        if (!empty($condition['column']) and !empty($condition['item'])){
+            $sql = $sql . ' WHERE t1.' . $condition['column'] . '=\'' . $condition['item'] . '\'';
         }
         return $sql;
     }
