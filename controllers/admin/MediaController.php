@@ -22,7 +22,7 @@ class MediaController extends BaseController {
         $this->model = new Media();
     }
 
-    //todo update this to new controller methods - also need to add new entry into animal_media;
+    //todo need to add new entry into animal_media;
     public function save($router){
         $this->setDetailsData($router);
         $this->setModelData($router);
@@ -42,6 +42,8 @@ class MediaController extends BaseController {
         }
         return $router->renderView('/admin/details', $this->data);
     }
+
+    //todo need to add delete file
 
     protected function uploadFile($files, $filepath) {
         $target_dir = $filepath;

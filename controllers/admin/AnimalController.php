@@ -35,6 +35,24 @@ class AnimalController extends BaseController {
         $this->data['media'] = $router->db->executeQuery('SELECT j.id, j.animal_id, j.image_id, m.filename, m.id as image_id FROM animal_media j, media m WHERE j.image_id = m.id AND j.animal_id='.$this->data['fields']['id']);
     }
 
+    public function setBrowseData($router, $search){
+        parent::setBrowseData($router, $search);
+        $this->data['counts'] = $this->getCounts($router);
+    }
+
+    private function getCounts($router){
+        $all = $router->db->count($this->table);
+        $new = $router->db->count($this->table, "WHERE status = 'new'");
+        $waiting = $router->db->count($this->table, "WHERE status = 'waiting'");
+        $rehomed = $router->db->count($this->table, "WHERE status = 'rehomed'");
+        return [
+            'all' => $all,
+            'new' => $new,
+            'waiting' => $waiting,
+            'rehomed' => $rehomed
+        ];
+    }
+
     private function joinAnimalFields($router, $search = []){
         return $router->db->join([
             'name' => 'animals',

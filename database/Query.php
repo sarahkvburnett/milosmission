@@ -6,6 +6,14 @@ namespace app\database;
 
 class Query {
 
+    public function count($table, $where){
+        $sql = 'SELECT COUNT(id) FROM '.$table;
+        if (isset($where)){
+            $sql .= " ".$where;
+        }
+        return $sql;
+    }
+
     public function findAll(string $table, ?array $condition){
         $sql = 'SELECT * FROM '.$table;
         if (!empty($condition['column']) and !empty($condition['value'])) {

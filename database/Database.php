@@ -29,6 +29,11 @@ class Database {
         return $statement->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    public function count($table, $where = null){
+        $raw = $this->executeQuery($this->query->count($table, $where));
+        return $raw[0]['COUNT(id)'];
+    }
+
 
     public function describe($table){
         return $this->executeQuery('DESCRIBE '.$table);

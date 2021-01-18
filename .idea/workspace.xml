@@ -2,14 +2,14 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="62c3d5e8-cebe-44e0-b413-726d6197501c" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/codymistymilo.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/codymistymilo.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/php.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/php.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Router.php" beforeDir="false" afterPath="$PROJECT_DIR$/Router.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/controllers/admin/AnimalController.php" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/admin/AnimalController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/controllers/admin/BaseController.php" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/admin/BaseController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/controllers/admin/MediaController.php" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/admin/MediaController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/Database.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/Database.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/database/Query.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/Query.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/Media.php" beforeDir="false" afterPath="$PROJECT_DIR$/models/Media.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/views/admin/browse.php" beforeDir="false" afterPath="$PROJECT_DIR$/views/admin/browse.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -39,6 +39,17 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="PhpWorkspaceProjectConfiguration">
+    <include_path>
+      <path value="$PROJECT_DIR$/vendor/composer" />
+      <path value="$PROJECT_DIR$/vendor/graham-campbell/result-type" />
+      <path value="$PROJECT_DIR$/vendor/vlucas/phpdotenv" />
+      <path value="$PROJECT_DIR$/vendor/symfony/polyfill-mbstring" />
+      <path value="$PROJECT_DIR$/vendor/symfony/polyfill-ctype" />
+      <path value="$PROJECT_DIR$/vendor/symfony/polyfill-php80" />
+      <path value="$PROJECT_DIR$/vendor/phpoption/phpoption" />
+    </include_path>
+  </component>
   <component name="ProjectId" id="1m4REjSLkB1gzpjPXElGrDnvvrG" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
@@ -51,7 +62,7 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../milosmission-vue" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
   </component>
@@ -107,6 +118,7 @@
       <workItem from="1610836471003" duration="2046000" />
       <workItem from="1610909628706" duration="207000" />
       <workItem from="1610916981658" duration="9455000" />
+      <workItem from="1610930799800" duration="3705000" />
     </task>
     <servers />
   </component>
@@ -115,6 +127,19 @@
   </component>
   <component name="UnknownFeatures">
     <option featureType="com.intellij.fileTypeFactory" implementationName="*.env" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="COLUMN_ORDER" />
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
   <component name="WindowStateProjectService">
     <state x="542" y="216" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1609170523344">
