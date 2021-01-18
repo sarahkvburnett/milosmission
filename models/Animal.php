@@ -18,6 +18,7 @@ class Animal extends Base {
         'room_id' => "select",
         'owner_id' => "select",
         'rehoming_id' => "select",
+        'image' => "hidden"
     ];
 
     public function getAllOptions($db) {

@@ -11,7 +11,7 @@
             }
             ?>
         </select>
-        <input type="text" name="searchItem" value="<?php echo $search['item'] ?>" placeholder="Search">
+        <input type="text" name="searchValue" value="<?php echo $search['value'] ?>" placeholder="Search">
         <?php if(isset($_GET['searchItem'])):?>
             <a href="<?php echo $actions['browse']?>" class="btn btn-dark">Clear</a>
         <?php else:?>

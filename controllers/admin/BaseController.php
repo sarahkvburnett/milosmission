@@ -14,74 +14,80 @@ abstract class BaseController {
         'details' => '',
         'delete' => ''
     ];
-
     public $model;
+    public $data = [];
 
     abstract function __construct();
 
     public function browse($router){
-        $search = $this->getSearch($_GET);
-        $fields = $this->getBrowseFields($this->table, $router,  $search);
-        return $router->renderView('/admin/browse', [
-            'fields' => $fields,
-            'title' => $this->name,
-            'searchables' => $this->model->_searchFields,
-            'actions' => $this->urls,
-            'search' => $search,
-        ]);
+        $search = $this->setSearchData($_GET);
+        $this->setBrowseData($router,  $search);
+        $this->setModelData($router);
+        return $router->renderView('/admin/browse', $this->data);
     }
 
      public function save($router){
-        $fields = $this->getDetailsFields($this->table, $router);
-        $errors = [];
-        if ($_POST) {
+        $this->setDetailsData($router);
+         $this->setModelData($router);
+         if ($_POST) {
             $array = Validator::sanitiseAll($_POST);
             $model = new $this->model($array);
-            $errors = $model->save($router->db, $fields);
+            $errors = $model->save($router->db);
             if(empty($errors)) {
-                $router->redirect($this->urls['browse']);
+                $router->redirect($this->urls['browse'], $this->data);
             }
+            $this->data['errors'] = $errors;
         }
-        return $router->renderView('/admin/details', [
-            'fields' => $fields,
-            'errors' => $errors,
-            'title' => $this->name,
-            'actions' => $this->urls,
-            'inputs' => $this->model->_detailsTypes,
-            'options' => $this->model->getAllOptions($router->db)
-        ]);
+        return $router->renderView('/admin/details', $this->data);
     }
 
     public function delete($router){
         $id = $_POST['id'];
         $router->db->deleteOneById($this->table, $id);
-        $router->redirect($this->urls['browse']);
+        $router->redirect($this->urls['browse'], $this->data);
     }
 
-    public function getBrowseFields($table, $router, $search){
-        return $router->db->findAll($this->table, $search);
+    public function setModelData($router){
+        $this->data['actions'] = $this->urls;
+        $this->data['inputs'] = $this->model->_detailsTypes;
+        $this->data['options'] = $this->model->getAllOptions($router->db);
+        $this->data['searchables'] = $this->model->_searchFields;
     }
 
-    public function getDetailsFields($table, $router){
+    public function setBrowseData($router, $search){
+        $this->data['fields'] = $this->getBrowseData($router, $search);
+    }
+
+    public function setDetailsData($router){
         $fields = [];
         if (isset($_GET['id'])) {
-            $fields = $router->db->findOneById($table, $_GET['id']);
+            $fields = $this->getDetailsData($router);
             $fields = $fields[0];
         } else {
-            $data = $router->db->describe($table);
+            $data = $router->db->describe($this->table);
             foreach ($data as $item){
                 $fields[$item['Field']] = '';
             }
         }
-        return $fields;
+        $this->data['fields'] = $fields;
     }
 
-    public function getSearch($params){
+    public function getBrowseData($router, $search){
+        return $router->db->findAll($this->table, $search);
+    }
+
+    public function getDetailsData($router){
+        return $router->db->findOneById($this->table, $_GET['id']);
+    }
+
+    public function setSearchData($params){
         $searchColumn = $params['searchColumn'] ?? '';
-        $searchItem = $params['searchItem'] ?? '';
-        return [
+        $searchValue = $params['searchValue'] ?? '';
+        $search = [
             'column' => $searchColumn,
-            'item' => $searchItem
+            'value' => $searchValue
         ];
+        $this->data['search'] = $search;
+        return $search;
     }
 }

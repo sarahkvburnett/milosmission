@@ -21,8 +21,21 @@ class AnimalController extends BaseController {
         $this->model = new Animal();
     }
 
-    public function getBrowseFields($table, $router, $search = []){
-        $query = 'SELECT a.id, a.name, a.type, a.breed, a.colour, a.age, a.status, m.filename as image, a.room_id as room_id, a.friend_id, a.owner_id, a.rehoming_id FROM animals a LEFT JOIN media m ON m.id = a.image_id';
+    public function getBrowseData($router, $search = []){
+       return $this->joinAnimalFields($router, $search);
+    }
+
+    public function getDetailsData($router){
+        return $this->joinAnimalFields($router);
+    }
+
+    public function setDetailsData($router){
+        parent::setDetailsData($router);
+        $this->data['friend'] = $router->db->executeQuery('SELECT * FROM animals WHERE id='.$this->data['fields']['friend_id']);
+        $this->data['media'] = $router->db->executeQuery('SELECT j.id, j.animal_id, j.image_id, m.filename, m.id as image_id FROM animal_media j, media m WHERE j.image_id = m.id AND j.animal_id='.$this->data['fields']['id']);
+    }
+
+    private function joinAnimalFields($router, $search = []){
         return $router->db->join([
             'name' => 'animals',
             'fields' => ['id', 'name', 'type', 'breed', 'colour', 'age', 'status', 'room_id', 'friend_id', 'owner_id', 'rehoming_id'],
@@ -34,4 +47,5 @@ class AnimalController extends BaseController {
         ],
             $search);
     }
+
 }

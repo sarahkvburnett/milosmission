@@ -22,39 +22,34 @@ class MediaController extends BaseController {
         $this->model = new Media();
     }
 
+    //todo update this to new controller methods - also need to add new entry into animal_media;
     public function save($router){
-        $errors = [];
-        $fields = $this->getDetailsFields($this->table, $router);
-        if ($_POST) {
+        $this->setDetailsData($router);
+        $this->setModelData($router);
+        if ($_FILES) {
             $array = Validator::sanitiseAll($_POST);
-            $filename = $array['category']."/".$array['subcategory'];
-            $errors = $this->uploadFile($filename);
-            if (empty($errors) or errors[0] === "Sorry, file already exists."){
+            $filename = "/".$array['category'];
+            $errors = $this->uploadFile($_FILES, $filename);
+            if (empty($errors) or $errors[0] === "Sorry, file already exists."){
                 $array['filename'] = $filename."/".$_FILES['filename']['name'];
-                $media = new Media($array);
-                $errors = $media->save();
+                $model = new $this->model($array);
+                $errors = $model->save($router->db);
                 if(empty($errors)) {
-                    $router->redirect('/admin/media');
+                    $this->data['fields'] = $array;
+                    $router->redirect($this->urls['browse'], $this->data);
                 }
-            }
+             }
         }
-        return $router->renderView('/admin/details', [
-            'fields' => $fields,
-            'errors' => $errors,
-            'title' => $this->name,
-            'actions' => $this->urls,
-            'inputs' => $this->model->_detailsTypes,
-            'options' => $this->model->getAllOptions($router->db)
-        ]);
+        return $router->renderView('/admin/details', $this->data);
     }
 
-    protected function uploadFile($filepath) {
+    protected function uploadFile($files, $filepath) {
         $target_dir = $filepath;
-        $target_file = $_SERVER['DOCUMENT_ROOT']."/images/".$target_dir .'/'.basename($_FILES["filename"]["name"]);
+        $target_file = $_SERVER['DOCUMENT_ROOT']."/images".$target_dir .'/'.basename($files["filename"]["name"]);
         $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
 
         if (isset($_POST["submit"])) {
-            $check = getimagesize($_FILES["filename"]["tmp_name"]);
+            $check = getimagesize($files["filename"]["tmp_name"]);
             if ($check === false) {
                 return ["File is not an image"];
             }
@@ -71,7 +66,7 @@ class MediaController extends BaseController {
            return ["Sorry, only JPG, JPEG, PNG & GIF files are allowed."];
         }
 
-       if (!move_uploaded_file($_FILES["filename"]["tmp_name"], $target_file)) {
+       if (!move_uploaded_file($files["filename"]["tmp_name"], $target_file)) {
            return ["Sorry, there was an error uploading your file."];
        }
     }
