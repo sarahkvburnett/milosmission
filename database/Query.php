@@ -8,8 +8,8 @@ class Query {
 
     public function findAll(string $table, ?array $condition){
         $sql = 'SELECT * FROM '.$table;
-        if (!empty($condition['column']) and !empty($condition['item'])) {
-            $sql = $sql . ' WHERE ' . $condition['column'] . '=\'' . $condition['item'] . '\'';
+        if (!empty($condition['column']) and !empty($condition['value'])) {
+            $sql = $sql . ' WHERE ' . $condition['column'] . '=\'' . $condition['value'] . '\'';
         }
         return $sql;
     }
@@ -41,8 +41,8 @@ class Query {
         $sql = substr($sql, 0, -2);
         $sql .= ' FROM '.$table1['name'].' t1 LEFT JOIN '.$table2['name'].' t2';
         $sql .= ' ON t1.'.$table1['on'].' = t2.'.$table2['on'];
-        if (!empty($condition['column']) and !empty($condition['item'])){
-            $sql = $sql . ' WHERE t1.' . $condition['column'] . '=\'' . $condition['item'] . '\'';
+        if (!empty($condition['column']) and !empty($condition['value'])){
+            $sql = $sql . ' WHERE t1.' . $condition['column'] . '=\'' . $condition['value'] . '\'';
         }
         return $sql;
     }
@@ -71,4 +71,5 @@ class Query {
     public function delete($table){
         return 'DELETE FROM '.$table.' WHERE id=:id';
     }
+
 }

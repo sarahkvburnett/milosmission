@@ -35,15 +35,15 @@ class Media extends Base {
         if (!$this->filename) {
             $errors[] = "Please add a file";
         }
-        if (!$this->type) {
-            $errors[] = "Please indicate the filetype";
-        }
-        if (!$this->category) {
-            $errors[] = "Please indicate the category";
-        }
-        if (!$this->subcategory) {
-            $errors[] = "Please indicate the subcategory";
-        }
+//        if (!$this->type) {
+//            $errors[] = "Please indicate the filetype";
+//        }
+//        if (!$this->category) {
+//            $errors[] = "Please indicate the category";
+//        }
+//        if (!$this->subcategory) {
+//            $errors[] = "Please indicate the subcategory";
+//        }
         return $errors;
     }
 

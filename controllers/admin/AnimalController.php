@@ -21,22 +21,18 @@ class AnimalController extends BaseController {
         $this->model = new Animal();
     }
 
-    public function getBrowseFields($table, $router, $search = []){
+    public function getBrowseData($router, $search = []){
        return $this->joinAnimalFields($router, $search);
     }
 
-    public function getDetailsFields($table, $router){
-        $fields = [];
-        if (isset($_GET['id'])) {
-            $fields = $this->joinAnimalFields($router);
-            $fields = $fields[0];
-        } else {
-            $data = $router->db->describe($table);
-            foreach ($data as $item){
-                $fields[$item['Field']] = '';
-            }
-        }
-        return $fields;
+    public function getDetailsData($router){
+        return $this->joinAnimalFields($router);
+    }
+
+    public function setDetailsData($router){
+        parent::setDetailsData($router);
+        $this->data['friend'] = $router->db->executeQuery('SELECT * FROM animals WHERE id='.$this->data['fields']['friend_id']);
+        $this->data['media'] = $router->db->executeQuery('SELECT j.id, j.animal_id, j.image_id, m.filename, m.id as image_id FROM animal_media j, media m WHERE j.image_id = m.id AND j.animal_id='.$this->data['fields']['id']);
     }
 
     private function joinAnimalFields($router, $search = []){

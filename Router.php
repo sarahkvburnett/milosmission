@@ -28,22 +28,6 @@ class Router {
         $this->postRoutes[$url] = $fn;
     }
 
-    public function renderView($view, $params = [], $status = 200){
-//        foreach ($params as $key => $value){
-//            $$key = $value;
-//        }
-//        ob_start();
-//        include_once __DIR__."/views/$view.php";
-//        $content = ob_get_clean();
-//        if (str_contains($view, "admin") and !str_contains($view, "login")) {
-//            include_once __DIR__."/views/admin/_layout.php";
-//        } else {
-//            include_once __DIR__."/views/_layout.php";
-//        }
-        header('Content-type: application/json', true, $status);
-        echo json_encode($params);
-    }
-
     public function resolve(){
         $method = strtolower($_SERVER['REQUEST_METHOD']);
         $uri = $_SERVER['REQUEST_URI'] ?? '/';
@@ -67,8 +51,36 @@ class Router {
         }
     }
 
-    public function redirect($url){
-        header("Location: ".$url);
+    public function renderView($view, $data = [], $status = 200){
+//        todo: sort out what you doing about all this mate
+//        foreach ($params as $key => $value){
+//            $$key = $value;
+//        }
+//        ob_start();
+//        include_once __DIR__."/views/$view.php";
+//        $content = ob_get_clean();
+//        if (str_contains($view, "admin") and !str_contains($view, "login")) {
+//            include_once __DIR__."/views/admin/_layout.php";
+//        } else {
+//            include_once __DIR__."/views/_layout.php";
+//        }
+        if (isset($data['errors'])){
+            $status = 400;
+        }
+        header('Content-type: application/json', true, $status);
+        echo json_encode($data);
+        exit;
+    }
+
+
+    public function redirect($url, $data, $status = 200){
+//        header("Location: ".$url);
+//        exit;
+        if (isset($data['errors'])){
+            $status = 400;
+        }
+        header('Content-type: application/json', true, $status);
+        echo json_encode($data);
         exit;
     }
 }
