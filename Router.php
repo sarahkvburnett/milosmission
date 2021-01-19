@@ -52,7 +52,6 @@ class Router {
     }
 
     public function renderView($view, $data = [], $status = 200){
-//        todo: sort out what you doing about all this mate
 //        foreach ($params as $key => $value){
 //            $$key = $value;
 //        }

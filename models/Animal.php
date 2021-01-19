@@ -13,11 +13,11 @@ class Animal extends Base {
         'id' => "id",
         'status' => "select",
         'type' => "select",
-        'image_id' => "select",
-        'friend_id' => "select",
-        'room_id' => "select",
-        'owner_id' => "select",
-        'rehoming_id' => "select",
+        'image_id' => "hidden",
+        'friend_id' => "hidden",
+        'room_id' => "hidden",
+        'owner_id' => "hidden",
+        'rehoming_id' => "hidden",
         'image' => "hidden"
     ];
 

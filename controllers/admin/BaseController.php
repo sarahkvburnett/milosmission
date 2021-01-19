@@ -43,6 +43,7 @@ abstract class BaseController {
 
     public function delete($router){
         $id = $_POST['id'];
+        //todo: add where need to delete row from other table;
         $router->db->deleteOneById($this->table, $id);
         $router->redirect($this->urls['browse'], $this->data);
     }
