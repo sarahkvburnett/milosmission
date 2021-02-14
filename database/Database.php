@@ -6,69 +6,214 @@ use app\database\SQL;
 use http\Env;
 use \PDO;
 
+/**
+ * Class Database
+ * @package app\database
+ * Version 1.1
+ */
 class Database {
     public $pdo;
-    public static $db;
-    public $query;
+    public $statement;
+    protected $sql;
+    protected $values;
 
-    public function __construct() {
-        $this->pdo = new PDO($_ENV['DB_DSN'], $_ENV['DB_USER'], $_ENV['DB_PASSWORD']);
-        $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        self::$db = $this;
-        $this->query = new Query();
+    public function __construct($dbCredentials) {
+        ['dbDSN' => $DSN, 'dbUser' => $user, 'dbPassword' => $password, 'dbOptions' => $options] = $dbCredentials;
+        $this->pdo = new PDO($DSN, $user, $password, $options);
     }
 
-    public function executeQuery($query, $fields = []){
-        $statement = $this->pdo->prepare($query);
-        foreach( $fields as $key => $value){
-            $statement->bindValue(':'.$key, $value);
+    // Methods to prepare and execute PDO
+
+    /**
+     * Function to execute non-fetch queries - insert, update, delete...
+     * @return $this
+     */
+    public function execute() {
+        $this->prepareQuery($this->sql)->bindValues($this->values)->executeQuery();
+        return $this;
+    }
+
+    /**
+     * Function to execute fetch one record queries
+     * @return array
+     */
+    public function fetch() {
+        $this->execute();
+        return $this->statement->fetch(PDO::FETCH_ASSOC);
+    }
+
+    /**
+     * Function to execute fetch many record queries
+     * @return array
+     */
+    public function fetchAll() {
+        $this->execute();
+        return $this->statement->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+
+    //Methods to build initial sql statement
+
+    /**
+     * Write sql select statement for provided table
+     * @param string $table
+     * @return $this
+     */
+    public function select($table) {
+        $this->sql = 'SELECT * FROM ' . $table . ' t1';
+        return $this;
+    }
+
+    /**
+     * Write sql select statement with count function for provided table
+     * @param string $id
+     * @param string $table
+     * @return $this
+     */
+    public function count($id, $table) {
+        $this->sql = 'SELECT COUNT('.$id.') FROM ' . $table;
+        return $this;
+    }
+
+    /**
+     * Write sql describe statement for provided table
+     * @param string $table
+     * @return $this
+     */
+    public function describe($table) {
+        $this->sql = 'DESCRIBE ' . $table;
+        return $this;
+    }
+
+    /**
+     * Write sql insert statement for provided table
+     * @param string $table
+     * @param array $values
+     * @return $this
+     */
+    public function insert($table, $values) {
+        $this->setValues($values);
+        $insertSQL = "INSERT INTO " . $table . " (";
+        $valuesSQL = "VALUES (";
+        foreach ($values as $key => $value) {
+            $insertSQL = $insertSQL . $key . ", ";
+            if (!strpos($key, 'date')) {
+                $valuesSQL = $valuesSQL . ":" . $key . ", ";
+            }
         }
-//        $statement->debugDumpParams();
-        $statement->execute();
-        if (strpos($query, 'INSERT') !== false or strpos($query, 'UPDATE') !== false or strpos($query, 'DELETE') !== false) return;
-        return $statement->fetchAll(PDO::FETCH_ASSOC);
+        $this->sql = $this->trimSql($insertSQL) . ") " . $this->trimSql($valuesSQL) . ")";
+        return $this;
     }
 
-    public function count($table, $where = null){
-        $raw = $this->executeQuery($this->query->count($table, $where));
-        return $raw[0]['COUNT(id)'];
-    }
-
-
-    public function describe($table){
-        return $this->executeQuery('DESCRIBE '.$table);
-    }
-
-    public function fineOneByEmail($table, $email){
-        return $this->executeQuery($this->query->findByEmail($table, $email), ['email' => $email]);
-    }
-
-    public function findOneById($table, $id){
-       return $this->executeQuery($this->query->findById($table, $id), ['id' => $id]);
-    }
-
-    public function findOptions($table, string $columns, ?string $where){
-        return $this->executeQuery($this->query->findOptions($table, $columns, $where));
-    }
-
-    public function findAll($table, $condition = []){
-      return $this->executeQuery($this->query->findAll($table, $condition));
-    }
-
-    public function join(array $table1, array $table2, $condition = []){
-        return $this->executeQuery($this->query->join($table1, $table2, $condition));
-    }
-
-    public function save($table, $model){
-        if (isset($model['id'])){
-            return $this->executeQuery($this->query->update($table, $model), $model);
-        } else {
-            return $this->executeQuery($this->query->create($table, $model), $model);
+    /**
+     * Write sql update statement for provided table
+     * @param string $table
+     * @param array $values
+     * @return $this
+     */
+    public function update($table, $values) {
+        $this->setValues($values);
+        $sql = "UPDATE " . $table . " SET";
+        foreach ($values as $key => $value) {
+            if (isset($key)) {
+                $sql .= " " . $key . "=:" . $key . ", ";
+            }
         }
+        $this->sql = $this->trimSql($sql);
+        return $this;
     }
 
-    public function deleteOneById($table, $id){
-        return $this->executeQuery($this->query->delete($table, $id), ['id' => $id]);
+    /**
+     * Write sql delete statement for provided table
+     * @param string $table
+     */
+    public function delete($table) {
+        $this->sql = 'DELETE FROM ' . $table;
+        return $this;
+    }
+
+    // Helper methods to extend sql query - must start with whitespace
+
+    /**
+     * Add join to sql statement
+     * @param string $type
+     * @param string $table
+     * @param string $column
+     * @return $this
+     */
+    public function join($table, $column, $type = 'LEFT') {
+        $this->sql .= ' ' . $type . ' JOIN ' . $table . ' ON t1.' . $column . ' = ' . $table . '.' . $column . ' ';
+        return $this;
+    }
+
+    /**
+     * Add where clause to sql statement - can use multiple
+     * @param array $where [0 => $column, 1 => $value]
+     * @return $this
+     */
+
+    public function where($where = []) {
+        if (empty($where)) return $this;
+        $sql = '';
+        if (!strpos($this->sql, 'WHERE')) {
+            $sql .= ' WHERE';
+        };
+        $sql .= ' ' . $where[0] . ' = \'' . $where[1] . '\', ';
+        $this->sql .= $this->trimSql($sql);
+        return $this;
+    }
+
+    /**
+     * Function to remove trailing comma from sql statement added in final iteration of insert/update
+     * @param string $sql
+     * @return false|string
+     */
+    protected function trimSql($sql) {
+        return substr($sql, 0, -2);
+    }
+
+    /**
+     * Set values
+     * @param array $values
+     */
+    protected function setValues($values) {
+        $this->values = $values;
+    }
+
+    //Methods for PDO stages
+
+    /**
+     * Prepares a statement for execution
+     * @param string $query
+     * @return $this
+     */
+    protected function prepareQuery($query) {
+        $this->statement = $this->pdo->prepare($query);
+        return $this;
+    }
+
+    /**
+     * Bind values to parameters for statement
+     * @param array $values
+     * @return $this
+     */
+    protected function bindValues($values = []) {
+        if (!empty($values)) {
+            foreach ($values as $key => $value) {
+                $this->statement->bindValue(':' . $key, $value);
+            }
+        }
+        return $this;
+    }
+
+    /**
+     * Executes prepared statement
+     * @return bool
+     */
+    protected function executeQuery() {
+//        $this->statement->debugDumpParams();
+        return $this->statement->execute();
     }
 
 }
+

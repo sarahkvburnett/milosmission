@@ -6,7 +6,7 @@ namespace app\controllers;
 
 use app\database\Database;
 
-class Controller {
+class Frontend {
 
     static public function index($router){
         $fields = $router->db->findAll('animals');

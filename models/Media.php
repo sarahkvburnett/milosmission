@@ -16,7 +16,7 @@ class Media extends Base {
         'type' => "select",
     ];
 
-    public function getAlloptions($db) {
+    public function getAllOptions($db) {
         $animalNames = $this->getOptions($db,'animals',  'name');
         $animalIds = $this->getOptions($db,'animals', 'id');
         return [

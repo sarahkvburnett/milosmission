@@ -3,57 +3,38 @@
 
 namespace app\models;
 
-
 use app\database\Database;
+use app\models\Base;
 
 class Animal extends Base {
     public ?string $_table = 'animals';
+    public ?string $_name = 'animal';
 
-    public ?array $_detailsTypes = [
-        'id' => "id",
-        'status' => "select",
-        'type' => "select",
-        'image_id' => "hidden",
-        'friend_id' => "hidden",
-        'room_id' => "hidden",
-        'owner_id' => "hidden",
-        'rehoming_id' => "hidden",
-        'image' => "hidden"
-    ];
-
-    public function getAllOptions($db) {
-        $imageIds = $this->getOptions($db,'media', 'id', 'WHERE type="image"');
-        $friendIds = $this->getOptions($db, 'animals',  'id');
-        $roomIds = $this->getOptions($db,'rooms', 'id');
-        $ownerIds = $this->getOptions($db,'owners', 'id');
-        $rehomingIds = $this->getOptions($db,'owners', 'id');
-        return [
-            'status' => ['New', 'Waiting', 'Rehomed'],
-            'type' => ['Cat', 'Dog'],
-            'image_id' => $imageIds,
-            'friend_id' => $friendIds,
-            'room_id' => $roomIds,
-            'owner_id' => $ownerIds,
-            'rehoming_id' => $rehomingIds,
-        ];
-    }
-
-    public ?array $_searchFields = [
-        'id', 'name', 'type', 'breed', 'age', 'status'
-    ];
+    protected $animal_id;
+    protected $animal_name;
+    protected $animal_type;
+    protected $animal_breed;
+    protected $animal_colour;
+    protected $animal_age;
+    protected $animal_status;
+    protected $media_id;
+    protected $room_id;
+    protected $friend_id;
+    protected $owner_id;
+    protected $rehoming_id;
 
     public function validate($fields) {
         $errors = [];
-        if (!$this->name) {
+        if (!$this->animal_name) {
             $errors[] = "Please add a name";
         }
-        if (!$this->type) {
+        if (!$this->animal_type) {
             $errors[] = "Please indicate the animal's type";
         }
-        if (!$this->image_id) {
+        if (!$this->media_id) {
             $errors[] = "Please add an image";
         }
-        if (!$this->status) {
+        if (!$this->animal_status) {
             $errors[] = "Please indicate the animal's current status";
         }
         return $errors;

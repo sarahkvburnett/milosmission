@@ -18,10 +18,10 @@
         <?php
         include __DIR__."../../_errors.php";
         foreach($fields as $key => $value){
-            $type = $inputs[$key] ?? 'text';
+            $type = $types[$key] ?? 'text';
                 echo '<div class="form-group row">';
                 if ($type !== 'hidden') {
-                    echo '<label class="col-sm-3">' . ucwords($key) . '</label>';
+                    echo '<label class="col-sm-3">' .$labels[$key]. '</label>';
                 }
                 include __DIR__."/_fields.php";
                 echo '</div>';

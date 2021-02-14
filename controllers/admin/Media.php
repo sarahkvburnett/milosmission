@@ -3,24 +3,9 @@
 
 namespace app\controllers\admin;
 
+use app\controllers\Admin;
 
-use app\database\Database;
-use app\models\Media;
-use app\Router;
-use app\Validator;
-
-class MediaController extends BaseController {
-    public $name = 'Media';
-    public $table = 'media';
-    public $urls = [
-        'browse' => '/admin/media',
-        'details' => '/admin/media/details',
-        'delete' => '/admin/media/delete'
-    ];
-
-    public function __construct(){
-        $this->model = new Media();
-    }
+class Media extends Admin {
 
     //todo need to add new entry into animal_media;
     public function save($router){
@@ -42,8 +27,6 @@ class MediaController extends BaseController {
         }
         return $router->renderView('/admin/details', $this->data);
     }
-
-    //todo need to add delete file
 
     protected function uploadFile($files, $filepath) {
         $target_dir = $filepath;
@@ -71,5 +54,9 @@ class MediaController extends BaseController {
        if (!move_uploaded_file($files["filename"]["tmp_name"], $target_file)) {
            return ["Sorry, there was an error uploading your file."];
        }
+    }
+
+    protected function deleteFile(){
+        //todo
     }
 }

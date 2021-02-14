@@ -6,7 +6,7 @@ namespace app\controllers\admin;
 use app\database\Database;
 use app\models\User;
 
-class AuthController {
+class Auth {
 
        //TODO: need to redirect on login back to the initial url
 
