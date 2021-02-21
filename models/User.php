@@ -3,61 +3,55 @@
 
 namespace app\models;
 
-
+use app\models\abstracts\Admin;
 use app\database\Database;
 use app\Validator;
 
-class User extends Base {
+class User extends Admin {
 
-    public ?string $_table = 'users';
+    protected $user_id;
+    protected $user_firstname;
+    protected $user_lastname;
+    protected $user_email;
+    protected $user_password;
 
-    public ?array $_searchFields = [
-        'id' => "id",
-        'password' => 'password',
-        'confirmpassword' => 'password',
-        'email' => 'email',
-    ];
+    function setTable() {
+        $this->_table = 'users';
+    }
 
-    public ?array $_detailsTypes = [
-        'id', 'firstname', 'lastname', 'email'
-    ];
-
-    public function getAllOptions($db) {
+    function setName() {
+        $this->_name = 'User';
     }
 
     public function save($router){
         $fields = $this->getFields();
-        $errors = $validator->validate($fields);
-        if (empty($errors)){
-            $this->password = password_hash($data['password'], PASSWORD_DEFAULT);
-            $db->save($this->_table, $fields);
-        }
-        return $errors;
+        $this->user_password = password_hash($this->user_password, PASSWORD_DEFAULT);
+        $router->db->save($this->_table, $fields);
     }
 
     public function createAuthHash(){
-        $auth = $this->email.$this->password;
+        $auth = $this->user_email.$this->user_password;
         return password_hash($auth, PASSWORD_DEFAULT);
     }
 
-    public function validate($fields) {
+    public function validate() {
         $errors = [];
-        if (!$this->firstname) {
+        if (!$this->user_firstname) {
             $errors[] = "Please add a firstname";
         }
-        if (!$this->lastname) {
+        if (!$this->user_lastname) {
             $errors[] = "Please add a lastname";
         }
-        if (!$this->email) {
+        if (!$this->user_email) {
             $errors[] = "Please add an email";
         }
-        if (!$this->password) {
+        if (!$this->user_password) {
             $errors[] = "Please add a password";
         }
-        if (!$this->confirmpassword) {
+        if (!$this->user_confirmpassword) {
             $errors[] = "Please confirm your password";
         }
-        if ($this->password !== $this->confirmpassword ) {
+        if ($this->user_password !== $this->user_confirmpassword ) {
             $errors[] = "Your passwords do not match";
         }
         return $errors;

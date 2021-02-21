@@ -19,9 +19,9 @@
         'title' => 'Animals',
         'links' => [
             ['/admin/animals', 'Browse all animals'],
-            ['admin/animals?searchColumn=status&searchItem=Waiting', 'Browse animals waiting for homes'],
+            ['admin/animals?searchColumn=animal_status&searchValue=Waiting', 'Browse animals waiting for homes'],
             ['/admin/animals/details', 'Create new animal'],
-            ['admin/animals?searchColumn=status&searchItem=Rehomed', 'Browse rehomed animals']
+            ['admin/animals?searchColumn=animal_status&searchValue=Rehomed', 'Browse rehomed animals']
         ]
     ];
 
@@ -31,9 +31,9 @@
         'title' => 'Owners',
         'links' => [
             ['/admin/owners', 'Browse all owners'],
-            ['admin/owners?searchColumn=status&searchItem=New', 'Browse owners waiting for home check'],
+            ['admin/owners?searchColumn=owner_status&searchValue=New', 'Browse owners waiting for home check'],
             ['/admin/owners/details', 'Create new owner'],
-            ['admin/owners?searchColumn=status&searchItem=Rehomed', 'Browse owners who have rehomed animal'],
+            ['admin/owners?searchColumn=owner_status&searchValue=Rehomed', 'Browse owners who have rehomed animal'],
         ]
     ];
 
@@ -43,8 +43,8 @@
         'title' => 'Media',
         'links' => [
             ['/admin/media', 'Browse all media'],
-            ['admin/media?searchColumn=type&searchItem=Image', 'Browse all images'],
-            ['admin/media?searchColumn=type&searchItem=Video', 'Browse all videos'],
+            ['admin/media?searchColumn=media_type&searchValue=Image', 'Browse all images'],
+            ['admin/media?searchColumn=media_type&searchValue=Video', 'Browse all videos'],
             ['/admin/media/details', 'Create new media'],
         ]
     ];

@@ -17,11 +17,9 @@ class Animal extends Options {
             'animal_colour',
             'animal_age',
             'animal_status',
-            'media_id',
             'room_id',
             'friend_id',
-            'owner_id',
-            'rehoming_id',
+            'image'
         ];
     }
 
@@ -38,7 +36,8 @@ class Animal extends Options {
                 'room_id' =>'Room',
                 'friend_id' =>'Friend',
                 'owner_id' =>'New Owner',
-                'rehoming_id' => 'Rehoming ID'
+                'rehoming_id' => 'Rehoming ID',
+                'image' => 'Image'
         ];
     }
 
@@ -56,7 +55,7 @@ class Animal extends Options {
             'media_filename' => 'hidden',
             'media_type' => 'hidden',
             'media_category' => 'hidden',
-            'media_subcategory' => 'hidden'
+            'media_subcategory' => 'hidden',
         ];
     }
 
@@ -67,21 +66,12 @@ class Animal extends Options {
     }
 
     function setOptions() {
-        $statuses = $this->writeOptions(['New', 'Waiting', 'Rehomed']);
-        $types = $this->writeOptions(['Cat', 'Dog']);
-        $mediaIds = $this->fetchOptions('media', 'media_id', 'media_filename', ["media_type", "image"]);
-        $friendIds = $this->fetchOptions('animals',  'animal_id', 'animal_name');
-        $roomIds = $this->fetchOptions('rooms', 'room_id', 'room_id');
-        $ownerIds = $this->fetchOptions('owners', 'owner_id', 'owner_firstname');
-        $rehomingIds = $this->fetchOptions('rehomings', 'rehoming_id', 'rehoming_id');
-        $this->options = [
-            'animal_status' => $statuses,
-            'animal_type' => $types,
-            'media_id' => $mediaIds,
-            'friend_id' => $friendIds,
-            'room_id' => $roomIds,
-            'owner_id' => $ownerIds,
-            'rehoming_id' => $rehomingIds,
-        ];
+        $this->addOption('animal_status', $this->writeOptions(['New', 'Waiting', 'Rehomed']));
+        $this->addOption('animal_type', $this->writeOptions(['Cat', 'Dog']));
+        $this->addOption('media_id', $this->fetchOptions('media', 'media_id', 'media_filename', ["media_type", "image"]));
+        $this->addOption('friend_id', $this->fetchOptions('animals',  'animal_id', 'animal_name'));
+        $this->addOption('room_id', $this->fetchOptions('rooms', 'room_id', 'room_id'));
+        $this->addOption('owner_id', $this->fetchOptions('owners', 'owner_id', 'owner_firstname'));
+        $this->addOption('rehoming_id', $this->fetchOptions('rehomings', 'rehoming_id', 'rehoming_id'));
     }
 }

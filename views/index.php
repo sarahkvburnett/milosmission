@@ -12,7 +12,7 @@
             <?php
             foreach($animals as $i => $animal){
                 echo '<div class="card">';
-                echo '<img src="/images/'.$animal['image'].'"></img>';
+                echo '<img src="/images/'.$animal['media_filename'].'"></img>';
                 echo '</div>';
             }
             ?>

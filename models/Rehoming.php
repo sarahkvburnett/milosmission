@@ -3,44 +3,35 @@
 
 namespace app\models;
 
+use app\models\abstracts\Admin;
 
-class Rehoming extends Base {
+class Rehoming extends Admin {
 
-    public ?string $_table = 'rehomings';
+    protected $rehoming_id;
+    protected $rehoming_date;
+    protected $rehoming_status;
+    protected $owner_id;
 
-    public ?array $_detailsTypes = [
-        'id' => 'id',
-        'date' => 'date',
-        'status' => 'select',
-        'owner_id' => 'select',
-        'animal_id' => 'select'
-    ];
-
-    public ?array $_searchFields = [
-        'id', 'date', 'status', 'owner'
-    ];
-
-    public function getAllOptions($db) {
-        $ownerIds = $this->getOptions($db, 'owners', 'firstname');
-        $animalIds = $this->getOptions($db, 'animals', 'name');
-        return [
-            'status' => ['Pending', 'Rehomed'],
-            'owner_id' => $ownerIds,
-            'amimals' => $animalIds
-        ];
+    function setTable() {
+        $this->_table = 'rehomings';
     }
 
-    public function validate($fields) {
+    function setName() {
+        $this->_name = 'Rehoming';
+    }
+
+    public function validate() {
         $errors = [];
-        if (!$this->date) {
+        if (!$this->rehoming_date) {
             $errors[] = "Please add the date";
         }
-        if (!$this->status) {
+        if (!$this->rehoming_status) {
             $errors[] = "Please select status";
         }
-        if (!$this->address) {
+        if (!$this->owner_id) {
             $errors[] = "Please add an owner";
         }
         return $errors;
     }
+
 }

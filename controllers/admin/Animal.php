@@ -3,58 +3,93 @@
 
 namespace app\controllers\admin;
 
-use app\controllers\Admin;
+use app\controllers\abstracts\Admin;
+use app\Router;
+use http\Exception;
 
 class Animal extends Admin {
 
-    protected string $class = 'Animal';
-    protected string $table = 'animals';
+    function setClass() {
+        $this->class = 'Animal';
+    }
+
+    function setTable() {
+        $this->table = 'animals';
+    }
 
     public function setExistingDetailsData($router){
-        $fields = $router->db
+        $this->addDataField(
+            'fields',
+                $router->db
                 ->select($this->table)
                 ->join('media', 'media_id')
                 ->where(['animal_id', $_GET['id']])
-                ->fetch();
-        $this->addDataField('fields', $fields);
-        if (!empty($fields['friend_id'])){
-            $friend = $router->db
+                ->fetch()
+        );
+        if (!empty($this->data['fields']['friend_id'])){
+            $this->addDataField(
+                'friend',
+                $router->db
                     ->select($this->table)
                     ->where(['animal_id', $this->data['fields']['friend_id']])
-                    ->fetch();
-            $this->addDataField('friend', $friend);
+                    ->fetch()
+            );
         }
-        if (!empty($fields['id'])){
-            $media = $router->db
-                ->select('animal_media')
-                ->join('media', 'media_id')
-                ->where(['animal_media_id', $this->data['fields']['animal_id']])
-                ->fetchAll();
-            $this->addDataField('media', $media);
+        if (!empty($this->data['fields']['animal_id'])){
+            $this->addDataField(
+                'media',
+                $router->db
+                    ->select('animal_media')
+                    ->join('media', 'media_id')
+                    ->where(['animal_id', $this->data['fields']['animal_id']])
+                    ->fetchAll()
+            );
         }
     }
 
     public function setBrowseData($router, $search = []){
-        $fields = $router->db
-                    ->select($this->table)
-                    ->join('media', 'media_id')
-                    ->where($search)
-                    ->fetchAll();
-        $this->addDataField('fields', $fields);
-        $this->addDataField('counts', $this->fetchCounts($router));
+        $this->addDataField(
+            'fields',
+            $router->db
+                ->select($this->table, ['*', 'media.media_filename as image'])
+                ->join('media', 'media_id')
+                ->where($search)
+                ->fetchAll()
+        );
     }
 
-    private function fetchCounts($router){
-        $all = $router->db->count('animal_id', $this->table)->fetch();
-        $new = $router->db->count('animal_id', $this->table)->where(['animal_status', 'new'])->fetch();
-        $waiting = $router->db->count('animal_id', $this->table)->where(['animal_status', 'waiting'])->fetch();
-        $rehomed = $router->db->count('animal_id', $this->table)->where(['animal_status', 'rehomed'])->fetch();
-        return [
-            'all' => $all["COUNT(animal_id)"],
-            'new' => $new["COUNT(animal_id)"],
-            'waiting' => $waiting["COUNT(animal_id)"],
-            'rehomed' => $rehomed["COUNT(animal_id)"]
-        ];
+    public function save($router, $data){
+        parent::save($router, $data);
+        $this->updateFriend($router, $data);
     }
+
+    /**
+     * @param Router $router
+     * @param $data
+     * @throws Exception
+     */
+    public function updateFriend($router, $data){
+        $animalId = $data['animal_id'];
+        $friendId = $data['friend_id'];
+        try {
+            $router->db->update('animals', ['friend_id' => NULL])->where(['friend_id', $friendId])->execute();
+            $router->db->update('animals', ['friend_id' => NULL])->where(['friend_id', $animalId])->execute();
+            $router->db->update('animals', ['friend_id' => $animalId])->where(['animal_id', $friendId])->execute();
+            $router->db->update('animals', ['friend_id' => $friendId])->where(['animal_id', $animalId])->execute();
+        } catch (Exception $e) {
+            throw new \Exception('Friend not updated', 500);
+        }
+    }
+
+    public function setCounts($router) {
+        $idColumn = $this->class.'_id';
+        $statusColumn = $this->class.'_status';
+        $this->addCount('All', $idColumn, $router->db->count($idColumn, $this->table)->fetch());
+        $this->addCount('New', $idColumn, $router->db->count($idColumn, $this->table)->where([$statusColumn, "new"])->fetch());
+        $this->addCount('Waiting', $idColumn, $router->db->count($idColumn, $this->table)->where([$statusColumn, "waiting"])->fetch());
+        $this->addCount('Rehomed', $idColumn, $router->db->count($idColumn, $this->table)->where([$statusColumn, "rehomed"])->fetch());
+    }
+
+    //todo need to delete friend on delete
 
 }

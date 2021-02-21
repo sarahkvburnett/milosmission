@@ -2,6 +2,7 @@
     <h1 class="h1 text-center">
         <?php if(isset($_GET['id'])){
             echo 'Update '.$title;
+//            todo get name back
             if (isset($fields['name'])){
                 echo ': <span class="text-primary">'.$fields['name'].'</span>';
             }
@@ -59,4 +60,11 @@
             </div>
         </div>
     <?php endif?>
+    <?php if(isset($media)) {
+        echo '<div id="media" class="bg-white mb-5 p-4 mx-auto d-flex flex-wrap justify-content-center">';
+        foreach ($media as $item){
+            echo '<p><img width="250" class="img-fluid img-thumbnail m-1" src="/images/'.$item['media_filename'].'"/></p>';
+        }
+        echo '</div>';
+    }?>
 </div>

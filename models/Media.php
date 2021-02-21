@@ -5,45 +5,40 @@ namespace app\models;
 
 
 use app\database\Database;
+use app\models\abstracts\Admin;
 
-class Media extends Base {
+class Media extends Admin {
 
-    public ?string $_table = 'media';
+    protected $media_id;
+    protected $media_filename;
+    protected $media_type;
+    protected $media_category;
+    protected $media_subcategory;
 
-    public ?array $_detailsTypes = [
-        'id' => "id",
-        'filename' =>  "file",
-        'type' => "select",
-    ];
+    //todo sort out media-id image replacement
 
-    public function getAllOptions($db) {
-        $animalNames = $this->getOptions($db,'animals',  'name');
-        $animalIds = $this->getOptions($db,'animals', 'id');
-        return [
-            'type' => ['Image', 'Video'],
-            'animal_name' => $animalNames,
-            'animal_id' => $animalIds,
-        ];
+    function setTable() {
+        $this->_table = 'media';
     }
 
-    public ?array $_searchFields = [
-        'id', 'filename', 'type', 'category', 'subcategory'
-    ];
+    function setName() {
+        $this->_name = 'Media';
+    }
 
-    public function validate($fields) {
+    public function validate() {
         $errors = [];
-        if (!$this->filename) {
+        if (!$this->media_filename) {
             $errors[] = "Please add a file";
         }
-//        if (!$this->type) {
-//            $errors[] = "Please indicate the filetype";
-//        }
-//        if (!$this->category) {
-//            $errors[] = "Please indicate the category";
-//        }
-//        if (!$this->subcategory) {
-//            $errors[] = "Please indicate the subcategory";
-//        }
+        if (!$this->media_type) {
+            $errors[] = "Please indicate the filetype";
+        }
+        if (!$this->media_category) {
+            $errors[] = "Please indicate the category";
+        }
+        if (!$this->media_subcategory) {
+            $errors[] = "Please indicate the subcategory";
+        }
         return $errors;
     }
 

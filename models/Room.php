@@ -3,31 +3,25 @@
 
 namespace app\models;
 
-
+use app\models\abstracts\Admin;
 use app\database\Database;
 
-class Room extends Base {
+class Room extends Admin {
 
-    public ?string $_table = 'rooms';
+    protected $room_id;
+    protected $room_type;
 
-    public ?array $_detailsTypes = [
-        'id' => "id",
-        'type' => "select",
-    ];
-
-    public function getAllOptions($db) {
-        return [
-            'type' => ['Cat', 'Dog']
-            ];
+    function setTable() {
+        $this->_table = 'rooms';
     }
 
-    public ?array $_searchFields = [
-        'id', 'type'
-    ];
+    function setName() {
+        $this->_table = 'Room';
+    }
 
-    public function validate($fields) {
+    public function validate() {
         $errors = [];
-        if (!$this->type) {
+        if (!$this->room_type) {
             $errors[] = "Please indicate the animal type";
         }
         return $errors;

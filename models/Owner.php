@@ -5,46 +5,45 @@ namespace app\models;
 
 
 use app\database\Database;
+use app\models\abstracts\Admin;
 
-class Owner extends Base {
+class Owner extends Admin {
 
-    public ?string $_table = 'owners';
+    protected $owner_id;
+    protected $owner_firstname;
+    protected $owner_lastname;
+    protected $owner_address;
+    protected $owner_postcode;
+    protected $owner_animal;
+    protected $owner_status;
 
-    public ?array $_detailsTypes = [
-        'id' => "id",
-        'animal' => 'select',
-        'status' => "select",
-    ];
-
-    public function getAllOptions($db) {
-        return [
-            'animal' => ['Cat', 'Dog'],
-            'status' => ['New', 'Waiting', 'Rehomed']
-        ];
+    function setTable() {
+        $this->_table = 'owners';
     }
 
-    public ?array $_searchFields = [
-        'id', 'firstname', 'lastname', 'postcode', 'animal', 'status'
-    ];
+    function setName() {
+        $this->_name = 'Owner';
+    }
 
-    public function validate($fields) {
+
+    public function validate() {
         $errors = [];
-        if (!$this->firstname) {
+        if (!$this->owner_firstname) {
             $errors[] = "Please add a firstname";
         }
-        if (!$this->lastname) {
+        if (!$this->owner_lastname) {
             $errors[] = "Please add a lastname";
         }
-        if (!$this->address) {
+        if (!$this->owner_address) {
             $errors[] = "Please add an address";
         }
-        if (!$this->postcode) {
+        if (!$this->owner_postcode) {
             $errors[] = "Please add a postcode";
         }
-        if (!$this->animal) {
+        if (!$this->owner_animal) {
             $errors[] = "Select the animal type to be rehomed";
         }
-        if (!$this->status) {
+        if (!$this->owner_status) {
             $errors[] = "Please select the owner's status";
         }
         return $errors;

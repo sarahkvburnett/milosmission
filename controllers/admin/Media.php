@@ -3,23 +3,42 @@
 
 namespace app\controllers\admin;
 
-use app\controllers\Admin;
+use app\controllers\abstracts\Admin;
 
 class Media extends Admin {
 
+    //todo img preview
+
+    function setClass() {
+        $this->class = "Media";
+    }
+
+    function setTable() {
+        $this->table = "media";
+    }
+
+    protected function setBrowseData($router, $search = []) {
+        $this->addDataField(
+            'fields',
+            $router->db
+                ->select($this->table, ['*', 'media_filename AS preview'])
+                ->where($search)
+                ->fetchAll()
+        );
+    }
+
     //todo need to add new entry into animal_media;
-    public function save($router){
-        $this->setDetailsData($router);
-        $this->setModelData($router);
+    public function save($router, $data){
         if ($_FILES) {
-            $array = Validator::sanitiseAll($_POST);
+            $array = Validator::sanitiseAll($data);
             $filename = "/".$array['category'];
             $errors = $this->uploadFile($_FILES, $filename);
             if (empty($errors) or $errors[0] === "Sorry, file already exists."){
                 $array['filename'] = $filename."/".$_FILES['filename']['name'];
                 $model = new $this->model($array);
-                $errors = $model->save($router->db);
+                $errors = $model->validate();
                 if(empty($errors)) {
+                    $model->save($router->db);
                     $this->data['fields'] = $array;
                     $router->redirect($this->urls['browse'], $this->data);
                 }
@@ -59,4 +78,5 @@ class Media extends Admin {
     protected function deleteFile(){
         //todo
     }
+
 }

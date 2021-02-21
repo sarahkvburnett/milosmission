@@ -2,20 +2,20 @@
 
 namespace app\database;
 
-use app\database\SQL;
 use http\Env;
 use \PDO;
 
 /**
  * Class Database
  * @package app\database
- * Version 1.1
+ * Version 1.2
  */
 class Database {
     public $pdo;
     public $statement;
     protected $sql;
     protected $values;
+    private bool $hasWhere = false;
 
     public function __construct($dbCredentials) {
         ['dbDSN' => $DSN, 'dbUser' => $user, 'dbPassword' => $password, 'dbOptions' => $options] = $dbCredentials;
@@ -59,8 +59,16 @@ class Database {
      * @param string $table
      * @return $this
      */
-    public function select($table) {
-        $this->sql = 'SELECT * FROM ' . $table . ' t1';
+    public function select($table, $columns = []) {
+        if (empty($columns)){
+            $this->sql = 'SELECT * FROM ' . $table . ' t1';
+        } else {
+            $sql = 'SELECT ';
+            foreach ($columns as $column){
+                $sql .= $column.', ';
+            }
+            $this->sql = $this->trimSql($sql).' FROM '.$table . ' t1';
+        }
         return $this;
     }
 
@@ -89,7 +97,7 @@ class Database {
      * Write sql insert statement for provided table
      * @param string $table
      * @param array $values
-     * @return $this
+     * @return Database $this
      */
     public function insert($table, $values) {
         $this->setValues($values);
@@ -97,9 +105,7 @@ class Database {
         $valuesSQL = "VALUES (";
         foreach ($values as $key => $value) {
             $insertSQL = $insertSQL . $key . ", ";
-            if (!strpos($key, 'date')) {
-                $valuesSQL = $valuesSQL . ":" . $key . ", ";
-            }
+            $valuesSQL = $valuesSQL . ":" . $key . ", ";
         }
         $this->sql = $this->trimSql($insertSQL) . ") " . $this->trimSql($valuesSQL) . ")";
         return $this;
@@ -109,7 +115,7 @@ class Database {
      * Write sql update statement for provided table
      * @param string $table
      * @param array $values
-     * @return $this
+     * @return Database $this
      */
     public function update($table, $values) {
         $this->setValues($values);
@@ -126,9 +132,20 @@ class Database {
     /**
      * Write sql delete statement for provided table
      * @param string $table
+     * @return Database $this
      */
     public function delete($table) {
         $this->sql = 'DELETE FROM ' . $table;
+        return $this;
+    }
+
+    /**
+     * Generic write sql statement
+     * @param string $query
+     * @return Database $this
+     */
+    public function query($query){
+        $this->sql = $query;
         return $this;
     }
 
@@ -139,7 +156,7 @@ class Database {
      * @param string $type
      * @param string $table
      * @param string $column
-     * @return $this
+     * @return Database $this
      */
     public function join($table, $column, $type = 'LEFT') {
         $this->sql .= ' ' . $type . ' JOIN ' . $table . ' ON t1.' . $column . ' = ' . $table . '.' . $column . ' ';
@@ -149,17 +166,18 @@ class Database {
     /**
      * Add where clause to sql statement - can use multiple
      * @param array $where [0 => $column, 1 => $value]
-     * @return $this
+     * @return Database $this
      */
 
     public function where($where = []) {
         if (empty($where)) return $this;
         $sql = '';
-        if (!strpos($this->sql, 'WHERE')) {
+        if (!$this->hasWhere) {
             $sql .= ' WHERE';
         };
         $sql .= ' ' . $where[0] . ' = \'' . $where[1] . '\', ';
         $this->sql .= $this->trimSql($sql);
+        $this->hasWhere = true;
         return $this;
     }
 
@@ -185,7 +203,7 @@ class Database {
     /**
      * Prepares a statement for execution
      * @param string $query
-     * @return $this
+     * @return Database $this
      */
     protected function prepareQuery($query) {
         $this->statement = $this->pdo->prepare($query);
@@ -195,7 +213,7 @@ class Database {
     /**
      * Bind values to parameters for statement
      * @param array $values
-     * @return $this
+     * @return Database $this
      */
     protected function bindValues($values = []) {
         if (!empty($values)) {
@@ -212,6 +230,7 @@ class Database {
      */
     protected function executeQuery() {
 //        $this->statement->debugDumpParams();
+        $this->hasWhere = false;
         return $this->statement->execute();
     }
 

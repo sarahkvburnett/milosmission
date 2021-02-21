@@ -1,0 +1,20 @@
+pagination
+sort the tables by column
+
+view mode for details (edit on click)
+
+front end
+
+counts
+    add links to counts
+    /new etc... category routes
+    add counts for other pages
+
+media
+    media preview for file upload
+    check file upload situation
+    delete file
+    need to add file into animal_media
+    sort out front end
+
+    auth is fucked - using old db methods

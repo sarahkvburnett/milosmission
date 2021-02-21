@@ -8,6 +8,7 @@ use app\models\User;
 
 class Auth {
 
+    //todo fix login
        //TODO: need to redirect on login back to the initial url
 
     public function login($router){

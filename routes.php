@@ -1,14 +1,11 @@
 <?php
 
 /**
- * array $routes
- * [0] = string method
- * [1] = string url
- * [2] = array route [string controller, string method, string middleware]
+ * array $routes - [string $method, string $url, array $route [string $controller, string $method, array $middleware]
  */
 
 $routes = [
-    ['get', '/animals', ['Frontend', 'animals']],
+    ['get', '/', ['Frontend', 'index']],
     ['get', '/admin/login', ['Auth', 'login', ['isGuest']]],
 
     ['post','/admin/login', ['Auth', 'login', ['isGuest']]],
@@ -17,35 +14,35 @@ $routes = [
     ['get','/admin', ['Admin', 'admin', ['isAuth']]],
 
     ['get','/admin/animals', ['Animal', 'browse', ['isAuth']]],
-    ['get','/admin/animals/details', ['Animal', 'save', ['isAuth']]],
-    ['post','/admin/animals/details', ['Animal', 'save', ['isAuth']]],
+    ['get','/admin/animals/details', ['Animal', 'details', ['isAuth']]],
+    ['post','/admin/animals/details', ['Animal', 'details', ['isAuth']]],
 
     ['post','/admin/animals/delete', ['Animal', 'delete', ['isAuth']]],
 
-    ['get','/admin/users', ['Admin', 'browse', ['isAuth']]],
-    ['get','/admin/users/details', ['Admin', 'save', ['isAuth']]],
-    ['post','/admin/users/details', ['Admin', 'save', ['isAuth']]],
-    ['post','/admin/users/delete', ['Admin', 'delete', ['isAuth']]],
+    ['get','/admin/users', ['User', 'browse', ['isAuth']]],
+    ['get','/admin/users/details', ['User', 'details', ['isAuth']]],
+    ['post','/admin/users/details', ['User', 'details', ['isAuth']]],
+    ['post','/admin/users/delete', ['User', 'delete', ['isAuth']]],
 
-    ['get','/admin/owners', ['Admin', 'browse', ['isAuth']]],
-    ['get','/admin/owners/details', ['Admin', 'save', ['isAuth']]],
-    ['post','/admin/owners/details', ['Admin', 'save', ['isAuth']]],
-    ['post','/admin/owners/delete', ['Admin', 'delete', ['isAuth']]],
+    ['get','/admin/owners', ['Owner', 'browse', ['isAuth']]],
+    ['get','/admin/owners/details', ['Owner', 'details', ['isAuth']]],
+    ['post','/admin/owners/details', ['Owner', 'details', ['isAuth']]],
+    ['post','/admin/owners/delete', ['Owner', 'delete', ['isAuth']]],
 
     ['get','/admin/media', ['Media', 'browse', ['isAuth']]],
-    ['get','/admin/media/details', ['Media', 'save', ['isAuth']]],
-    ['post','/admin/media/details', ['Media', 'save', ['isAuth']]],
+    ['get','/admin/media/details', ['Media', 'details', ['isAuth']]],
+    ['post','/admin/media/details', ['Media', 'details', ['isAuth']]],
     ['post','/admin/media/delete', ['Media', 'delete', ['isAuth']]],
 
-    ['get','/admin/rooms', ['Admin', 'browse', ['isAuth']]],
-    ['get','/admin/rooms/details', ['Admin', 'save', ['isAuth']]],
-    ['post','/admin/rooms/details', ['Admin', 'save', ['isAuth']]],
-    ['post','/admin/rooms/delete', ['Admin', 'delete', ['isAuth']]],
+    ['get','/admin/rooms', ['Room', 'browse', ['isAuth']]],
+    ['get','/admin/rooms/details', ['Room', 'details', ['isAuth']]],
+    ['post','/admin/rooms/details', ['Room', 'details', ['isAuth']]],
+    ['post','/admin/rooms/delete', ['Room', 'delete', ['isAuth']]],
 
-    ['get','/admin/rehomings', ['Admin', 'browse', ['isAuth']]],
-    ['get','/admin/rehomings/details', ['Admin', 'save', ['isAuth']]],
-    ['post','/admin/rehomings/details', ['Admin', 'save', ['isAuth']]],
-    ['post','/admin/rehomings/delete', ['Admin', 'delete', ['isAuth']]],
+    ['get','/admin/rehomings', ['Rehoming', 'browse', ['isAuth']]],
+    ['get','/admin/rehomings/details', ['Rehoming', 'details', ['isAuth']]],
+    ['post','/admin/rehomings/details', ['Rehoming', 'details', ['isAuth']]],
+    ['post','/admin/rehomings/delete', ['Rehoming', 'delete', ['isAuth']]],
 
 ];
 

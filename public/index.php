@@ -32,10 +32,10 @@ try {
     $uri = $router->getUri($_SERVER);
     $method = $router->getMethod($_SERVER);
     $route = $router->findRoute($uri, $method);
-    $router->executeMiddleware();
+    $router->executeMiddleware($route);
     $router->resolve($route);
 }
 catch (Error | Exception $e){
-    $router->handleError($e);
+    $router->handleException($e);
 }
 

@@ -4,11 +4,9 @@
 namespace app\models;
 
 use app\database\Database;
-use app\models\Base;
+use app\models\abstracts\Admin;
 
-class Animal extends Base {
-    public ?string $_table = 'animals';
-    public ?string $_name = 'animal';
+class Animal extends Admin {
 
     protected $animal_id;
     protected $animal_name;
@@ -23,7 +21,15 @@ class Animal extends Base {
     protected $owner_id;
     protected $rehoming_id;
 
-    public function validate($fields) {
+    public function setTable() {
+        $this->_table = 'animals';
+    }
+
+    public function setName() {
+        $this->_name = 'animal';
+    }
+
+    public function validate() {
         $errors = [];
         if (!$this->animal_name) {
             $errors[] = "Please add a name";
