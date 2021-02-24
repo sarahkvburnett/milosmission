@@ -9,14 +9,15 @@ class Validator {
         //for each set this
     }
 
-    public static function sanitise($value){
+    public static function sanitise(string $value){
         return htmlspecialchars(trim($value));
     }
 
-    public static function sanitiseAll($fields){
+    public static function sanitiseAll(array $fields){
         $sanitisedFields = [];
         foreach($fields as $field => $value){
-            $sanitisedFields[$field] = self::sanitise($value);
+            //todo deal with array error;
+            if (!is_array($value)) $sanitisedFields[$field] = self::sanitise($value);
         }
         return $sanitisedFields;
     }

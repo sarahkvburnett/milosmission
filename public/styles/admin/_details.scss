@@ -12,3 +12,27 @@
   }
 
 }
+
+#img-uploader img {
+  width: 100%;
+  border: 1px solid #000;
+}
+
+.checkbox {
+  border: 1px solid #000;
+  label, input {
+    width: auto !important;
+    display: inline;
+    margin: 1vw 0;
+  }
+  label {
+    margin: 2vw;
+  }
+}
+
+.table-badge {
+  background: $gray-200;
+  border-radius: 10px;
+  padding: 10px;
+  margin-right: 5px;
+}

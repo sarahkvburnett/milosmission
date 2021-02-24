@@ -15,5 +15,13 @@ class Room extends AdminGroupAnimals {
         $this->table = "rooms";
     }
 
-    //todo add in occupant(s) of room
+    public function save($router, $data){
+        $data['room_id'] = parent::save($router, $data);
+        $this->changeAnimals($router, $data, 'room_id');
+    }
+
+    public function delete($router) {
+        $this->removeAnimals($router, 'room_id');
+        parent::delete($router);
+    }
 }

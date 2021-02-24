@@ -60,7 +60,7 @@
             </div>
         </div>
     <?php endif?>
-    <?php if(isset($media)) {
+    <?php if(!empty($media)) {
         echo '<div id="media" class="bg-white mb-5 p-4 mx-auto d-flex flex-wrap justify-content-center">';
         foreach ($media as $item){
             echo '<p><img width="250" class="img-fluid img-thumbnail m-1" src="/images/'.$item['media_filename'].'"/></p>';

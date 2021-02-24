@@ -8,7 +8,7 @@ use \PDO;
 /**
  * Class Database
  * @package app\database
- * Version 1.2
+ * Version 1.3
  */
 class Database {
     public $pdo;
@@ -26,7 +26,6 @@ class Database {
 
     /**
      * Function to execute non-fetch queries - insert, update, delete...
-     * @return $this
      */
     public function execute() {
         $this->prepareQuery($this->sql)->bindValues($this->values)->executeQuery();
@@ -232,6 +231,14 @@ class Database {
 //        $this->statement->debugDumpParams();
         $this->hasWhere = false;
         return $this->statement->execute();
+    }
+
+    /**
+     * Returns last insert id
+     * @return string
+     */
+    public function lastInsertId(){
+        return $this->pdo->lastInsertId();
     }
 
 }

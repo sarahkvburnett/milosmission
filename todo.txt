@@ -1,13 +1,11 @@
 pagination
-sort the tables by column
+sorting tables
 
 view mode for details (edit on click)
 
-front end
+sort out front end - stop writing echo mate and bring in vue components etc.
 
 counts
-    add links to counts
-    /new etc... category routes
     add counts for other pages
 
 media
@@ -17,4 +15,22 @@ media
     need to add file into animal_media
     sort out front end
 
-    auth is fucked - using old db methods
+rehoming / room / owners
+    need to alter the animal records on save
+    mate you haven't dealt with removing animals on update - need to retrieve the records first and compare
+
+auth is commented out :)
+
+date format
+
+missing validation e.g.
+- able to put cats in a kennel etc.
+- can put rehomed animals in a kennel
+- can give waiting animals owner/rehoming id - although tbf pending but yeah...
+- able to rehome already rehomed animals...
+for animals - status conditionally display fields or at least for now prevent save
+for rooms - filter out available options or again just stop save
+
+relations on delete - e.g. delete from friend
+
+please deal with passing router everywhere

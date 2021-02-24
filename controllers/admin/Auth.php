@@ -5,37 +5,55 @@ namespace app\controllers\admin;
 
 use app\database\Database;
 use app\models\User;
+use app\Router;
 
 class Auth {
+
+    protected array $errors = [];
 
     //todo fix login
        //TODO: need to redirect on login back to the initial url
 
-    public function login($router){
-        $errors = [];
+    public function login(Router $router){
         if ($_POST){
-           $data = new User($_POST);
-           $user = $router->db->fineOneByEmail('users', $data->email);
-            if(!$user) {
-                $errors[] = "Email address not found";
-            }
-//            if(password_verify($data->password , $user['password'])) {
-//                $errors[] = "Password incorrect";
-//            }
-            if(empty($errors)){
-                $authHash = $data->createAuthHash();
-                setcookie("auth-user", $authHash, time() + (86400 * 30));
-                header( 'Location: /admin');
+            $user = new User($_POST);
+            $this->validate($user);
+            if (empty($this->errors)){
+                $dbUser = $router->db->select('users')->where(['user_email', $user->user_email])->fetch();
+                if(!$dbUser) {
+                    $this->addError("Email address not found");
+                }
+//                if(!password_verify($user->user_password , $dbUser['user_password'])) {
+//                    $this->addError("Password incorrect");
+//                }
+                if(empty($this->errors)){
+                    $authHash = $user->createAuthHash();
+                    setcookie("auth-user", $authHash, time() + (86400 * 30));
+                    header( 'Location: /admin');
+                }
             }
         }
        $router->renderView('/admin/auth/login', [
-           'errors'=> $errors
+           'errors'=> $this->errors
        ]);
     }
 
     public function logout(){
         setcookie("auth-user", "", time() - 3600);
         header('Location: /');
+    }
+
+    public function validate(User $user){
+        if (!$user->user_email) {
+            $this->addError("Please add an email");
+        }
+        if (!$user->user_password) {
+            $this->addError("Please add a password");
+        }
+    }
+
+    public function addError($msg){
+        $this->errors[] = $msg;
     }
 
 }

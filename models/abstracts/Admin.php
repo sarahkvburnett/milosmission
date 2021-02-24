@@ -35,7 +35,7 @@ abstract class Admin {
      * @return string - name of id column in db
      */
     protected function nameIdField(){
-        return $this->_name.'_id';
+        return strtolower($this->_name.'_id');
     }
 
     /**
@@ -55,7 +55,7 @@ abstract class Admin {
     /**
      * Save record in db
      * @param Router $router
-     * @return array $errors - any validation errors
+     * @return string lastInsertId
      */
     public function save($router){
         $fields = $this->getFields();
@@ -65,6 +65,7 @@ abstract class Admin {
         } else {
             $router->db->insert($this->_table, $fields)->execute();
         }
+        return $router->db->lastInsertId();
     }
 
     /**

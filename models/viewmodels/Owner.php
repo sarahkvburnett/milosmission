@@ -32,6 +32,7 @@ class Owner extends Options {
             'owner_id' => "hidden",
             'owner_animal' => 'select',
             'owner_status' => "select",
+            'animals' => 'checkbox'
         ];
     }
 
@@ -44,5 +45,6 @@ class Owner extends Options {
     function setOptions() {
         $this->addOption('owner_animal', $this->writeOptions(['Cat', 'Dog']));
         $this->addOption('owner_status', $this->writeOptions(['New', 'Waiting', 'Rehomed']));
+        $this->addOption('animals', $this->fetchOptions('animals', 'animal_id', 'animal_name'));
     }
 }

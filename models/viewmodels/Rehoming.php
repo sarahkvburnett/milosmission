@@ -8,8 +8,6 @@ use app\models\viewmodels\abstracts\Options;
 
 class Rehoming extends Options {
 
-    //todo need to add someway of displaying the animal(s)
-
     //todo need to reformat date
 
     function setLabels() {
@@ -35,7 +33,8 @@ class Rehoming extends Options {
             'rehoming_date' => 'date',
             'rehoming_status' => 'select',
             'owner_id' => 'select',
-            'owner_name' => 'hidden'
+            'owner_name' => 'hidden',
+            'animals' => 'checkbox'
         ];
     }
 
@@ -48,5 +47,6 @@ class Rehoming extends Options {
     function setOptions() {
         $this->addOption('rehoming_status', $this->writeOptions(['Pending', 'Rehomed']));
         $this->addOption('owner_id', $this->fetchOptions('owners', 'owner_id', 'owner_firstname'));
+        $this->addOption('animals', $this->fetchOptions('animals', 'animal_id', 'animal_name'));
     }
 }

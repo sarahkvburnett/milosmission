@@ -16,7 +16,7 @@ class Room extends Admin {
     }
 
     function setName() {
-        $this->_table = 'Room';
+        $this->_name = 'Room';
     }
 
     public function validate() {

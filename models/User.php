@@ -14,6 +14,7 @@ class User extends Admin {
     protected $user_lastname;
     protected $user_email;
     protected $user_password;
+    protected $user_confirmpassword;
 
     function setTable() {
         $this->_table = 'users';
@@ -27,6 +28,11 @@ class User extends Admin {
         $fields = $this->getFields();
         $this->user_password = password_hash($this->user_password, PASSWORD_DEFAULT);
         $router->db->save($this->_table, $fields);
+    }
+
+    public function __get($name)
+    {
+        return $this->$name;
     }
 
     public function createAuthHash(){

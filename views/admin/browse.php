@@ -3,8 +3,11 @@
        echo '<div id="counts" class="mb-5">';
        foreach ($counts as $name => $count){
            echo '<div class="bg-primary">
-                <p class="lead font-weight-bold">'.$name.'</p>
-                <p>'.$count['value'].'</p></div>';
+                    <a href="'.$count['url'].'"
+                        <p class="lead font-weight-bold">'.$name.'</p>
+                        <p>'.$count['value'].'</p>
+                    </a>
+                </div>';
        }
        echo '</div>';
     }?>
@@ -51,6 +54,13 @@
                             if (!$value){
                                 echo '<td>-</td>';
                             }
+                            else if (is_array($value)) {
+                                echo '<td>';
+                                foreach ($value as $item) {
+                                    echo '<span class="table-badge">'.$item.'</span>';
+                                }
+                                echo '</td>';
+                            }
                             else if ($key === "image" || $key === "preview") {
                                 echo '<td><img class="img-fluid img-thumbnail" src="/images/'.$field['media_filename'].'"></img></td>';
                             }
@@ -68,5 +78,4 @@
             <?php endif ?>
         </table>
     </div>
-
 </div>

@@ -54,10 +54,6 @@ abstract class Options extends Admin {
      */
     protected function fetchOptions($table, $value, $label, $where = []){
         $options = [];
-        $options[] = [
-            'value' => '',
-            'label' => '-- Please select --'
-        ];
         $data = $this->_db->select($table)->where($where)->fetchAll();
         if (empty($data)) return $options;
         foreach($data as $row){

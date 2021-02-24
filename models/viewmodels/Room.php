@@ -25,7 +25,8 @@ class Room extends abstracts\Options {
        $this->types = [
             'room_id' => "hidden",
             'room_type' => "select",
-        ];
+            'animals' => 'checkbox'
+       ];
     }
 
     function setSearchables() {
@@ -36,5 +37,6 @@ class Room extends abstracts\Options {
 
     function setOptions() {
         $this->addOption('room_type', $this->writeOptions(['Cat', 'Dog']));
+        $this->addOption('animals', $this->fetchOptions('animals', 'animal_id', 'animal_name'));
     }
 }

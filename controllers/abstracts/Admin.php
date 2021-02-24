@@ -68,6 +68,7 @@ abstract class Admin {
      * Save record(s) in db
      * @param Router $router
      * @param array $data - $_POST
+     * @return string lastInsertId
      * @throws Exception
      */
     protected function save($router, $data){
@@ -79,7 +80,7 @@ abstract class Admin {
             $this->addDataField('errors', $errors);
             throw new Exception('Bad Request', 400);
         }
-        $model->save($router);
+        return $model->save($router);
     }
 
     /**
@@ -222,8 +223,13 @@ abstract class Admin {
      * @param string $column
      * @param array $data
      */
-    protected function addCount($name, $column, $data){
+    protected function addCount($name, $column, $data, $url){
         $this->counts[$name]['value'] = $data["COUNT(".$column.")"];
+        $this->counts[$name]['url'] = $url;
+    }
+
+    protected function addGroupConcatColumn($originColumn, $joinTable){
+        return '(SELECT GROUP_CONCAT(t2.'.$originColumn.') FROM '.$joinTable.' t2 WHERE t1.'.$this->class.'_id = t2.'.$this->class.'_id) AS '.$joinTable.'';
     }
 
 }
