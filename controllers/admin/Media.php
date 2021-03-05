@@ -44,7 +44,7 @@ class Media extends Admin {
                 }
              }
         }
-        return $router->renderView('/admin/details', $this->data);
+        return $router->sendResponse('/admin/details', $this->data);
     }
 
     protected function uploadFile($files, $filepath) {

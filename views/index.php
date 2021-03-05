@@ -4,7 +4,7 @@
         <div class="lead">
             <h1>Animal Sanctuary</h1>
             <p class="lead">Milos mission provides safe haven for rescued animals until we find them a new forever home. </p>
-        </p>
+        </div>
     </section>
     <section id="animals" class="p-5 bg-primary">
         <h1 class="text-center p-4">Animals needing homes</h1>

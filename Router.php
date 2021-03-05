@@ -11,6 +11,12 @@ class Router {
     public $getRoutes = [];
     public $postRoutes = [];
 
+    private $uri;
+    private $method;
+    private $route;
+
+    public bool $isAPIRoute;
+
     public $db;
 
     /**
@@ -44,15 +50,31 @@ class Router {
      * @param array $route - [string $controller, string $method, array $middleware]
      * @throws Exception
      */
-    public function resolve($route) {
-        [$controller, $method] = $route;
+    public function resolve() {
+        [$controller, $method] = $this->route;
         $class = $this->findClass($controller);
         $controller = new $class($this);
         $controller->$method($this);
     }
 
     /**
-     * Send view in response
+     * Handle sending of response - json vs view
+     * @param $url
+     * @param array $data
+     * @param int $status
+     * @throws Exception
+     */
+    public function sendResponse($url, $data = [], $status = 200){
+        $currentURL = $this->uri ? $this->uri : $url;
+        if ($this->isAPIRoute) {
+            $this->sendJSON($data, $status);
+        } else {
+            if (empty($url)) throw new Exception('Template not specified');
+            $this->renderView($url, $data, $status);
+        }
+    }
+
+    /**
      * @param string $view
      * @param array $data
      * @param int $status
@@ -69,18 +91,19 @@ class Router {
         } else {
             include_once __DIR__."/views/_layout.php";
         }
-//        $this->sendJSON($data, $status);
     }
-
 
     /**
      * Redirect
      * @param string $url
      */
     public function redirect($url) {
-        header("Location: ".$url);
-        exit;
-//        $this->sendJSON();
+        if ($this->isAPIRoute) {
+            $this->sendJSON([], 302);
+        } else {
+            header("Location: " . $url);
+            exit;
+        }
     }
 
     /**
@@ -98,8 +121,10 @@ class Router {
      * Execute each middleware
      * @param array $mw
      */
-    public function executeMiddleware($route) {
-        if (isset($route[2])) {
+    public function executeMiddleware() {
+        //todo auth removed for api
+        $route = $this->route;
+        if (isset($route[2]) && !$this->isAPIRoute) {
             $mw = $route[2];
             foreach ($mw as $fn) {
                 Middleware::$fn();
@@ -118,26 +143,7 @@ class Router {
             'file' => $e->getFile(),
             'line' => $e->getLine(),
         ]];
-        $this->renderView('error', $data, $e->getCode());
-    }
-
-    /**
-     * Get request method from request
-     * @param $request
-     * @return string
-     */
-    public function getMethod($request){
-        return strtolower($request['REQUEST_METHOD']);
-    }
-
-    /**
-     * Get request uri from request
-     * @param $request
-     * @return string
-     */
-    public function getUri($request){
-        $uri = $request['REQUEST_URI'] ?? '/';
-        return strtok($uri, '?');
+        $this->sendResponse('error', $data, $e->getCode());
     }
 
     /**
@@ -153,8 +159,13 @@ class Router {
         } else {
            $route = $this->postRoutes[$uri] ?? [];
         };
-        if (!$route) throw new Exception('Route Not Found', 404);
-        return $route;
+        $this->uri = $uri;
+        $this->method = $method;
+        $this->route = $route;
+        $this->setIsAPIRoute($uri);
+        if (!$route) {
+            throw new Exception('Route Not Found', 404);
+        }
     }
 
     /**
@@ -171,5 +182,12 @@ class Router {
             }
         }
         throw new Exception('Controller Not Found', 404);
+    }
+
+    /**
+     * @param string $uri
+     */
+    private function setIsAPIRoute($uri) {
+        $this->isAPIRoute = str_contains($uri, 'api');
     }
 }

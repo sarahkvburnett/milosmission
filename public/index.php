@@ -29,11 +29,11 @@ foreach($routes as $route){
 }
 
 try {
-    $uri = $router->getUri($_SERVER);
-    $method = $router->getMethod($_SERVER);
-    $route = $router->findRoute($uri, $method);
-    $router->executeMiddleware($route);
-    $router->resolve($route);
+    $uri = strtok($_SERVER['REQUEST_URI'], '?');
+    $method = strtolower($_SERVER['REQUEST_METHOD']);
+    $router->findRoute($uri, $method);
+    $router->executeMiddleware();
+    $router->resolve();
 }
 catch (Error | Exception $e){
     $router->handleException($e);

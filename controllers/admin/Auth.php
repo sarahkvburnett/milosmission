@@ -29,18 +29,18 @@ class Auth {
                 if(empty($this->errors)){
                     $authHash = $user->createAuthHash();
                     setcookie("auth-user", $authHash, time() + (86400 * 30));
-                    header( 'Location: /admin');
+                    $router->redirect('/admin');
                 }
             }
         }
-       $router->renderView('/admin/auth/login', [
+       $router->sendResponse('/admin/auth/login', [
            'errors'=> $this->errors
        ]);
     }
 
-    public function logout(){
+    public function logout(Router $router){
         setcookie("auth-user", "", time() - 3600);
-        header('Location: /');
+        $router->redirect('/');
     }
 
     public function validate(User $user){

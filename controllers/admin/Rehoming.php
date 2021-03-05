@@ -40,7 +40,7 @@ class Rehoming extends AdminGroupAnimals {
         $data = $router->db
             ->select($this->table, $this->columns)
             ->join('owners', 'owner_id')
-            ->where([$this->nameIdColumn(), $_GET['id']])
+            ->where([$this->getIdentifier(), $_GET['id']])
             ->fetch();
         $data['animals'] = $this->convertAnimalsToArray($data['animals']);
         $this->addDataField('fields', $data);

@@ -6,8 +6,8 @@
 
 $routes = [
     ['get', '/', ['Frontend', 'index']],
-    ['get', '/admin/login', ['Auth', 'login', ['isGuest']]],
 
+    ['get', '/admin/login', ['Auth', 'login', ['isGuest']]],
     ['post','/admin/login', ['Auth', 'login', ['isGuest']]],
     ['post','/admin/logout', ['Auth', 'logout', ['isAuth']]],
 

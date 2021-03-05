@@ -41,7 +41,7 @@ abstract class AdminGroupAnimals extends Admin {
     protected function setExistingDetailsData($router) {
         $data = $router->db
             ->select($this->table, $this->columns)
-            ->where([$this->nameIdColumn(), $_GET['id']])
+            ->where([$this->getIdentifier(), $_GET['id']])
             ->fetch();
         $data['animals'] = $this->convertAnimalsToArray($data['animals']);
         $this->addDataField('fields', $data);

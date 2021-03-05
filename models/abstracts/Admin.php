@@ -32,34 +32,13 @@ abstract class Admin {
     abstract function setName();
 
     /**
-     * @return string - name of id column in db
-     */
-    protected function nameIdField(){
-        return strtolower($this->_name.'_id');
-    }
-
-    /**
-     * Get db fields from model
-     * @return array
-     */
-    protected function getFields(){
-        $array = get_object_vars($this);
-        foreach($array as $field => $value){
-            if(strpos($field, '_') === 0){
-                unset($array[$field]);
-            }
-        }
-        return $array;
-    }
-
-    /**
      * Save record in db
      * @param Router $router
      * @return string lastInsertId
      */
     public function save($router){
         $fields = $this->getFields();
-        $idColumn = $this->nameIdField();
+        $idColumn = $this->getIdentifier();
         if(isset($this->$idColumn)){
             $router->db->update($this->_table, $fields)->where([$idColumn, $this->$idColumn])->execute();
         } else {
@@ -73,5 +52,26 @@ abstract class Admin {
      * @return array $errors
      */
     abstract function validate();
+
+    /**
+     * @return string - name of id column in db
+     */
+    protected function getIdentifier(){
+        return strtolower($this->_name.'_id');
+    }
+
+    /**
+     * Get db columns from model
+     * @return array
+     */
+    protected function getFields(){
+        $array = get_object_vars($this);
+        foreach($array as $field => $value){
+            if(strpos($field, '_') === 0){
+                unset($array[$field]);
+            }
+        }
+        return $array;
+    }
 
 }

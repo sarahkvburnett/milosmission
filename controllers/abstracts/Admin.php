@@ -28,7 +28,7 @@ abstract class Admin {
         $this->setSearch();
         $this->setCounts($router);
         $this->setModelData($router);
-        $this->addDataField('id', $this->nameIdColumn());
+        $this->addDataField('id', $this->getIdentifier());
         $this->addDataField('search', $this->search);
         $this->addDataField('counts', $this->counts);
         $this->addDataField('title', $this->class);
@@ -45,7 +45,7 @@ abstract class Admin {
      */
     public function browse($router){
         $this->setBrowseData($router,  $this->search);
-        $router->renderView('/admin/browse', $this->data);
+        $router->sendResponse('/admin/browse', $this->data);
     }
 
     /**
@@ -55,13 +55,13 @@ abstract class Admin {
      */
      public function details($router){
          $this->setDetailsData($router);
-//         $_POST = json_decode(file_get_contents('php://input'), true);
+         if ($router->isAPIRoute) $_POST = json_decode(file_get_contents('php://input'), true);
          if ($_POST) {
             $this->save($router, $_POST);
             $router->redirect($this->actions['browse']);
             return;
         }
-        $router->renderView('/admin/details', $this->data);
+        $router->sendResponse('/admin/details', $this->data);
     }
 
     /**
@@ -89,7 +89,7 @@ abstract class Admin {
      */
     public function delete($router){
         $id = $_POST['id'];
-        $router->db->delete($this->table)->where([$this->nameIdColumn(), $id])->execute();
+        $router->db->delete($this->table)->where([$this->getIdentifier(), $id])->execute();
         $router->redirect($this->actions['browse']);
     }
 
@@ -119,7 +119,7 @@ abstract class Admin {
     protected function setDetailsData($router){
         if (isset($_GET['id'])) {
             $this->setExistingDetailsData($router);
-            $id = $this->data['fields'][$this->nameIdColumn()];
+            $id = $this->data['fields'][$this->getIdentifier()];
             $this->addIdToActions($id);
         } else {
            $this->setNewDetailsData($router);
@@ -150,7 +150,7 @@ abstract class Admin {
             'fields',
             $router->db
                 ->select($this->table)
-                ->where([$this->nameIdColumn(), $_GET['id']])
+                ->where([$this->getIdentifier(), $_GET['id']])
                 ->fetch()
         );
     }
@@ -180,7 +180,7 @@ abstract class Admin {
     /**
      * Return name of id column for db queries
      */
-    protected function nameIdColumn(){
+    protected function getIdentifier(){
         return strtolower($this->class.'_id');
     }
 
