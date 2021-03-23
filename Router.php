@@ -4,6 +4,7 @@ namespace app;
 
 use app\database\Database;
 use app\Middleware;
+use app\repository\OptionsRepo;
 use Error;
 use Exception;
 
@@ -17,14 +18,10 @@ class Router {
 
     public bool $isAPIRoute;
 
-    public $db;
+    protected $dbConnections;
 
-    /**
-     * Router constructor.
-     * @param Database $db
-     */
-    public function __construct($db) {
-        $this->db = $db;
+    public function __construct($dbConnections){
+        $this->dbConnections = $dbConnections;
     }
 
     /**
@@ -52,8 +49,9 @@ class Router {
      */
     public function resolve() {
         [$controller, $method] = $this->route;
-        $class = $this->findClass($controller);
-        $controller = new $class($this);
+        $class = $this->findController($controller);
+        $repo = $this->findRepo($controller);
+        $controller = new $class(new $repo($this->dbConnections));
         $controller->$method($this);
     }
 
@@ -174,7 +172,7 @@ class Router {
      * @return string
      * @throws Exception
      */
-    protected function findClass($class){
+    protected function findController($class){
         $sources = ['app\controllers\\', 'app\controllers\admin\\'];
         foreach ($sources as $source){
             if (class_exists($source.$class)){
@@ -182,6 +180,15 @@ class Router {
             }
         }
         throw new Exception('Controller Not Found', 404);
+    }
+
+    /**
+     * Find repository class
+     * @param $class
+     * @return string
+     */
+    protected function findRepo($class){
+        return 'app\repository\\'.$class.'Repo';
     }
 
     /**

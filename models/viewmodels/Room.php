@@ -4,7 +4,7 @@
 namespace app\models\viewmodels;
 
 
-class Room extends abstracts\Options {
+class Room extends abstracts\AdminOptions {
 
     function setLabels() {
 

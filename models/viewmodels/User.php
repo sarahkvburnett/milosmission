@@ -3,9 +3,9 @@
 
 namespace app\models\viewmodels;
 
-use app\models\viewmodels\abstracts\Admin;
+use app\models\viewmodels\abstracts\Base;
 
-class User extends Admin {
+class User extends Base {
 
     //todo confirm password missing from details
 

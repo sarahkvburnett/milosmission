@@ -4,6 +4,8 @@
 namespace app\controllers\admin;
 
 use app\controllers\abstracts\Admin;
+use app\database\Database;
+use app\Validator;
 
 class Media extends Admin {
 
@@ -17,14 +19,9 @@ class Media extends Admin {
         $this->table = "media";
     }
 
-    protected function setBrowseData($router, $search = []) {
-        $this->addDataField(
-            'fields',
-            $router->db
-                ->select($this->table, ['*', 'media_filename AS preview'])
-                ->where($search)
-                ->fetchAll()
-        );
+    protected function setBrowseData($search = []) {
+        $db = Database::getInstance();
+        $this->addDataField('fields', $db->select($this->table, ['*', 'media_filename AS preview'])->where($search)->fetchAll());
     }
 
     //todo need to add new entry into animal_media;
@@ -40,11 +37,11 @@ class Media extends Admin {
                 if(empty($errors)) {
                     $model->save($router->db);
                     $this->data['fields'] = $array;
-                    $router->redirect($this->urls['browse'], $this->data);
+                    $router->redirect($this->urls['browse']);
                 }
              }
         }
-        return $router->sendResponse('/admin/details', $this->data);
+        $router->sendResponse('/admin/details', $this->data);
     }
 
     protected function uploadFile($files, $filepath) {

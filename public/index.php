@@ -1,27 +1,16 @@
 <?php
 
+use app\Options;
+use app\repository\OptionsRepo;
 use app\Router;
 use app\database\Database;
-use Dotenv\Dotenv;
 
-require_once __DIR__.'/../vendor/autoload.php';
+require_once "../bootstrap.php";
 require_once "../routes.php";
 
-$dotenv = Dotenv::createImmutable(dirname(__DIR__));
-$dotenv->load();
+$dbConnections['mysql'] = Database::factory('PDO', $dbCredentials['mysql']);
 
-$dbCredentials = [
-    'dbDSN' => $_ENV['DB_DSN'],
-    'dbUser' => $_ENV['DB_USER'],
-    'dbPassword' => $_ENV['DB_PASSWORD'],
-    'dbOptions' => [
-        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
-    ]
-];
-
-$database = new Database($dbCredentials);
-$router = new Router($database);
-
+$router = new Router($dbConnections);
 foreach($routes as $route){
     [$method, $url, $controller] = $route;
     $router->$method('/api'.$url, $controller);

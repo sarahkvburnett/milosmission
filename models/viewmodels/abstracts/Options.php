@@ -9,8 +9,8 @@ abstract class Options extends Admin {
 
     protected ?array $options;
 
-    public function __construct($router) {
-        parent::__construct($router);
+    public function __construct($repo) {
+        parent::__construct($repo);
         $this->setOptions();
     }
 
@@ -46,15 +46,15 @@ abstract class Options extends Admin {
 
     /**
      * Fetch possible options from entries in db
-     * @param $table - name of table
+     * @param $table - name of db table
      * @param $value - name of column to be used as value
      * @param $label - name of column to be used as label
      * @param array $where - condition to limit option from db
      * @return array $data - array of associative arrays each an option ['value' => $value, 'label' => $label]
      */
-    protected function fetchOptions($table, $value, $label, $where = []){
+    protected function findOptions($table, $value, $label, $where = []){
         $options = [];
-        $data = $this->_db->select($table)->where($where)->fetchAll();
+        $data = $this->repo->count($table, $where);
         if (empty($data)) return $options;
         foreach($data as $row){
             $options[] = [

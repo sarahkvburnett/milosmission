@@ -32,5 +32,3 @@ for animals - status conditionally display fields or at least for now prevent sa
 for rooms - filter out available options or again just stop save
 
 relations on delete - e.g. delete from friend
-
-please deal with passing router everywhere

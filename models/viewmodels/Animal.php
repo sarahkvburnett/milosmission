@@ -5,8 +5,9 @@ namespace app\models\viewmodels;
 
 
 use app\models\viewmodels\abstracts\Options;
+use app\repository\BaseRepo;
 
-class Animal extends Options {
+class Animal extends Options{
 
     function setColumns(){
         $this->columns = [
@@ -68,10 +69,17 @@ class Animal extends Options {
     function setOptions() {
         $this->addOption('animal_status', $this->writeOptions(['New', 'Waiting', 'Rehomed']));
         $this->addOption('animal_type', $this->writeOptions(['Cat', 'Dog']));
-        $this->addOption('media_id', $this->fetchOptions('media', 'media_id', 'media_filename', ["media_type", "image"]));
-        $this->addOption('friend_id', $this->fetchOptions('animals',  'animal_id', 'animal_name'));
-        $this->addOption('room_id', $this->fetchOptions('rooms', 'room_id', 'room_id'));
-        $this->addOption('owner_id', $this->fetchOptions('owners', 'owner_id', 'owner_firstname'));
-        $this->addOption('rehoming_id', $this->fetchOptions('rehomings', 'rehoming_id', 'rehoming_id'));
+        $this->addOption('media_id', $this->findOptions('media', 'media_id', 'media_filename'));
+        $this->addOption('friend_id', $this->findOptions('rooms', 'room_id', 'room_id'));
+        $this->addOption('owner_id', $this->findOptions('owners', 'owner_id', 'owner_firstname'));
+        $this->addOption('rehoming_id', $this->findOptions('rehomings', 'rehoming_id', 'rehoming_id'));
     }
+
+    protected function setCounts(){
+        $this->addCount('All', $this->repo->count(), '/admin/animals');
+        $this->addCount('New', $this->repo->count('animal_status', "new"), '?searchValue=new&searchColumn=animal_status');
+        $this->addCount('Waiting', $this->repo->count('animal_status', "waiting"), '?searchValue=waiting&searchColumn=animal_status');
+        $this->addCount('Rehomed', $this->repo->count('animal_status', "rehomed"), '?searchValue=rehomed&searchColumn=animal_status');
+    }
+
 }

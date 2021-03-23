@@ -4,9 +4,9 @@
 namespace app\models\viewmodels;
 
 
-use app\models\viewmodels\abstracts\Options;
+use app\models\viewmodels\abstracts\AdminOptions;
 
-class Owner extends Options {
+class Owner extends AdminOptions {
 
     function setLabels() {
         $this->labels = [

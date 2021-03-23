@@ -5,24 +5,24 @@ namespace app\models\viewmodels\abstracts;
 
 use app\database\Database;
 
-abstract class Admin {
+abstract class Base {
 
-    protected Database $_db;
     protected ?array $types;
     protected ?array $searchables;
     protected ?array $labels;
     protected ?array $columns;
+    protected ?array $counts;
 
     /**
-     * Admin constructor for view model.
-     * @param Router $router
+     * Base constructor for view model.
      */
-    public function __construct($router) {
-        $this->_db = $router->db;
+    public function __construct($repo) {
+        $this->repo = $repo;
         $this->setLabels();
         $this->setColumns();
         $this->setSearchables();
         $this->setTypes();
+        $this->setCounts();
     }
 
     /**
@@ -44,6 +44,22 @@ abstract class Admin {
      * Set the fields to be searchable in search form
      */
     abstract function setSearchables();
+
+    /**
+     * Set counts
+     */
+    abstract function setCounts();
+
+    /**
+     * Add key/value pair to counts
+     * @param string $name
+     * @param int $count
+     * @param string $url
+     */
+    protected function addCount($name, $count, $url){
+        $this->counts[$name]['value'] = $count;
+        $this->counts[$name]['url'] = $url;
+    }
 
     /**
      * Extract view model data for request

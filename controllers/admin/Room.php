@@ -17,11 +17,11 @@ class Room extends AdminGroupAnimals {
 
     public function save($router, $data){
         $data['room_id'] = parent::save($router, $data);
-        $this->changeAnimals($router, $data, 'room_id');
+        $this->changeAnimals($data, 'room_id');
     }
 
     public function delete($router) {
-        $this->removeAnimals($router, 'room_id');
+        $this->removeAnimals('room_id');
         parent::delete($router);
     }
 }

@@ -15,11 +15,12 @@ class Auth {
        //TODO: need to redirect on login back to the initial url
 
     public function login(Router $router){
+        $db = Database::getInstance();
         if ($_POST){
             $user = new User($_POST);
             $this->validate($user);
             if (empty($this->errors)){
-                $dbUser = $router->db->select('users')->where(['user_email', $user->user_email])->fetch();
+                $dbUser = $db->select('users')->where(['user_email', $user->user_email])->fetch();
                 if(!$dbUser) {
                     $this->addError("Email address not found");
                 }

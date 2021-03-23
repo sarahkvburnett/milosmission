@@ -3,9 +3,9 @@
 
 namespace app\models\viewmodels;
 
-use app\models\viewmodels\abstracts\Options;
+use app\models\viewmodels\abstracts\AdminOptions;
 
-class Media extends Options {
+class Media extends AdminOptions {
 
     function setLabels() {
        $this->labels = [

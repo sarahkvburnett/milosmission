@@ -3,6 +3,7 @@
 
 namespace app\models\abstracts;
 
+use app\database\Database;
 use app\Router;
 use app\Validator;
 
@@ -14,7 +15,7 @@ abstract class Admin {
     public ?string $_name;
 
     /**
-     * Admin constructor.
+     * Base constructor.
      * @param array $data
      */
     public function __construct($data = []) {
@@ -34,17 +35,15 @@ abstract class Admin {
     /**
      * Save record in db
      * @param Router $router
-     * @return string lastInsertId
      */
-    public function save($router){
+    public function save($repo){
         $fields = $this->getFields();
         $idColumn = $this->getIdentifier();
         if(isset($this->$idColumn)){
-            $router->db->update($this->_table, $fields)->where([$idColumn, $this->$idColumn])->execute();
+            $repo->update($this->$idColumn);
         } else {
-            $router->db->insert($this->_table, $fields)->execute();
+            $repo->insert($fields);
         }
-        return $router->db->lastInsertId();
     }
 
     /**
@@ -64,7 +63,7 @@ abstract class Admin {
      * Get db columns from model
      * @return array
      */
-    protected function getFields(){
+    public function getFields(){
         $array = get_object_vars($this);
         foreach($array as $field => $value){
             if(strpos($field, '_') === 0){

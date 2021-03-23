@@ -3,6 +3,7 @@
 
 namespace app\controllers\abstracts;
 
+use app\database\Repository\Interfaces\Repository;
 use app\Router;
 use \Exception;
 use app\Validator;
@@ -16,18 +17,20 @@ abstract class Admin {
 
     protected array $data;
 
+    protected $repo;
+
     /**
-     * Admin constructor.
-     * @param Router $router
+     * Base constructor.
      * @throws Exception
      */
-    public function __construct($router){
+    public function __construct($repo){
+        $this->repo = $repo;
         $this->setClass();
         $this->setTable();
         $this->setActions(strtolower($this->table));
         $this->setSearch();
-        $this->setCounts($router);
-        $this->setModelData($router);
+        $this->setCounts();
+        $this->setModelData($repo);
         $this->addDataField('id', $this->getIdentifier());
         $this->addDataField('search', $this->search);
         $this->addDataField('counts', $this->counts);
@@ -44,7 +47,7 @@ abstract class Admin {
      * @param Router $router
      */
     public function browse($router){
-        $this->setBrowseData($router,  $this->search);
+        $this->setBrowseData($this->search);
         $router->sendResponse('/admin/browse', $this->data);
     }
 
@@ -54,7 +57,7 @@ abstract class Admin {
      * @throws Exception
      */
      public function details($router){
-         $this->setDetailsData($router);
+         $this->setDetailsData();
          if ($router->isAPIRoute) $_POST = json_decode(file_get_contents('php://input'), true);
          if ($_POST) {
             $this->save($router, $_POST);
@@ -80,7 +83,7 @@ abstract class Admin {
             $this->addDataField('errors', $errors);
             throw new Exception('Bad Request', 400);
         }
-        return $model->save($router);
+        return $model->save($this->repo);
     }
 
     /**
@@ -89,7 +92,7 @@ abstract class Admin {
      */
     public function delete($router){
         $id = $_POST['id'];
-        $router->db->delete($this->table)->where([$this->getIdentifier(), $id])->execute();
+        $this->repo->delete($id);
         $router->redirect($this->actions['browse']);
     }
 
@@ -114,64 +117,29 @@ abstract class Admin {
 
     /**
      * Determine update/create data needed for details route
-     * @param Router $router
      */
-    protected function setDetailsData($router){
+    protected function setDetailsData(){
         if (isset($_GET['id'])) {
-            $this->setExistingDetailsData($router);
+            $this->addDataField('fields', $this->repo->findOne($_GET['id']));
             $id = $this->data['fields'][$this->getIdentifier()];
             $this->addIdToActions($id);
         } else {
-           $this->setNewDetailsData($router);
+           $this->addDataField('fields', $this->repo->describe());
         }
     }
 
     /**
      * Add browse fields to $this->data using $this->addDataField($name, $data)
-     * @param Router $router
      * @param array $search
      */
-    protected function setBrowseData($router, $search = []){
-        $this->addDataField(
-            'fields',
-            $router->db
-                ->select($this->table)
-                ->where($search)
-                ->fetchAll()
-        );
-    }
-
-    /**
-     * Add details to data for update
-     * @param Router $router
-     */
-    protected function setExistingDetailsData($router){
-        $this->addDataField(
-            'fields',
-            $router->db
-                ->select($this->table)
-                ->where([$this->getIdentifier(), $_GET['id']])
-                ->fetch()
-        );
-    }
-
-    /**
-     * Add details to data for create
-     * @param Router $router
-     */
-    protected function setNewDetailsData($router){
-        $data = $router->db->describe($this->table)->fetchAll();
-        $fields = [];
-        foreach ($data as $item){
-            $fields[$item['Field']] = '';
-        }
-        $this->addDataField('fields', $fields);
+    protected function setBrowseData($search = []){
+        $this->addDataField('fields', $this->repo->findAll($search));
     }
 
     /**
      * Add key/value pair to data
      * @param string $name - name of field in response
-     * @param array $data - associated data (likely db result)
+     * @param $data - associated data (likely db result)
      */
     protected function addDataField($name, $data){
         $this->data[$name] = $data;
@@ -198,11 +166,10 @@ abstract class Admin {
 
     /**
      * Add fields from view model to data
-     * @param Router $router
      */
-    protected function setModelData($router){
+    protected function setModelData(){
         $class = 'app\models\viewmodels\\'.$this->class;
-        $viewmodel = new $class($router);
+        $viewmodel = new $class($this->repo);
         $model = $viewmodel->getData();
         foreach ($model as $key => $data){
             $this->addDataField($key, $data);
@@ -210,24 +177,11 @@ abstract class Admin {
     }
 
     /**
-     * Set counts
-     * @param Router $router
+     *  Return sql to add group contact column to query
+     * @param $originColumn - column to group concat
+     * @param $joinTable - table containing column
+     * @return string
      */
-    protected function setCounts($router){
-        $this->counts = [];
-    }
-
-    /**
-     * Add key/value pair to counts
-     * @param string $name
-     * @param string $column
-     * @param array $data
-     */
-    protected function addCount($name, $column, $data, $url){
-        $this->counts[$name]['value'] = $data["COUNT(".$column.")"];
-        $this->counts[$name]['url'] = $url;
-    }
-
     protected function addGroupConcatColumn($originColumn, $joinTable){
         return '(SELECT GROUP_CONCAT(t2.'.$originColumn.') FROM '.$joinTable.' t2 WHERE t1.'.$this->class.'_id = t2.'.$this->class.'_id) AS '.$joinTable.'';
     }

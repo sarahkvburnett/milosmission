@@ -4,9 +4,9 @@
 namespace app\models\viewmodels;
 
 
-use app\models\viewmodels\abstracts\Options;
+use app\models\viewmodels\abstracts\AdminOptions;
 
-class Rehoming extends Options {
+class Rehoming extends AdminOptions {
 
     //todo need to reformat date
 
