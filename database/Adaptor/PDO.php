@@ -1,12 +1,12 @@
 <?php
 
 
-namespace app\database\Extension;
+namespace app\database\Adaptor;
 
-use app\database\Extension\Interfaces\Extension;
+use app\database\Adaptor\interfaces\Adaptor;
 use app\database\QueryBuilder\SQLBuilder;
 
-class PDO extends SQLBuilder implements Extension {
+class PDO extends SQLBuilder implements Adaptor {
 
     public $pdo;
     public $sql;
@@ -36,9 +36,14 @@ class PDO extends SQLBuilder implements Extension {
         $statement->execute();
     }
 
+    //Specific PDO methods
+
     public function query($sql){
         $this->sql = $sql;
     }
 
+    public function lastInsertId(){
+        return $this->pdo->lastInsertId();
+    }
 
 }

@@ -24,8 +24,9 @@ class Media extends Admin {
         $this->addDataField('fields', $db->select($this->table, ['*', 'media_filename AS preview'])->where($search)->fetchAll());
     }
 
+    //todo this is well old mate
     //todo need to add new entry into animal_media;
-    public function save($router, $data){
+    public function save($data){
         if ($_FILES) {
             $array = Validator::sanitiseAll($data);
             $filename = "/".$array['category'];
@@ -37,11 +38,9 @@ class Media extends Admin {
                 if(empty($errors)) {
                     $model->save($router->db);
                     $this->data['fields'] = $array;
-                    $router->redirect($this->urls['browse']);
                 }
              }
         }
-        $router->sendResponse('/admin/details', $this->data);
     }
 
     protected function uploadFile($files, $filepath) {

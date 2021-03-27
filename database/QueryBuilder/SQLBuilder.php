@@ -14,8 +14,9 @@ class SQLBuilder {
 
     protected $table;
 
-    public function setTable($table){
+    public function table($table){
         $this->table = $table;
+        return $this;
     }
 
     protected function reset(){
@@ -41,6 +42,7 @@ class SQLBuilder {
     public function from($table){
         $this->sql = strtok($this->sql,'FROM');
         $this->sql .= "FROM $table t1";
+        return $this;
     }
 
     /**

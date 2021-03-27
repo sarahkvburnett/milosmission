@@ -3,47 +3,91 @@
 
 namespace app\models;
 
-use app\database\Database;
-use app\models\abstracts\Admin;
 
-class Animal extends Admin {
+use app\models\abstracts\AdminOptions;
 
-    protected $animal_id;
-    protected $animal_name;
-    protected $animal_type;
-    protected $animal_breed;
-    protected $animal_colour;
-    protected $animal_age;
-    protected $animal_status;
-    protected $media_id;
-    protected $room_id;
-    protected $friend_id;
-    protected $owner_id;
-    protected $rehoming_id;
+class Animal extends AdminOptions{
 
-    public function setTable() {
-        $this->_table = 'animals';
+    public function setRules(){
+        $this->rules = [
+            'animal_name' => ['required' => 'Please add a a name'],
+            'animal_type' => ['required' => 'Please indicate the animal\'s type'],
+            'media_id' => ['required' => 'Please add an image'],
+            'animal_status' => ['required' => 'Please indicate the animal\'s current status'],
+        ];
     }
 
-    public function setName() {
-        $this->_name = 'animal';
+    function setColumns(){
+        $this->columns = [
+            'animal_id',
+            'animal_name',
+            'animal_type',
+            'animal_breed',
+            'animal_colour',
+            'animal_age',
+            'animal_status',
+            'room_id',
+            'friend_id',
+            'image'
+        ];
     }
 
-    public function validate() {
-        $errors = [];
-        if (!$this->animal_name) {
-            $errors[] = "Please add a name";
-        }
-        if (!$this->animal_type) {
-            $errors[] = "Please indicate the animal's type";
-        }
-        if (!$this->media_id) {
-            $errors[] = "Please add an image";
-        }
-        if (!$this->animal_status) {
-            $errors[] = "Please indicate the animal's current status";
-        }
-        return $errors;
+    function setLabels(){
+        $this->labels = [
+                'animal_id' =>'ID',
+                'animal_name' =>'Name',
+                'animal_type' =>'Type',
+                'animal_breed' =>'Breed',
+                'animal_colour' =>'Colour',
+                'animal_age' =>'Age',
+                'animal_status' =>'Status',
+                'media_id' =>'Image',
+                'room_id' =>'Room',
+                'friend_id' =>'Friend',
+                'owner_id' =>'New Owner',
+                'rehoming_id' => 'Rehoming ID',
+                'image' => 'Image'
+        ];
+    }
+
+
+    function setTypes() {
+        $this->types = [
+            'animal_id' => "hidden",
+            'animal_status' => "select",
+            'animal_type' => "select",
+            'room_id' => "select",
+            'friend_id' => "select",
+            'owner_id' => "select",
+            'rehoming_id' => "select",
+            'media_id' => "select",
+            'media_filename' => 'hidden',
+            'media_type' => 'hidden',
+            'media_category' => 'hidden',
+            'media_subcategory' => 'hidden',
+        ];
+    }
+
+    function setSearchables() {
+       $this->searchables = [
+               'animal_id', 'animal_name', 'animal_type', 'animal_breed', 'animal_age', 'animal_status'
+       ];
+    }
+
+    function setOptions() {
+        $this->addOption('animal_status', $this->writeOptions(['New', 'Waiting', 'Rehomed']));
+        $this->addOption('animal_type', $this->writeOptions(['Cat', 'Dog']));
+        $this->addOption('media_id', $this->findOptions('media', 'media_id', 'media_filename'));
+        $this->addOption('friend_id', $this->findOptions('rooms', 'room_id', 'room_id'));
+        $this->addOption('owner_id', $this->findOptions('owners', 'owner_id', 'owner_firstname'));
+        $this->addOption('rehoming_id', $this->findOptions('rehomings', 'rehoming_id', 'rehoming_id'));
+    }
+
+    protected function setCounts(){
+        $this->addCount('All', $this->repo->count(), '/admin/animals');
+        $this->addCount('New', $this->repo->count('animal_status', "new"), '?searchValue=new&searchColumn=animal_status');
+        $this->addCount('Waiting', $this->repo->count('animal_status', "waiting"), '?searchValue=waiting&searchColumn=animal_status');
+        $this->addCount('Rehomed', $this->repo->count('animal_status', "rehomed"), '?searchValue=rehomed&searchColumn=animal_status');
     }
 
 }

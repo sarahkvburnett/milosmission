@@ -2,10 +2,10 @@
 
 namespace app\database;
 
-use app\database\Extension\Interfaces\Extension;
+use app\database\Adaptor\interfaces\Adaptor;
+use app\database\Adaptor\PDO;
 use Exception;
 use http\Env;
-use app\database\Extension\PDO;
 
 /**
  * Class Database
@@ -14,10 +14,10 @@ use app\database\Extension\PDO;
  */
 class Database {
 
-    public static function factory($extension, $dbCredentials) {
-        $class = 'app\database\Extension\\'.$extension;
+    public static function factory($adaptor, $dbCredentials) {
+        $class = 'app\database\Adaptor\\'.$adaptor;
         $db = new $class($dbCredentials);
-        if(!$db instanceof Extension ){
+        if(!$db instanceof Adaptor ){
             throw new Exception("$class is not a db extension");
         }
         return $db;

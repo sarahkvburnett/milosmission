@@ -4,49 +4,61 @@
 namespace app\models;
 
 
-use app\database\Database;
-use app\models\abstracts\Admin;
+use app\models\abstracts\AdminOptions;
 
-class Owner extends Admin {
+class Owner extends AdminOptions {
 
-    protected $owner_id;
-    protected $owner_firstname;
-    protected $owner_lastname;
-    protected $owner_address;
-    protected $owner_postcode;
-    protected $owner_animal;
-    protected $owner_status;
-
-    function setTable() {
-        $this->_table = 'owners';
+    function setRules(){
+        $this->rules = [
+           'owner_firstname' => ['required' => "Please add a firstname"],
+            'owner_address' => ['required' => "Please add a a lastname"],
+            'owner_postcode' => ['required' => "Please add an address"],
+            'owner_animal' => ['required' => "Select the animal type to be rehomed"],
+            'owner_status' => ['required' => "Please select the owner's status"]
+            ];
     }
 
-    function setName() {
-        $this->_name = 'Owner';
+    function setLabels() {
+        $this->labels = [
+            "owner_id" => "ID",
+            "owner_firstname" => "First Name",
+            "owner_lastname" => "Last Name",
+            "owner_address" => "Address",
+            "owner_postcode" => "Post Code",
+            "owner_animal" => "Type",
+            "owner_status" => "Status",
+            "animals" => "Animals"
+        ];
     }
 
-
-    public function validate() {
-        $errors = [];
-        if (!$this->owner_firstname) {
-            $errors[] = "Please add a firstname";
-        }
-        if (!$this->owner_lastname) {
-            $errors[] = "Please add a lastname";
-        }
-        if (!$this->owner_address) {
-            $errors[] = "Please add an address";
-        }
-        if (!$this->owner_postcode) {
-            $errors[] = "Please add a postcode";
-        }
-        if (!$this->owner_animal) {
-            $errors[] = "Select the animal type to be rehomed";
-        }
-        if (!$this->owner_status) {
-            $errors[] = "Please select the owner's status";
-        }
-        return $errors;
+    function setColumns() {
+       $this->columns = [
+           "owner_id", "owner_firstname", "owner_lastname", "owner_address", "owner_postcode", "owner_animal", "owner_status", "animals"
+       ];
     }
 
+    function setTypes() {
+        $this->types = [
+            'owner_id' => "hidden",
+            'owner_animal' => 'select',
+            'owner_status' => "select",
+            'animals' => 'checkbox'
+        ];
+    }
+
+    function setSearchables() {
+        $this->searchables = [
+            'owner_id', 'owner_firstname', 'owner_lastname', 'owner_postcode', 'owner_animal', 'owner_status'
+        ];
+    }
+
+    function setOptions() {
+        $this->addOption('owner_animal', $this->writeOptions(['Cat', 'Dog']));
+        $this->addOption('owner_status', $this->writeOptions(['New', 'Waiting', 'Rehomed']));
+        $this->addOption('animals', $this->fetchOptions('animals', 'animal_id', 'animal_name'));
+    }
+
+    function setCounts() {
+        // TODO: Implement setCounts() method.
+    }
 }

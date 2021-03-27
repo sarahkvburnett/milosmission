@@ -3,28 +3,51 @@
 
 namespace app\models;
 
-use app\models\abstracts\Admin;
-use app\database\Database;
 
-class Room extends Admin {
+use app\models\abstracts\AdminOptions;
 
-    protected $room_id;
-    protected $room_type;
+class Room extends AdminOptions {
 
-    function setTable() {
-        $this->_table = 'rooms';
+    function setRules(){
+        $this->rules = [
+              'room_type' => ['required' => "Please indicate the animal type"]
+        ];
     }
 
-    function setName() {
-        $this->_name = 'Room';
+    function setLabels() {
+        $this->labels = [
+            'room_id' => 'Number',
+            'room_type' => 'Type',
+            'animals' => 'Occupants'
+        ];
     }
 
-    public function validate() {
-        $errors = [];
-        if (!$this->room_type) {
-            $errors[] = "Please indicate the animal type";
-        }
-        return $errors;
+    function setColumns() {
+        $this->columns = [
+            'room_id', 'room_type', 'animals'
+        ];
     }
 
+    function setTypes() {
+       $this->types = [
+            'room_id' => "hidden",
+            'room_type' => "select",
+            'animals' => 'checkbox'
+       ];
+    }
+
+    function setSearchables() {
+        $this->searchables = [
+            'room_id', 'room_type'
+        ];
+    }
+
+    function setOptions() {
+        $this->addOption('room_type', $this->writeOptions(['Cat', 'Dog']));
+        $this->addOption('animals', $this->fetchOptions('animals', 'animal_id', 'animal_name'));
+    }
+
+    function setCounts() {
+        // TODO: Implement setCounts() method.
+    }
 }

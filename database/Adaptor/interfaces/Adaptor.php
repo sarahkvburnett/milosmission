@@ -1,10 +1,10 @@
 <?php
 
 
-namespace app\database\Extension\Interfaces;
+namespace app\database\Adaptor\interfaces;
 
 
-interface Extension {
+interface Adaptor {
 
     public function findOne();
     public function findAll();

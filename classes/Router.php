@@ -4,7 +4,7 @@ namespace app;
 
 use app\database\Database;
 use app\Middleware;
-use app\repository\OptionsRepo;
+use app\pages\Page;
 use Error;
 use Exception;
 
@@ -48,10 +48,10 @@ class Router {
      * @throws Exception
      */
     public function resolve() {
-        [$controller, $method] = $this->route;
-        $class = $this->findController($controller);
-        $repo = $this->findRepo($controller);
-        $controller = new $class(new $repo($this->dbConnections));
+        [$class, $method] = $this->route;
+        $page = Page::setInstance($class);
+        $repo = $this->getRepo($page->getRepo(), $this->dbConnections);
+        $controller = $this->getController($page->getController(), $repo);
         $controller->$method($this);
     }
 
@@ -85,9 +85,9 @@ class Router {
         include_once __DIR__."/views/$view.php";
         $content = ob_get_clean();
         if (str_contains($view, "admin") and !str_contains($view, "login")) {
-            include_once __DIR__."/views/admin/_layout.php";
+            include_once __DIR__ . "/views/admin/_layout.php";
         } else {
-            include_once __DIR__."/views/_layout.php";
+            include_once __DIR__ . "/views/_layout.php";
         }
     }
 
@@ -120,7 +120,7 @@ class Router {
      * @param array $mw
      */
     public function executeMiddleware() {
-        //todo auth removed for api
+        //todo auth removed for api - cookie
         $route = $this->route;
         if (isset($route[2]) && !$this->isAPIRoute) {
             $mw = $route[2];
@@ -167,34 +167,17 @@ class Router {
     }
 
     /**
-     * Find controller class
-     * @param $class
-     * @return string
-     * @throws Exception
-     */
-    protected function findController($class){
-        $sources = ['app\controllers\\', 'app\controllers\admin\\'];
-        foreach ($sources as $source){
-            if (class_exists($source.$class)){
-                return $source.$class;
-            }
-        }
-        throw new Exception('Controller Not Found', 404);
-    }
-
-    /**
-     * Find repository class
-     * @param $class
-     * @return string
-     */
-    protected function findRepo($class){
-        return 'app\repository\\'.$class.'Repo';
-    }
-
-    /**
      * @param string $uri
      */
     private function setIsAPIRoute($uri) {
         $this->isAPIRoute = str_contains($uri, 'api');
+    }
+
+    private function getRepo($class, $dbConnections){
+        return new $class($dbConnections);
+    }
+
+    private function getController($class, $repo){
+        return new $class($repo);
     }
 }

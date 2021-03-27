@@ -1,7 +1,7 @@
 <?php
 
 
-namespace app\repository\Interfaces;
+namespace app\repository\abstracts;
 
 
 interface Repository {
@@ -12,8 +12,6 @@ interface Repository {
     public function update($id, $model);
     public function delete($id);
     public function describe();
+    public function count($condition);
 
-////diff interface:
-//    public function *count();
-//public function *options();
 }

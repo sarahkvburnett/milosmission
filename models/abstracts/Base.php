@@ -1,12 +1,13 @@
 <?php
 
 
-namespace app\models\viewmodels\abstracts;
+namespace app\models\abstracts;
 
 use app\database\Database;
 
 abstract class Base {
 
+    protected ?array $rules;
     protected ?array $types;
     protected ?array $searchables;
     protected ?array $labels;
@@ -24,6 +25,11 @@ abstract class Base {
         $this->setTypes();
         $this->setCounts();
     }
+
+    /**
+     * Set validation rules
+     */
+    abstract function setRules();
 
     /**
      * Set labels for the view form elements
@@ -44,22 +50,6 @@ abstract class Base {
      * Set the fields to be searchable in search form
      */
     abstract function setSearchables();
-
-    /**
-     * Set counts
-     */
-    abstract function setCounts();
-
-    /**
-     * Add key/value pair to counts
-     * @param string $name
-     * @param int $count
-     * @param string $url
-     */
-    protected function addCount($name, $count, $url){
-        $this->counts[$name]['value'] = $count;
-        $this->counts[$name]['url'] = $url;
-    }
 
     /**
      * Extract view model data for request

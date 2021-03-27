@@ -1,11 +1,11 @@
 <?php
 
 
-namespace app\models\viewmodels\abstracts;
+namespace app\models\abstracts;
 
-use app\models\viewmodels\abstracts\Admin;
+use app\models\abstracts\Admin;
 
-abstract class Options extends Admin {
+abstract class AdminOptions extends Admin {
 
     protected ?array $options;
 

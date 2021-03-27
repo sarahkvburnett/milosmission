@@ -1,5 +1,6 @@
 <?php
 
+use app\FailedValidation;
 use app\Options;
 use app\repository\OptionsRepo;
 use app\Router;
@@ -26,5 +27,8 @@ try {
 }
 catch (Error | Exception $e){
     $router->handleException($e);
+}
+catch (FailedValidation $e){
+    $router->handleFailedValidation($e);
 }
 
