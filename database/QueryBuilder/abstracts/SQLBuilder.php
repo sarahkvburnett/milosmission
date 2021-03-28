@@ -1,27 +1,15 @@
 <?php
 
 
-namespace app\database\QueryBuilder;
+namespace app\database\QueryBuilder\abstracts;
 
 
-use app\database\Database;
+class SQLBuilder extends QueryBuilder {
 
-class SQLBuilder {
-
-    protected $sql;
-    protected $values;
+    protected ?string $query;
+    protected ?array $values;
     protected bool $hasWhere = false;
-
-    protected $table;
-
-    public function table($table){
-        $this->table = $table;
-        return $this;
-    }
-
-    protected function reset(){
-        $this->hasWhere = false;
-    }
+    protected ?string $table;
 
     //Methods to build initial sql statement
 
@@ -31,7 +19,7 @@ class SQLBuilder {
      * @return $this
      */
     public function select($columns = '*'){
-        $this->sql = "SELECT $columns FROM $this->table t1";
+        $this->query = "SELECT $columns FROM $this->table t1";
         return $this;
     }
 
@@ -40,85 +28,80 @@ class SQLBuilder {
      * @param $table
      */
     public function from($table){
-        $this->sql = strtok($this->sql,'FROM');
-        $this->sql .= "FROM $table t1";
+        $this->query = strtok($this->query,'FROM');
+        $this->query .= "FROM $table t1";
         return $this;
     }
 
     /**
      * Write sql select statement with count function for provided table
      * @param string $id
-     * @param string $table
      * @return $this
      */
-    public function count($id, $table) {
-        $this->sql = 'SELECT COUNT('.$id.') FROM ' . $table;
+    public function count($id) {
+        $this->query = "SELECT COUNT($id) FROM $this->table";
         return $this;
     }
 
     /**
      * Write sql describe statement for provided table
-     * @param string $table
      * @return $this
      */
-    public function describe($table) {
-        $this->sql = 'DESCRIBE ' . $table;
+    public function describe() {
+        $this->query = "DESCRIBE $this->table";
         return $this;
     }
 
     /**
      * Write sql insert statement for provided table
-     * @param string $table
      * @param array $values
-     * @return Database $this
+     * @return $this
      */
-    public function insert($table, $values) {
+    public function insert($values) {
         $this->setValues($values);
-        $insertSQL = "INSERT INTO " . $table . " (";
+        $insertSQL = "INSERT INTO $this->table (";
         $valuesSQL = "VALUES (";
         foreach ($values as $key => $value) {
-            $insertSQL .= $key . ", ";
-            $valuesSQL .= $this->addValue($key) . ", ";
+            $insertSQL .= "$key, ";
+            $valuesSQL .= "$value, ";
         }
-        $this->sql = $this->trimSql($insertSQL) . ") " . $this->trimSql($valuesSQL) . ")";
+        $this->query = "$this->trimSql($insertSQL)) $this->trimSql($valuesSQL))";
         return $this;
     }
 
     /**
      * Write sql update statement for provided table
-     * @param string $table
      * @param array $values
-     * @return Database $this
+     * @return $this
      */
-    public function update($table, $values) {
+    public function update($values) {
         $this->setValues($values);
-        $sql = "UPDATE " . $table . " SET";
+        $sql = "UPDATE $this->table SET";
         foreach ($values as $key => $value) {
             if (isset($key)) {
-                $sql .= " " . $key . "=" . $this->addValue($key) . ", ";
+                $sql .= " $key = $value, ";
             }
         }
-        $this->sql = $this->trimSql($sql);
+        $this->query = $this->trimSql($sql);
         return $this;
     }
 
     /**
      * Write sql delete statement for provided table
-     * @param string $table
-     * @return Database $this
+     * @return $this
      */
-    public function delete($table) {
-        $this->sql = 'DELETE FROM ' . $table;
+    public function delete() {
+        $this->query = "DELETE FROM $this->table";
         return $this;
     }
 
     /**
      * Generic write sql statement
      * @param string $query
-     * @return Database $this
+     * @return $this
      */
     public function query($query){
-        $this->sql = $query;
+        $this->query = $query;
         return $this;
     }
 
@@ -127,12 +110,11 @@ class SQLBuilder {
     /**
      * Add join to sql statement
      * @param string $type
-     * @param string $table
      * @param string $column
-     * @return Database $this
+     * @return $this
      */
     public function join($table, $column, $type = 'LEFT') {
-        $this->sql .= ' ' . $type . ' JOIN ' . $table . ' ON t1.' . $column . ' = ' . $table . '.' . $column . ' ';
+        $this->query .= " $type JOIN $table ON t1.$column = $table.$column";
         return $this;
     }
 
@@ -140,24 +122,26 @@ class SQLBuilder {
      * Add where clause to sql statement - can use multiple
      * @param $column - either string for column, or array of [0 => $column, 1 => value];
      * @param null $value - either string for value, or null;
-     * @return SQLBuilder
+     * @return $this
      */
 
-    public function where($column, $value = null): SQLBuilder {
+    public function where($column, $value = null) {
         if (empty($column)) return $this;
         if (is_array($column)){
             $value = $column[1];
             $column = $column[0];
         }
-        $sql = '';
+        $sql = " ";
         if (!$this->hasWhere) {
-            $sql .= ' WHERE';
+            $sql .= "WHERE ";
         };
-        $sql .= ' ' . $column . ' = \'' . $value . '\', ';
-        $this->sql .= $this->trimSql($sql);
+        $sql .= "$column = $value, ";
+        $this->query .= $this->trimSql($sql);
         $this->hasWhere = true;
         return $this;
     }
+
+    //HELPER METHODS
 
     /**
      * Function to remove trailing comma from sql statement added in final iteration of insert/update
@@ -176,8 +160,22 @@ class SQLBuilder {
         $this->values = $values;
     }
 
-    protected function addValue($key){
-        return $this->isPDO ? ':'.$key : $key;
+    /**
+     * Set table to query
+     * @param $table
+     * @return $this
+     */
+    public function table($table){
+        $this->table = $table;
+        return $this;
     }
+
+    /**
+     * Clean up after query
+     */
+    public function reset(){
+        $this->hasWhere = false;
+    }
+
 
 }

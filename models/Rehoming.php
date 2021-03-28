@@ -4,9 +4,14 @@
 namespace app\models;
 
 
-use app\models\abstracts\AdminOptions;
+use app\models\abstracts\Options;
 
-class Rehoming extends AdminOptions {
+class Rehoming extends Options {
+
+    protected string $table = 'rehomings';
+    protected string $idColumn = 'rehoming_id';
+    protected string $className = 'Rehoming';
+    protected string $name = 'rehoming';
 
     //todo need to reformat date
 

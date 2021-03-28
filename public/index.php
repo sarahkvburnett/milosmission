@@ -1,15 +1,15 @@
 <?php
 
-use app\FailedValidation;
-use app\Options;
-use app\repository\OptionsRepo;
-use app\Router;
+use app\classes\Router;
+use app\database\Connections;
 use app\database\Database;
 
 require_once "../bootstrap.php";
 require_once "../routes.php";
 
-$dbConnections['mysql'] = Database::factory('PDO', $dbCredentials['mysql']);
+$dbConnections = new Connections($dbCredentials);
+$dbConnections->add('mysql', 'PDO');
+//$dbConnections->add('sqlsrv', 'PDO');
 
 $router = new Router($dbConnections);
 foreach($routes as $route){
@@ -28,7 +28,3 @@ try {
 catch (Error | Exception $e){
     $router->handleException($e);
 }
-catch (FailedValidation $e){
-    $router->handleFailedValidation($e);
-}
-

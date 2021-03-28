@@ -3,9 +3,14 @@
 
 namespace app\models;
 
-use app\models\abstracts\Admin;
+use app\models\abstracts\Model;
 
-class User extends Admin {
+class User extends Model {
+
+    protected string $table = 'users';
+    protected string $idColumn = 'user_id';
+    protected string $className = 'User';
+    protected string $name = 'user';
 
     //todo confirm password missing from details
 

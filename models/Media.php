@@ -3,9 +3,14 @@
 
 namespace app\models;
 
-use app\models\abstracts\AdminOptions;
+use app\models\abstracts\Options;
 
-class Media extends AdminOptions {
+class Media extends Options {
+
+    protected string $table = 'media';
+    protected string $idColumn = 'media_id';
+    protected string $className = 'Media';
+    protected string $name = 'media';
 
     function setRules(){
         $this->rules = [

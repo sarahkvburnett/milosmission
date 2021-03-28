@@ -4,9 +4,14 @@
 namespace app\models;
 
 
-use app\models\abstracts\AdminOptions;
+use app\models\abstracts\Options;
 
-class Animal extends AdminOptions{
+class Animal extends Options{
+
+    protected string $table = 'animals';
+    protected string $idColumn = 'animal_id';
+    protected string $className = 'Animal';
+    protected string $name = 'animal';
 
     public function setRules(){
         $this->rules = [
@@ -83,7 +88,7 @@ class Animal extends AdminOptions{
         $this->addOption('rehoming_id', $this->findOptions('rehomings', 'rehoming_id', 'rehoming_id'));
     }
 
-    protected function setCounts(){
+    function setCounts(){
         $this->addCount('All', $this->repo->count(), '/admin/animals');
         $this->addCount('New', $this->repo->count('animal_status', "new"), '?searchValue=new&searchColumn=animal_status');
         $this->addCount('Waiting', $this->repo->count('animal_status', "waiting"), '?searchValue=waiting&searchColumn=animal_status');

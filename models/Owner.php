@@ -4,9 +4,14 @@
 namespace app\models;
 
 
-use app\models\abstracts\AdminOptions;
+use app\models\abstracts\Options;
 
-class Owner extends AdminOptions {
+class Owner extends Options {
+
+    protected string $table = 'owners';
+    protected string $idColumn = 'owner_id';
+    protected string $className = 'Owner';
+    protected string $name = 'owner';
 
     function setRules(){
         $this->rules = [

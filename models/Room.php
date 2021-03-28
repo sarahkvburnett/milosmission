@@ -4,9 +4,14 @@
 namespace app\models;
 
 
-use app\models\abstracts\AdminOptions;
+use app\models\abstracts\Options;
 
-class Room extends AdminOptions {
+class Room extends Options {
+
+    protected string $table = 'rooms';
+    protected string $idColumn = 'room_id';
+    protected string $className = 'Room';
+    protected string $name = 'room';
 
     function setRules(){
         $this->rules = [

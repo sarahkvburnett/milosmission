@@ -1,7 +1,7 @@
 <?php
 
 
-namespace app;
+namespace app\classes;
 
 
 use Exception;
@@ -14,7 +14,7 @@ class Request {
         if (!isset($instance))  self::$instance = new Request();
         return self::$instance;
     }
-    
+
     public function hasId(){
         if (isset($_GET['id'])) return true;
         if (isset($_POST['id'])) return true;
@@ -34,7 +34,19 @@ class Request {
         return [];
     }
 
+    public function isApi(){
+        return str_contains($_SERVER['REQUEST_URI'], 'api');
+    }
 
+    public function isPost(){
+        if ($this->isAPI()) $_POST = json_decode(file_get_contents('php://input'), true);
+        return isset($_POST);
+    }
+
+    public function getPost(){
+        if ($this->isAPI()) $_POST = json_decode(file_get_contents('php://input'), true);
+        return $_POST;
+    }
 
 
 }

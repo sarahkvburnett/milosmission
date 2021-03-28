@@ -1,0 +1,11 @@
+https://github.com/cytopia/devilbox/issues/439
+
+shell
+
+sudo su -
+
+MSODBC_URL="https://packages.microsoft.com/debian/8/prod/pool/main/m/msodbcsql17/";
+MSODBC_DEB="$( curl -sS "${MSODBC_URL}" | grep -Eo 'msodbcsql[-._0-9]+?_amd64\.deb' | tail -1 )";
+curl -sS "${MSODBC_URL}${MSODBC_DEB}" > "/tmp/${MSODBC_DEB}";
+ACCEPT_EULA=Y  dpkg -i "/tmp/${MSODBC_DEB}";
+rm -f "/tmp/${MSODBC_DEB}";

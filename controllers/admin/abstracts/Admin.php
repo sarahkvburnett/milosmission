@@ -1,27 +1,26 @@
 <?php
 
 
-namespace app\controllers\abstracts;
+namespace app\controllers\admin\abstracts;
 
-use app\FailedValidation;
-use app\pages\Page;
-use app\Request;
-use app\Router;
+use app\classes\FailedValidation;
+use app\classes\Page;
+use app\classes\Request;
+use app\classes\Router;
 use \Exception;
-use app\Validator;
+use app\classes\Validator;
 
 class Admin {
     protected array $actions;
     protected array $search;
     protected array $fields;
-    protected string $id;
+    protected ?string $id;
 
     protected $repo;
     protected $model;
-    protected $viewmodel;
 
     /**
-     * Base constructor.
+     * PageInterface constructor.
      * @param $repo
      */
     public function __construct($repo){
@@ -31,30 +30,17 @@ class Admin {
         $this->actions = $page->getActions();
         $this->search = $request->getSearch();
         $this->id = $request->hasId() ? $request->getId() : null;
-        $this->rules = $this->model->getRules();
         $this->repo = $repo;
-        $this->setModelData($repo);
+        $this->setModelData();
     }
 
     /**
-     * Set the action urls for the view
-     * @param string $name
+     * Dashboard page
+     * @param Router $router
      */
-    protected function setActions($name){
-        $this->actions['browse'] = '/admin/'.$name;
-        $this->actions['details'] = '/admin/'.$name.'/details';
-        $this->actions['delete'] = '/admin/'.$name.'/delete';
+    public function admin($router){
+        $router->renderView('/admin/index');
     }
-
-    /**
-     * Add the id to the details/delete action urls
-     * @param int $id
-     */
-    protected function addIdToActions($id){
-        $this->actions['details'] .= "?id=".$id;
-        $this->actions['delete'] .= "?id=".$id;
-    }
-
 
     /**
      * Execute browse route
@@ -72,11 +58,10 @@ class Admin {
      */
      public function details($router){
          $this->setDetailsData();
-         //todo move to request class
-         if ($router->isAPIRoute) $_POST = json_decode(file_get_contents('php://input'), true);
-         if ($_POST) {
+         $request = Request::getInstance();
+         if ($request->isPost()) {
              try {
-                 $this->save($_POST);
+                 $this->save($request->getPost());
              } catch (FailedValidation $e) {
                  $this->errors = $e->getErrors();
              }
@@ -133,9 +118,8 @@ class Admin {
     /**
      * Add fields from view model to data
      */
-    protected function setModelData($repo){
-        $model = new $this->model($repo);
-        $data = $model->getData();
+    protected function setModelData(){
+        $data = $this->model->getData();
         foreach ($data as $key => $value){
             $this->$key = $value;
         }

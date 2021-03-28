@@ -3,7 +3,7 @@
 
 namespace app\controllers\admin;
 
-use app\controllers\abstracts\Admin;
+use app\controllers\admin\abstracts\Admin;
 use app\database\Database;
 use app\Validator;
 

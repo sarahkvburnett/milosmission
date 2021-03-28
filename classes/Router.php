@@ -1,10 +1,10 @@
 <?php
 
-namespace app;
+namespace app\classes;
 
-use app\database\Database;
-use app\Middleware;
-use app\pages\Page;
+use app\classes\Middleware;
+use app\classes\Page;
+use app\database\Connections;
 use Error;
 use Exception;
 
@@ -18,10 +18,11 @@ class Router {
 
     public bool $isAPIRoute;
 
-    protected $dbConnections;
+    protected Connections $dbConnections;
 
     public function __construct($dbConnections){
         $this->dbConnections = $dbConnections;
+        $this->root = dirname(__FILE__).'../../';
     }
 
     /**
@@ -50,8 +51,8 @@ class Router {
     public function resolve() {
         [$class, $method] = $this->route;
         $page = Page::setInstance($class);
-        $repo = $this->getRepo($page->getRepo(), $this->dbConnections);
-        $controller = $this->getController($page->getController(), $repo);
+        $repo = $page->setRepo($this->dbConnections);
+        $controller = $page->setController($repo);
         $controller->$method($this);
     }
 
@@ -64,7 +65,8 @@ class Router {
      */
     public function sendResponse($url, $data = [], $status = 200){
         $currentURL = $this->uri ? $this->uri : $url;
-        if ($this->isAPIRoute) {
+        $request = Request::getInstance();
+        if ($request->isApi()) {
             $this->sendJSON($data, $status);
         } else {
             if (empty($url)) throw new Exception('Template not specified');
@@ -78,16 +80,17 @@ class Router {
      * @param int $status
      */
     public function renderView($view, $data = [], $status = 200) {
+       $ROOT = $this->root;
         foreach ($data as $key => $value){
             $$key = $value;
         }
         ob_start();
-        include_once __DIR__."/views/$view.php";
+        include_once $ROOT."views/$view.php";
         $content = ob_get_clean();
         if (str_contains($view, "admin") and !str_contains($view, "login")) {
-            include_once __DIR__ . "/views/admin/_layout.php";
+            include_once $ROOT."views/admin/_layout.php";
         } else {
-            include_once __DIR__ . "/views/_layout.php";
+            include_once $ROOT."views/_layout.php";
         }
     }
 
@@ -96,7 +99,8 @@ class Router {
      * @param string $url
      */
     public function redirect($url) {
-        if ($this->isAPIRoute) {
+        $request = Request::getInstance();
+        if ($request->isApi()) {
             $this->sendJSON([], 302);
         } else {
             header("Location: " . $url);
@@ -120,9 +124,10 @@ class Router {
      * @param array $mw
      */
     public function executeMiddleware() {
+        $request = Request::getInstance();
         //todo auth removed for api - cookie
         $route = $this->route;
-        if (isset($route[2]) && !$this->isAPIRoute) {
+        if (isset($route[2]) && !$request->isApi()) {
             $mw = $route[2];
             foreach ($mw as $fn) {
                 Middleware::$fn();
@@ -152,32 +157,13 @@ class Router {
      * @throws Exception
      */
     public function findRoute($uri, $method){
-        if ($method === 'get') {
-            $route = $this->getRoutes[$uri] ?? [];
-        } else {
-           $route = $this->postRoutes[$uri] ?? [];
-        };
+        $route = $method === 'get' ? $this->getRoutes[$uri] ?? [] : $this->postRoutes[$uri] ?? [];
         $this->uri = $uri;
         $this->method = $method;
         $this->route = $route;
-        $this->setIsAPIRoute($uri);
         if (!$route) {
             throw new Exception('Route Not Found', 404);
         }
     }
 
-    /**
-     * @param string $uri
-     */
-    private function setIsAPIRoute($uri) {
-        $this->isAPIRoute = str_contains($uri, 'api');
-    }
-
-    private function getRepo($class, $dbConnections){
-        return new $class($dbConnections);
-    }
-
-    private function getController($class, $repo){
-        return new $class($repo);
-    }
 }

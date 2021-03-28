@@ -3,14 +3,14 @@
 
 namespace app\models\abstracts;
 
-use app\models\abstracts\Admin;
+use app\models\abstracts\Model;
 
-abstract class AdminOptions extends Admin {
+abstract class Options extends Model {
 
     protected ?array $options;
 
-    public function __construct($repo) {
-        parent::__construct($repo);
+    public function setData() {
+        parent::setData();
         $this->setOptions();
     }
 
@@ -54,7 +54,7 @@ abstract class AdminOptions extends Admin {
      */
     protected function findOptions($table, $value, $label, $where = []){
         $options = [];
-        $data = $this->repo->count($table, $where);
+        $data = $this->repo->options($table, $where);
         if (empty($data)) return $options;
         foreach($data as $row){
             $options[] = [

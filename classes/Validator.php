@@ -1,7 +1,7 @@
 <?php
 
 
-namespace app;
+namespace app\classes;
 
 
 use Exception;
@@ -37,6 +37,10 @@ class Validator {
                 switch($rule){
                     case 'required':
                         if (!$value) $errors[] = $msg;
+                        break;
+                        //todo add validation options - see below carnage
+                    case 'default':
+                        break;
                 }
             }
         }

@@ -4,18 +4,9 @@
 namespace app\repository;
 
 
-use app\abstracts\repository\AdminRepo;
-use app\repository\abstracts\Repository;
+use app\repository\abstracts\SQLRepo;
 
-class AnimalRepo extends AdminRepo {
-
-    public function setTable() {
-        $this->db->table('animals');
-    }
-
-    public function setIdColumn() {
-        $this->idColumn = 'animal_id';
-    }
+class AnimalRepo extends SQLRepo {
 
     public function findOne($id){
          $data = $this->db->select()->join('media', 'media_id')->where('animal_id', $id)->findOne();

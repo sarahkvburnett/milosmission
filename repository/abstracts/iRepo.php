@@ -4,7 +4,9 @@
 namespace app\repository\abstracts;
 
 
-interface Repository {
+interface iRepo {
+
+    public function setQueryBuilder($dbConnections);
 
     public function findAll($condition);
     public function findOne($id);

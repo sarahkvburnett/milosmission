@@ -3,36 +3,33 @@
 
 namespace app\database\Adaptor;
 
-use app\database\Adaptor\interfaces\Adaptor;
-use app\database\QueryBuilder\SQLBuilder;
 
-class PDO extends SQLBuilder implements Adaptor {
+use app\database\Adaptor\abstracts\iAdaptor;
+
+class PDO implements iAdaptor {
 
     public $pdo;
-    public $sql;
 
     public function __construct($dbCredentials){
-        ['dbDSN' => $DSN, 'dbUser' => $user, 'dbPassword' => $password, 'dbOptions' => $options] = $dbCredentials;
+        ['DSN' => $DSN, 'User' => $user, 'Password' => $password, 'Options' => $options] = $dbCredentials;
         $this->pdo = new \PDO($DSN, $user, $password, $options);
     }
 
-    public function findOne() {
-        $this->reset();
-        $statement = $this->pdo->prepare($this->sql);
+    public function findOne($query) {
+        $statement = $this->pdo->prepare($query);
         $statement->execute();
         return $statement->fetch();
     }
 
-    public function findAll() {
-        $this->reset();
-        $statement = $this->pdo->prepare($this->sql);
+    public function findAll($query) {
+        $statement = $this->pdo->prepare($query);
         $statement->debugDumpParams();
         $statement->execute();
         return $statement->fetchAll();
     }
 
-    public function save() {
-        $statement = $this->pdo->prepare($this->sql);
+    public function save($query) {
+        $statement = $this->pdo->prepare($query);
         $statement->execute();
     }
 

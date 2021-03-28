@@ -1,13 +1,13 @@
 <?php
 
 
-namespace app\controllers\abstracts;
+namespace app\controllers\admin\abstracts;
 
 
 use app\database\Database;
 use app\Router;
 
-abstract class GroupAnimal extends Admin {
+abstract class AdminGroupAnimal extends Admin {
 
     public function save($data){
         $id = parent::save($data);

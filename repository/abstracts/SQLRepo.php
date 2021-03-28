@@ -1,26 +1,26 @@
 <?php
 
 
-namespace app\abstracts\repository;
+namespace app\repository\abstracts;
 
 
-use app\database\Database;
-use app\database\Adaptor\interfaces\Adaptor;
-use app\pages\Page;
-use app\repository\abstracts\Repository;
+use app\database\QueryBuilder\PDO_MYSQL;
+use app\classes\Page;
+use MongoDB\Driver\Query;
 
-class AdminRepo implements Repository {
+class SQLRepo implements iRepo {
 
-    protected Adaptor $db;
+    protected PDO_MYSQL $db;
 
     protected string $table;
     protected string $idColumn;
 
     public function __construct($dbConnections){
-        $this->db = $dbConnections['mysql'];
+        $this->setQueryBuilder($dbConnections);
         $page = Page::getInstance();
+        $page->setModel();
         $this->idColumn = $page->getIdColumn();
-        $this->table = $page->getTable();
+        $this->db->table($page->getTable());
     }
 
     public function findOne($id){
@@ -54,12 +54,12 @@ class AdminRepo implements Repository {
         return $fields;
     }
 
-    public function option($table, $where){
+    public function options($table, $where){
         return $this->db->select()->from($table)->where($where)->findAll();
     }
 
-    public function count($condition){
-        $data = $this->db->count($this->idColumn)->where($condition);
+    public function count($column = null, $where = null){
+        $data = $this->db->count($this->idColumn)->where($column, $where)->findAll();
         return $data["COUNT($this->idColumn)"];
     }
 
@@ -68,6 +68,10 @@ class AdminRepo implements Repository {
     protected function toArray($data){
         if (!isset($data)) return [];
         return explode(",", $data);
+    }
+
+    public function setQueryBuilder($dbConnections){
+        $this->db = new PDO_MYSQL($dbConnections->get('mysql'));
     }
 
 }

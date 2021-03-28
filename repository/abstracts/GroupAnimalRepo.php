@@ -1,12 +1,10 @@
 <?php
 
 
-namespace app\repository;
+namespace app\repository\abstracts;
 
 
-use app\abstracts\repository\AdminRepo;
-
-class GroupAnimalRepo extends AdminRepo {
+class GroupAnimalRepo extends SQLRepo {
 
     protected string $selectColumns;
 
