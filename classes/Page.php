@@ -4,20 +4,27 @@
 namespace app\classes;
 
 
+use app\controllers\abstracts\iController;
 use app\controllers\Controller;
+use app\database\Connections;
+use app\models\abstracts\iModel;
 use app\models\Model;
+use app\repository\abstracts\iRepo;
 use app\repository\Repo;
 use Exception;
 
 class Page {
 
-    protected string $classname;
     protected ?int $id = null;
 
-    public static $instance;
+    protected ?iModel $model;
+    protected ?iController $controller;
+    protected ?iRepo $repo;
+
+    public static Page $instance;
 
     public static function setInstance($page){
-        if (!isset($instance)) self::$instance = new Page($page);
+        if (!isset(self::$instance)) self::$instance = new Page($page);
         return self::$instance;
     }
 
@@ -65,6 +72,11 @@ class Page {
         return $this->model->getName();
     }
 
+    public function describe(){
+        if (!isset($this->repo)) throw new Exception('No description - Repo not set', 400);
+        return $this->repo->describe();
+    }
+
     public function getActions(){
         $id = $this->id;
         $urls['details'] = isset($id) ? "$this->detailsUrl?id=$id" : $this->detailsUrl;
@@ -84,14 +96,14 @@ class Page {
         return $this->model;
     }
 
-    public function setRepo($dbConnections) {
-        if (!isset($this->repo)) $this->repo = Repo::factory($this->classname."Repo", $dbConnections);
+    public function setRepo() {
+        if (!isset($this->repo)) $this->repo = Repo::factory($this->classname."Repo");
         return $this->repo;
     }
 
     public function setActions(){
         $name = strtolower($this->classname);
-        $this->browseUrl = '/admin/'.$name;
+        $this->browseUrl = '/admin/'.$name."/browse";
         $this->detailsUrl = '/admin/'.$name.'/details';
         $this->deleteUrl = '/admin/'.$name.'/delete';
     }

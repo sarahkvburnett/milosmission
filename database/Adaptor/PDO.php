@@ -17,19 +17,26 @@ class PDO implements iAdaptor {
 
     public function findOne($query) {
         $statement = $this->pdo->prepare($query);
+//        $statement->debugDumpParams();
         $statement->execute();
         return $statement->fetch();
     }
 
     public function findAll($query) {
         $statement = $this->pdo->prepare($query);
-        $statement->debugDumpParams();
+//        $statement->debugDumpParams();
         $statement->execute();
         return $statement->fetchAll();
     }
 
-    public function save($query) {
+    public function save($query, $values = []) {
         $statement = $this->pdo->prepare($query);
+//        $statement->debugDumpParams();
+        if (!empty($values)) {
+            foreach ($values as $key => $value) {
+                $statement->bindValue(':' . $key, $value);
+            }
+        }
         $statement->execute();
     }
 

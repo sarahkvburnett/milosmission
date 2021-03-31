@@ -1,12 +1,11 @@
 <?php
 
 
-namespace app\repository;
+namespace app\repository\admin;
 
+use app\repository\abstracts\AdminRepo;
 
-use app\repository\abstracts\SQLRepo;
-
-class AnimalRepo extends SQLRepo {
+class AnimalRepo extends AdminRepo {
 
     public function findOne($id){
          $data = $this->db->select()->join('media', 'media_id')->where('animal_id', $id)->findOne();
@@ -34,17 +33,18 @@ class AnimalRepo extends SQLRepo {
 
        $this->db->update($model)->where('animal_id', $id, 'LIKE')->save();
 
-        $this->db->update(['friend_id' => NULL])->where('friend_id', $friendId);
-        $this->db->update(['friend_id' => NULL])->where('friend_id', $animalId);
-        $this->db->update(['friend_id' => $animalId])->where('friend_id', $friendId);
-        $this->db->update(['friend_id' => $friendId])->where('friend_id', $animalId);
-
-        return $id;
+       if (!empty($friendId)){
+           $this->db->update(['friend_id' => NULL])->where('friend_id', $friendId)->save();
+           $this->db->update(['friend_id' => NULL])->where('friend_id', $animalId)->save();
+           $this->db->update(['friend_id' => $animalId])->where('animal_id', $friendId)->save();
+           $this->db->update(['friend_id' => $friendId])->where('animal_id', $animalId)->save();
+       }
+       return $id;
     }
 
 
     public function delete($id) {
-        $this->db->update(['friend_id' => NULL])->where('friend_id', $id);
+        $this->db->update(['friend_id' => NULL])->where('friend_id', $id)->save();
         $this->db->delete()->where('animal_id', $id)->save();
     }
 

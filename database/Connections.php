@@ -7,8 +7,20 @@ namespace app\database;
 class Connections {
 
     protected array $connections;
+    protected array $credentials;
 
-    public function __construct($credentials){
+    public static Connections $instance;
+
+    public static function setInstance($credentials){
+        if (!isset(self::$instance)) self::$instance = new Connections($credentials);
+        return self::$instance;
+    }
+
+    public static function getInstance(){
+        return self::$instance;
+    }
+
+    protected function __construct($credentials){
         $this->credentials = $credentials;
     }
 

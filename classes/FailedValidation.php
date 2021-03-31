@@ -12,7 +12,7 @@ class FailedValidation extends Exception {
     protected array $errors;
 
     public function __construct($errors) {
-        parent::__construct("Errors in response", 400, null);
+        parent::__construct('Errors in request', 400, null);
         $this->errors = $errors;
     }
 

@@ -18,10 +18,7 @@ class Router {
 
     public bool $isAPIRoute;
 
-    protected Connections $dbConnections;
-
-    public function __construct($dbConnections){
-        $this->dbConnections = $dbConnections;
+    public function __construct(){
         $this->root = dirname(__FILE__).'../../';
     }
 
@@ -44,14 +41,14 @@ class Router {
     }
 
     /**
-     * Resolve route by instantiating controller and calling method
+     * Resolve route
      * @param array $route - [string $controller, string $method, array $middleware]
      * @throws Exception
      */
     public function resolve() {
         [$class, $method] = $this->route;
         $page = Page::setInstance($class);
-        $repo = $page->setRepo($this->dbConnections);
+        $repo = $page->setRepo();
         $controller = $page->setController($repo);
         $controller->$method($this);
     }

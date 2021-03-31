@@ -1,13 +1,13 @@
 <div id="admin-details">
     <h1 class="h1 text-center">
         <?php if(isset($_GET['id'])){
-            echo 'Update '.$title;
+            echo 'Update '.$className;
 //            todo get name back
             if (isset($fields['name'])){
                 echo ': <span class="text-primary">'.$fields['name'].'</span>';
             }
         } else {
-            echo 'Create New '.$title;
+            echo 'Create New '.$className;
         }
         ?>
     </h1>
@@ -20,12 +20,14 @@
         include __DIR__."../../_errors.php";
         foreach($fields as $key => $value){
             $type = $types[$key] ?? 'text';
+            if ($type !== 'relation'){
                 echo '<div class="form-group row">';
                 if ($type !== 'hidden') {
                     echo '<label class="col-sm-3">' .$labels[$key]. '</label>';
                 }
                 include __DIR__."/_fields.php";
                 echo '</div>';
+            }
         }
         ?>
         <div class="text-center">

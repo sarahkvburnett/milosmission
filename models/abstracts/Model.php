@@ -13,21 +13,16 @@ abstract class Model implements iModel {
     protected string $className;
     protected string $name;
 
-    protected ?array $rules;
-    protected ?array $types;
-    protected ?array $searchables;
-    protected ?array $labels;
-    protected ?array $columns;
-    protected ?array $counts;
+    protected array $rules;
+    protected array $types;
+    protected array $searchables;
+    protected array $labels;
+    protected array $columns;
+    protected array $counts;
 
     public function setData(){
         $page = Page::getInstance();
         $this->repo = $page->getRepo();
-        $this->setLabels();
-        $this->setColumns();
-        $this->setSearchables();
-        $this->setTypes();
-        $this->setCounts();
     }
 
     /**
@@ -46,18 +41,6 @@ abstract class Model implements iModel {
         return $array;
     }
 
-
-    /**
-     * Add key/value pair to counts
-     * @param string $name
-     * @param int $count
-     * @param string $url
-     */
-    protected function addCount($name, $count, $url){
-        $this->counts[$name]['value'] = $count;
-        $this->counts[$name]['url'] = $url;
-    }
-
     public function getTable(){
         return $this->table;
     }
@@ -70,5 +53,16 @@ abstract class Model implements iModel {
         return $this->name;
     }
 
+
+    /**
+     * Add key/value pair to counts
+     * @param string $name
+     * @param int $count
+     * @param string $url
+     */
+    protected function addCount($name, $count, $url){
+        $this->counts[$name]['value'] = $count;
+        $this->counts[$name]['url'] = $url;
+    }
 
 }

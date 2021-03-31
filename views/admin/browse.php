@@ -11,7 +11,7 @@
        }
        echo '</div>';
     }?>
-    <h1 class="h1 text-center"><?php echo $name?></h1>
+    <h1 class="h1 text-center"><?php echo $className?></h1>
     <form id="search" action="<?php echo $actions['browse']?>" method="get" class="bg-light">
         <select name="searchColumn" id="searchColumn">
             <?php foreach ($searchables as $option) {
@@ -69,7 +69,7 @@
                             }
                         }
                     }
-                    echo '<td class="text-right"><a class="btn btn-primary" href="'.$actions['details'].'?id='.$field[$id].'">Edit</a></td>';
+                    echo '<td class="text-right"><a class="btn btn-primary" href="'.$actions['details'].'?id='.$field[$idColumn].'">Edit</a></td>';
                     echo'</tr>';
                 }
                 ?>

@@ -4,12 +4,14 @@
 namespace app\database\QueryBuilder\abstracts;
 
 
+use app\classes\Page;
+
 class SQLBuilder extends QueryBuilder {
 
     protected ?string $query;
+    protected ?string $table;
     protected ?array $values;
     protected bool $hasWhere = false;
-    protected ?string $table;
 
     //Methods to build initial sql statement
 
@@ -58,7 +60,6 @@ class SQLBuilder extends QueryBuilder {
      * @return $this
      */
     public function insert($values) {
-        $this->setValues($values);
         $insertSQL = "INSERT INTO $this->table (";
         $valuesSQL = "VALUES (";
         foreach ($values as $key => $value) {
@@ -66,6 +67,7 @@ class SQLBuilder extends QueryBuilder {
             $valuesSQL .= "$value, ";
         }
         $this->query = "$this->trimSql($insertSQL)) $this->trimSql($valuesSQL))";
+        $this->values = $values;
         return $this;
     }
 
@@ -75,14 +77,14 @@ class SQLBuilder extends QueryBuilder {
      * @return $this
      */
     public function update($values) {
-        $this->setValues($values);
         $sql = "UPDATE $this->table SET";
         foreach ($values as $key => $value) {
             if (isset($key)) {
-                $sql .= " $key = $value, ";
+                $sql .= " $key=$value, ";
             }
         }
         $this->query = $this->trimSql($sql);
+        $this->values = $values;
         return $this;
     }
 
@@ -135,7 +137,7 @@ class SQLBuilder extends QueryBuilder {
         if (!$this->hasWhere) {
             $sql .= "WHERE ";
         };
-        $sql .= "$column = $value, ";
+        $sql .= "$column=$value, ";
         $this->query .= $this->trimSql($sql);
         $this->hasWhere = true;
         return $this;
@@ -153,14 +155,6 @@ class SQLBuilder extends QueryBuilder {
     }
 
     /**
-     * Set values
-     * @param array $values
-     */
-    protected function setValues($values) {
-        $this->values = $values;
-    }
-
-    /**
      * Set table to query
      * @param $table
      * @return $this
@@ -174,7 +168,11 @@ class SQLBuilder extends QueryBuilder {
      * Clean up after query
      */
     public function reset(){
+        $page = Page::getInstance();
+        $this->table = $page->getTable();
         $this->hasWhere = false;
+        $this->values = null;
+        return $this;
     }
 
 

@@ -4,8 +4,9 @@
 namespace app\controllers\admin;
 
 
-use app\controllers\admin\abstracts\AdminGroupAnimal;
+use app\controllers\abstracts\AdminGroupAnimal;
+use app\controllers\abstracts\iController;
 
-class Room extends AdminGroupAnimal {
+class Room extends AdminGroupAnimal implements iController{
 
 }

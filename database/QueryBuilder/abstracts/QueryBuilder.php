@@ -5,8 +5,9 @@ namespace app\database\QueryBuilder\abstracts;
 
 
 use app\database\Adaptor\abstracts\iAdaptor;
+use app\database\Connections;
 
-abstract class QueryBuilder {
+abstract class QueryBuilder implements iQueryBuilder {
 
     protected ?string $query;
     protected iAdaptor $db;
@@ -17,18 +18,21 @@ abstract class QueryBuilder {
 
     //Methods to execute sql statement
     public function findOne() {
+        $data = $this->db->findOne($this->query);
         $this->reset();
-        return $this->db->findOne($this->query);
+        return $data;
     }
 
     public function findAll() {
+        $data = $this->db->findAll($this->query);
         $this->reset();
-        return $this->db->findAll($this->query);
+        return $data;
     }
 
     public function save() {
+        $data = $this->db->save($this->query, $this->values);
         $this->reset();
-        return $this->db->save($this->query);
+        return $data;
     }
 
     //Clean up

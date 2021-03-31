@@ -11,26 +11,26 @@ class PDOBuilder extends SQLBuilder {
     // Add ':' for bind values
 
     public function insert($values) {
-        $this->setValues($values);
         $insertSQL = "INSERT INTO $this->table (";
         $valuesSQL = "VALUES (";
         foreach ($values as $key => $value) {
             $insertSQL .= "$key, ";
-            $valuesSQL .= ":$value, ";
+            $valuesSQL .= ":$key, ";
         }
-        $this->sql = "$this->trimSql($insertSQL)) $this->trimSql($valuesSQL))";
+        $this->query = "$this->trimSql($insertSQL)) $this->trimSql($valuesSQL))";
+        $this->values = $values;
         return $this;
     }
 
     public function update($values) {
-        $this->setValues($values);
         $sql = "UPDATE $this->table SET";
         foreach ($values as $key => $value) {
             if (isset($key)) {
-                $sql .= " $key = :$value, ";
+                $sql .= " $key=:$key, ";
             }
         }
-        $this->sql = $this->trimSql($sql);
+        $this->query = $this->trimSql($sql);
+        $this->values = $values;
         return $this;
     }
 

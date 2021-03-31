@@ -7,11 +7,11 @@ use app\database\Database;
 require_once "../bootstrap.php";
 require_once "../routes.php";
 
-$dbConnections = new Connections($dbCredentials);
+$dbConnections = Connections::setInstance($dbCredentials);
 $dbConnections->add('mysql', 'PDO');
 //$dbConnections->add('sqlsrv', 'PDO');
 
-$router = new Router($dbConnections);
+$router = new Router();
 foreach($routes as $route){
     [$method, $url, $controller] = $route;
     $router->$method('/api'.$url, $controller);

@@ -7,17 +7,12 @@ use app\models\abstracts\Model;
 
 abstract class Options extends Model {
 
-    protected ?array $options;
+    protected array $options;
 
     public function setData() {
         parent::setData();
         $this->setOptions();
     }
-
-    /**
-     * Add required options needed for form elements
-     */
-    abstract function setOptions();
 
     /**
      * Add option to list of options

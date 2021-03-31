@@ -14,26 +14,26 @@
     }
 
     $animalsCard = [
-        'url' => '/admin/animals',
+        'url' => '/admin/animal',
         'icon' => 'paw',
         'title' => 'Animals',
         'links' => [
-            ['/admin/animals', 'Browse all animals'],
-            ['admin/animals?searchColumn=animal_status&searchValue=Waiting', 'Browse animals waiting for homes'],
-            ['/admin/animals/details', 'Create new animal'],
-            ['admin/animals?searchColumn=animal_status&searchValue=Rehomed', 'Browse rehomed animals']
+            ['/admin/animal/browse', 'Browse all animals'],
+            ['admin/animal/browse?searchColumn=animal_status&searchValue=Waiting', 'Browse animals waiting for homes'],
+            ['/admin/animal/details', 'Create new animal'],
+            ['admin/animal/browse?searchColumn=animal_status&searchValue=Rehomed', 'Browse rehomed animals']
         ]
     ];
 
     $ownersCard = [
-        'url' => '/admin/owners',
+        'url' => '/admin/owner',
         'icon' => 'user-friends',
         'title' => 'Owners',
         'links' => [
-            ['/admin/owners', 'Browse all owners'],
-            ['admin/owners?searchColumn=owner_status&searchValue=New', 'Browse owners waiting for home check'],
-            ['/admin/owners/details', 'Create new owner'],
-            ['admin/owners?searchColumn=owner_status&searchValue=Rehomed', 'Browse owners who have rehomed animal'],
+            ['/admin/owner/browse', 'Browse all owners'],
+            ['admin/owner/browse?searchColumn=owner_status&searchValue=New', 'Browse owners waiting for home check'],
+            ['/admin/owner/details', 'Create new owner'],
+            ['admin/owner/browse?searchColumn=owner_status&searchValue=Rehomed', 'Browse owners who have rehomed animal'],
         ]
     ];
 
@@ -42,40 +42,40 @@
         'icon' => 'photo-video',
         'title' => 'Media',
         'links' => [
-            ['/admin/media', 'Browse all media'],
-            ['admin/media?searchColumn=media_type&searchValue=Image', 'Browse all images'],
-            ['admin/media?searchColumn=media_type&searchValue=Video', 'Browse all videos'],
+            ['/admin/media/browse', 'Browse all media'],
+            ['admin/media/browse?searchColumn=media_type&searchValue=Image', 'Browse all images'],
+            ['admin/media/browse?searchColumn=media_type&searchValue=Video', 'Browse all videos'],
             ['/admin/media/details', 'Create new media'],
         ]
     ];
 
     $roomsCard = [
-        'url' => '/admin/rooms',
+        'url' => '/admin/room',
         'icon' => 'warehouse',
         'title' => 'Rooms',
         'links' => [
-            ['/admin/rooms', 'Browse all rooms'],
-            ['/admin/rooms/details', 'Create new rooms'],
+            ['/admin/room/browse', 'Browse all rooms'],
+            ['/admin/room/details', 'Create new rooms'],
         ]
     ];
 
     $rehomingsCard = [
-        'url' => '/admin/rehomings',
+        'url' => '/admin/rehoming',
         'icon' => 'house-user',
         'title' => 'Rehomings',
         'links' => [
-            ['/admin/rehomings', 'Browse all rehoming'],
-            ['/admin/rehomings/details', 'Create new rehoming'],
+            ['/admin/rehoming/browse', 'Browse all rehoming'],
+            ['/admin/rehoming/details', 'Create new rehoming'],
         ]
     ];
 
     $usersCard = [
-        'url' => '/admin/users',
+        'url' => '/admin/user',
         'icon' => 'user',
         'title' => 'Users',
         'links' => [
-            ['/admin/users', 'Browse all users'],
-            ['/admin/users/details', 'Create new user'],
+            ['/admin/user/browse', 'Browse all users'],
+            ['/admin/user/details', 'Create new user'],
         ]
     ];
 

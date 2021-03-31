@@ -1,9 +1,10 @@
 <?php
 
 
-namespace app\controllers\admin\abstracts;
+namespace app\controllers\abstracts;
 
 
+use app\classes\Request;
 use app\database\Database;
 use app\Router;
 
@@ -11,11 +12,11 @@ abstract class AdminGroupAnimal extends Admin {
 
     public function save($data){
         $id = parent::save($data);
-        $this->changeAnimals($data, $this->model->getIdentifier());
+        $this->changeAnimals($data, $this->model->getIdColumn());
     }
 
     public function delete($router) {
-        $this->removeAnimals($this->model->getIdentifier());
+        $this->removeAnimals($this->model->getIdColumn());
         parent::delete($router);
     }
 
@@ -41,7 +42,8 @@ abstract class AdminGroupAnimal extends Admin {
      * @param $idColumn - id of animal to have association removed
      */
     protected function removeAnimals($idColumn){
-        $id = $_POST['id'];
+        $request = Request::getInstance();
+        $id = $request->get('id');
         $this->repo->removeAnimals($id);
     }
 

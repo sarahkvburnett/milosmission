@@ -8,25 +8,31 @@ use Exception;
 
 class Validator {
     public function __construct($fields = []) {
-        if (!empty($fields)) throw new Exception('No data to validate', 400);
-        foreach ($fields as $field => $value){
-            $this->$field = $value;
-        }
+        if (empty($fields)) throw new Exception('No data to validate', 400);
+        $this->fields = $fields;
     }
 
-    public function sanitise(string $value){
-        return htmlspecialchars(trim($value));
-    }
 
-    public function sanitiseAll(){
+    /**
+     * Sanitise input
+     * @return $this
+     */
+    public function sanitise(){
         $sanitisedFields = [];
         foreach($this->fields as $field => $value){
             //todo deal with array error;
-            if (!is_array($value)) $sanitisedFields[$field] = self::sanitise($value);
+            if (!is_array($value)) $sanitisedFields[$field] = htmlspecialchars(trim($value));
         }
-        return $sanitisedFields;
+        $this->fields = $sanitisedFields;
+        return $this;
     }
 
+    /**
+     * Validate fields
+     * @param $allrules
+     * @return $this
+     * @throws FailedValidation
+     */
     public function validate($allrules) {
         $errors = [];
         foreach ($allrules as $field => $rules) {
@@ -38,7 +44,7 @@ class Validator {
                     case 'required':
                         if (!$value) $errors[] = $msg;
                         break;
-                        //todo add validation options - see below carnage
+                        //todo add validation options - required, email, password, match pattern but also like something that can't have one field if diff one is present
                     case 'default':
                         break;
                 }
@@ -48,52 +54,19 @@ class Validator {
         return $this;
     }
 
-    public ?array $_validateConstraints = [
-        'field' => 'method1|method2|method3',
-    ];
-
-    // $array[0] = field name
-//    // $array[1] = | separated list of methods / constraints
-//    public function validate($validateArray, special){
-//        $errors = [];
-//        foreach($validateArray as $field => $methods){
-//            $array = explode('|', $methods);
-//            foreach($array as $method){
-//                $x = strpos($method, '(');
-//                if ($x !== false){
-//                        //
-//
-//                 }
-//            }
-//        }
-//        return $errors;
-//    }
-//
-//
-//    //need to be able to put in a method with args and call the method with those args
-
-    //TODO: validation methods e.g.
-    public function required($value){
-
+    /**
+     * Return sanitised fields on model
+     */
+    public function getFields(){
+        $page = Page::getInstance();
+        $model = $page->describe();
+        $fields = [];
+        foreach ($model as $key => $value){
+            if (isset($this->fields[$key])) {
+                $fields[$key] = $this->fields[$key];
+            }
+        }
+        return $fields;
     }
-
-    public function email($value){
-        return filter_var($value, FILTER_VALIDATE_EMAIL);
-    }
-
-    //required, email, date, status, postcode, matches()
-
-    protected function matches($value, $str){
-        return $value === $str;
-    }
-
-    public static function convertStrToInt($value){
-        return intval($value);
-    }
-
-
-
-
-
 
 }

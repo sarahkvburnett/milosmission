@@ -4,8 +4,9 @@
 namespace app\controllers\admin;
 
 
-use app\controllers\admin\abstracts\Admin;
+use app\controllers\abstracts\Admin;
+use app\controllers\abstracts\iController;
 
-class Animal extends Admin {
+class Animal extends Admin implements iController {
 
 }

@@ -1,19 +1,21 @@
 <?php
 
 
-namespace app\controllers\admin\abstracts;
+namespace app\controllers\abstracts;
 
 use app\classes\FailedValidation;
 use app\classes\Page;
 use app\classes\Request;
 use app\classes\Router;
+use app\controllers\abstracts\iController;
 use \Exception;
 use app\classes\Validator;
 
-class Admin {
+abstract class Admin implements iController {
     protected array $actions;
     protected array $search;
     protected array $fields;
+    protected ?array $errors;
     protected ?string $id;
 
     protected $repo;
@@ -35,14 +37,6 @@ class Admin {
     }
 
     /**
-     * Dashboard page
-     * @param Router $router
-     */
-    public function admin($router){
-        $router->renderView('/admin/index');
-    }
-
-    /**
      * Execute browse route
      * @param Router $router
      */
@@ -59,14 +53,14 @@ class Admin {
      public function details($router){
          $this->setDetailsData();
          $request = Request::getInstance();
-         if ($request->isPost()) {
+         if ($request->hasPost()) {
              try {
                  $this->save($request->getPost());
+                 $router->redirect($this->actions['browse']);
+                 return;
              } catch (FailedValidation $e) {
                  $this->errors = $e->getErrors();
              }
-            $router->redirect($this->actions['browse']);
-            return;
         }
         $router->sendResponse('/admin/details', $this->getData());
     }
@@ -78,10 +72,9 @@ class Admin {
      * @throws Exception
      */
     protected function save($data){
-        $validator = new Validator($data);
-        $model = $validator->validate($this->rules)->sanitiseAll();
+        $model = $this->validate($data);
         if(isset($this->id)){
-            return $this->repo->update($model);
+            return $this->repo->update($this->id, $model);
         } else {
             return $this->repo->insert($model);
         }
@@ -133,6 +126,16 @@ class Admin {
         unset($array['repo']);
         unset($array['model']);
         return $array;
+    }
+
+    /**
+     * Validate model
+     * @return array
+     * @throws FailedValidation
+     */
+    protected function validate($data){
+        $validator = new Validator($data);
+        return $validator->sanitise()->validate($this->rules)->getFields();
     }
 
 

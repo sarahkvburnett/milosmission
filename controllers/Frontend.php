@@ -4,13 +4,21 @@
 namespace app\controllers;
 
 
+use app\classes\Page;
+use app\classes\Request;
+use app\controllers\abstracts\iController;
 use app\database\Database;
 
-class Frontend {
+class Frontend implements iController {
 
-    static public function index($router){
-        $db = Database::getInstance();
-        $animals = $db->select('animals')->join('media', 'media_id')->fetchAll();
+    protected $repo;
+
+    public function __construct($repo){
+        $this->repo = $repo;
+    }
+
+    public function index($router){
+        $animals = $this->repo->findAnimals();
         $router->renderView('/index', ['animals' => $animals]);
     }
 

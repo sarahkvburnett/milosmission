@@ -13,7 +13,8 @@ $dbCredentials = [
         'User' => $_ENV['MYSQL_USER'],
         'Password' => $_ENV['MYSQL_PASSWORD'],
         'Options' => [
-            PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
+            PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+            PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
         ]
     ],
     'sqlsrv' => [
@@ -21,7 +22,8 @@ $dbCredentials = [
         'User' => $_ENV['SQLSRV_USER'],
         'Password' => $_ENV['SQLSRV_PASSWORD'],
         'Options' => [
-            PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
+            PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+            PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
         ]
     ]
 ];

@@ -13,12 +13,12 @@
     <div class="list-group">
         <?php
         addMenuItem('/admin', 'home', 'Home');
-        addMenuItem('/admin/animals', 'paw', 'Animals');
-        addMenuItem('/admin/owners', 'user-friends', 'Owners');
-        addMenuItem('/admin/media', 'photo-video', 'Media');
-        addMenuItem('/admin/rooms', 'warehouse', 'Rooms');
-        addMenuItem('/admin/users', 'user', 'Users');
-        addMenuItem('/admin/rehomings', 'house-user', 'Rehomings');
+        addMenuItem('/admin/animal/browse', 'paw', 'Animals');
+        addMenuItem('/admin/owner/browse', 'user-friends', 'Owners');
+        addMenuItem('/admin/media/browse', 'photo-video', 'Media');
+        addMenuItem('/admin/room/browse', 'warehouse', 'Rooms');
+        addMenuItem('/admin/user/browse', 'user', 'Users');
+        addMenuItem('/admin/rehoming/browse', 'house-user', 'Rehomings');
         addMenuItem('/admin/logout', 'sign-out-alt', 'Logout');
         ?>
     </div>

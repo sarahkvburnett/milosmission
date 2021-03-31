@@ -3,20 +3,22 @@
 
 namespace app\repository\abstracts;
 
-
-use app\database\QueryBuilder\PDO_MYSQL;
 use app\classes\Page;
-use MongoDB\Driver\Query;
+use app\database\Connections;
+use app\database\QueryBuilder\abstracts\iQueryBuilder;
+use app\database\QueryBuilder\PDO_MYSQL;
+use app\repository\abstracts\Repo;
+use app\repository\abstracts\iAdminRepo;
 
-class SQLRepo implements iRepo {
+abstract class AdminRepo extends Repo implements iAdminRepo {
 
-    protected PDO_MYSQL $db;
+    protected iQueryBuilder $db;
 
     protected string $table;
     protected string $idColumn;
 
-    public function __construct($dbConnections){
-        $this->setQueryBuilder($dbConnections);
+    public function __construct(){
+        parent::__construct();
         $page = Page::getInstance();
         $page->setModel();
         $this->idColumn = $page->getIdColumn();
@@ -37,7 +39,7 @@ class SQLRepo implements iRepo {
     }
 
     public function update($id, $model){
-        $this->db->update($model)->where($this->idColumn, $id);
+        $this->db->update($model)->where($this->idColumn, $id)->save();
         return $id;
     }
 
@@ -63,6 +65,7 @@ class SQLRepo implements iRepo {
         return $data["COUNT($this->idColumn)"];
     }
 
+
     //HELPER METHODS
 
     protected function toArray($data){
@@ -70,8 +73,13 @@ class SQLRepo implements iRepo {
         return explode(",", $data);
     }
 
-    public function setQueryBuilder($dbConnections){
-        $this->db = new PDO_MYSQL($dbConnections->get('mysql'));
+    public function getQueryBuilder(){
+        return new PDO_MYSQL($this->dbConnections->get('mysql'));
+    }
+
+    //don't delete this - needed for when table changed
+    public function setTable($table){
+        $this->db->table($table);
     }
 
 }

@@ -3,72 +3,29 @@
 
 namespace app\controllers\admin;
 
-use app\controllers\admin\abstracts\Admin;
+use app\classes\FileUploader;
+use app\classes\Request;
+use app\controllers\abstracts\Admin;
+use app\controllers\abstracts\iController;
 use app\database\Database;
-use app\Validator;
+use app\classes\Validator;
 
-class Media extends Admin {
+class Media extends Admin implements iController{
 
     //todo img preview
 
-    function setClass() {
-        $this->class = "Media";
-    }
-
-    function setTable() {
-        $this->table = "media";
-    }
-
-    protected function setBrowseData($search = []) {
-        $db = Database::getInstance();
-        $this->addDataField('fields', $db->select($this->table, ['*', 'media_filename AS preview'])->where($search)->fetchAll());
-    }
-
-    //todo this is well old mate
+    //todo this is well old mate - fileuploader class
     //todo need to add new entry into animal_media;
     public function save($data){
-        if ($_FILES) {
-            $array = Validator::sanitiseAll($data);
-            $filename = "/".$array['category'];
-            $errors = $this->uploadFile($_FILES, $filename);
-            if (empty($errors) or $errors[0] === "Sorry, file already exists."){
-                $array['filename'] = $filename."/".$_FILES['filename']['name'];
-                $model = new $this->model($array);
-                $errors = $model->validate();
-                if(empty($errors)) {
-                    $model->save($router->db);
-                    $this->data['fields'] = $array;
-                }
-             }
+        $request = Request::getInstance();
+        $model = $this->validate($data);
+        $files = $request->getFiles();
+        $uploader = new FileUploader($model, $files);
+        if(isset($this->id)){
+            return $this->repo->update($this->id, $model);
+        } else {
+            return $this->repo->insert($model);
         }
-    }
-
-    protected function uploadFile($files, $filepath) {
-        $target_dir = $filepath;
-        $target_file = $_SERVER['DOCUMENT_ROOT']."/images".$target_dir .'/'.basename($files["filename"]["name"]);
-        $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
-
-        if (isset($_POST["submit"])) {
-            $check = getimagesize($files["filename"]["tmp_name"]);
-            if ($check === false) {
-                return ["File is not an image"];
-            }
-        }
-        if (file_exists($target_file)) {
-            return ["Sorry, file already exists."];
-        }
-//        if ($_FILES["filename"]["size"] > 500000) {
-//            return ["Sorry, your file is too large."];
-//        }
-
-        if ($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg"
-            && $imageFileType != "gif") {
-           return ["Sorry, only JPG, JPEG, PNG & GIF files are allowed."];
-        }
-
-       if (!move_uploaded_file($files["filename"]["tmp_name"], $target_file)) {
-           return ["Sorry, there was an error uploading your file."];
-       }
     }
 
     protected function deleteFile(){
