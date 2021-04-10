@@ -1,0 +1,69 @@
+{% extends 'layouts/admin.twig' %}
+
+{% block content %}
+    <div id="admin-details">
+        <h1 class="h1 text-center">
+            {% if _get.id %}
+                {% set browseUrl = actions.browse~'?id='~_get.id %}
+                {% set detailsUrl = actions.details~'?id='~_get.id %}
+                Update {{ className }}{% if fields.name %}: <span class="text-primary">{{ fields.name }}</span> todo get name back  {% endif %}
+            {% else %}
+                Create New {{ className}}
+            {% endif %}
+        </h1>
+        <div id="buttons" class="d-flex justify-content-between mx-auto my-3">
+            <a href="{{ browseUrl|default(actions.browse) }}" class="btn btn-dark">Back</a>
+            <button class="btn btn-danger" data-toggle="modal" data-target="#admin-delete">Delete</button>
+        </div>
+        <form action="{{ detailsUrl|default(actions.details) }}" method="post" enctype="multipart/form-data" class="bg-white mb-5 p-4 mx-auto">
+            {% include 'includes/errors.twig' %}
+            {% for key, value in fields %}
+                {% set type = types[key] ?? 'text' %}
+                {% if type is not same as 'relation' %}
+                    <div class="form-group row">
+                        {% if type is not same as 'hidden' %}
+                            <label class="col-sm-3">{{ labels[key] }}</label>
+                        {% endif %}
+                        {% include 'includes/fields.twig' %}
+                    </div>
+                {% endif %}
+            {% endfor %}
+            <div class="text-center">
+                    <input type="submit" value="{% if _get.id %}Update{% else %}Create{% endif %}" class="btn btn-primary"/>
+            </div>
+        </form>
+        {% if _get.id %}
+            <div id="admin-delete" class="modal" tabindex="-1" role="dialog">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Delete</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <p>Are you sure you want to delete this record?</p>
+                        </div>
+                        <div class="modal-footer">
+                            <form action="<?php echo $actions['delete']?>" method="post">
+                                <input type="hidden" name="id" value="<?php echo $_GET['id']?>"/>
+                                <input type="submit" value="Delete" class="btn btn-danger"/>
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+
+        {% if media is not empty %}
+            <div id="media" class="bg-white mb-5 p-4 mx-auto d-flex flex-wrap justify-content-center">
+                {% for item in media %}
+                    <p><img width="250" class="img-fluid img-thumbnail m-1" src="/images/{{ item.media_filename }}"/></p>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+
+{% endblock %}

@@ -1,0 +1,78 @@
+{% extends 'layouts/admin.twig' %}
+
+{% block content %}
+    <div id="admin-browse">
+        {% if counts is not empty %}
+            <div id="counts" class="mb-5">
+                {% for name, count in counts %}
+                    <div class="bg-primary">
+                        <a href="{{ count.url }}">
+                            <p class="lead font-weight-bold">{{ name }}</p>
+                            <p>{{ count.value }}</p>
+                        </a>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+        <h1 class="h1 text-center">{{ className }}</h1>
+        <form id="search" action="{{ actions.browse }}" method="get" class="bg-light">
+            <select name="searchColumn" id="searchColumn">
+                {% for option in searchables %}
+                    <option value="{{ option }}" selected="{{ option is same as _get.searchColumn }}">{{ labels[option] }}</option>
+                {% endfor %}
+            </select>
+            <input type="text" name="searchValue" value="{% if search is not empty %}{{ search[1] }}{% endif %}" placeholder="Search">
+            {% if _get.searchValue %}
+                <a href="{{ actions.browse }}" class="btn btn-dark">Clear</a>
+            {% else %}
+                <button class="btn btn-dark"><i class="fas fa-search"></i> Search</button>
+            {% endif %}
+        </form>
+        <div id="buttons" class="text-right my-3">
+            <a class="btn btn-primary" href="{{ actions.details }}">Create New</a>
+        </div>
+        <div class="table-responsive">
+            <table class="table bg-white">
+                {% if fields is not empty %}
+                    <tr>
+                        {% for column in columns %}
+                            <th>{{ labels[column] }}</th>
+                        {% endfor %}
+                        <th></th>
+                    </tr>
+                    {% for i, field in fields %}
+                        <tr>
+                            {% for key, value in field %}
+                                {% if key in columns %}
+                                    {% if value is iterable %}
+                                        <td>
+                                            {% for item in value %}
+                                                <span class="table-badge">{{ item }}</span>
+                                            {% endfor %}
+                                        </td>
+                                    {% elseif key is same as 'image' or key is same as 'preview' %}
+                                        <td>
+                                            <img class="img-fluid img-thumbnail" src="/images/{{ field.media_filename }}"/>
+                                        </td>
+                                    {% elseif value %}
+                                        <td>
+                                            {{ value }}
+                                        </td>
+                                    {% else %}
+                                        <td>-</td>
+                                    {% endif %}
+                                {% endif %}
+                            {% endfor %}
+                            <td class="text-right">
+                                <a class="btn btn-primary" href="{{ actions.details }}?id={{ field[idColumn] }}">Edit</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                {% else %}
+                    <th class="text-center py-5">None found</th>
+                {% endif %}
+            </table>
+        </div>
+    </div>
+{% endblock %}
+

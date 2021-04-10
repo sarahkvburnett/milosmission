@@ -1,0 +1,23 @@
+{% if type is same as 'select' %}
+    <select id="{{ key }}" name="{{ key }}" class="col-sm-9">
+        {% for option in options[key] %}
+            <option value="{{ option.value }}" {% if option.value is same as value %}selected{% endif %}>{{ option.label }}</option>
+        {% endfor %}
+    </select>
+{% elseif type is same as 'file' %}
+    <div class="col-sm-9 p-0" id="img-uploader">
+        <input type="file" name="{{ key }}" value="/images/{{ value }}"/>
+        <img class="img" src="/images/{{ value }}">
+    </div>
+{% elseif type is same as 'checkbox' %}
+    <div class="col-sm-9 checkbox">
+        {% for option in options[key] %}
+            <div>
+                <input type="checkbox" name="{{ key }}[]" value="{{ option.value }}" id="{{ option.value }}" {% if option.label in fields.animals %}checked{% endif %}/>
+                <label for="{{ option.value }}">{{ option.label }}</label>
+            </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <input class="col-sm-9" type="{{ type }}" name="{{ key }}" value="{{ value }}"/>
+{% endif %}

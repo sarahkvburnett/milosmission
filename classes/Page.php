@@ -4,22 +4,19 @@
 namespace app\classes;
 
 
-use app\controllers\abstracts\iController;
-use app\controllers\Controller;
-use app\database\Connections;
-use app\models\abstracts\iModel;
-use app\models\Model;
+use app\controller\abstracts\iController;
+use app\model\abstracts\iModel;
 use app\repository\abstracts\iRepo;
-use app\repository\Repo;
 use Exception;
 
 class Page {
 
-    protected ?int $id = null;
-
     protected ?iModel $model;
     protected ?iController $controller;
     protected ?iRepo $repo;
+
+    protected ?int $id = null;
+    public bool $hasModel = false;
 
     public static Page $instance;
 
@@ -37,8 +34,27 @@ class Page {
         $this->classname = $page;
         $request = Request::getInstance();
         if ($request->hasId()) $this->id = $request->getId();
-        $this->setActions();
     }
+
+    //SETTERS
+    public function setController($repo) {
+        if (!isset($this->controller)) $this->controller = Controller::factory($this->classname, $repo);
+        return $this->controller;
+    }
+
+    public function setModel() {
+        if (!isset($this->model)) {
+            $this->model = Model::factory($this->classname);
+            $this->hasModel = true;
+        }
+        return $this->model;
+    }
+
+    public function setRepo() {
+        if (!isset($this->repo)) $this->repo = Repository::factory($this->classname."Repo");
+        return $this->repo;
+    }
+
 
     //GETTERS
 
@@ -53,59 +69,28 @@ class Page {
     }
 
     public function getRepo() {
-        if (!isset($this->repo)) throw new Exception('Repo not set', 400);
+        if (!isset($this->repo)) throw new Exception('Repository not set', 400);
         return $this->repo;
     }
 
     public function getTable() {
-        if (!isset($this->model)) throw new Exception('No table - Model not set', 400);
+        if (!isset($this->model)) throw new Exception('No table - Admin not set', 400);
         return $this->model->getTable();
     }
 
     public function getIdColumn() {
-        if (!isset($this->model)) throw new Exception('No id column - Model not set', 400);
+        if (!isset($this->model)) throw new Exception('No id column - Admin not set', 400);
         return $this->model->getIdColumn();
     }
 
     public function getName() {
-        if (!isset($this->model)) throw new Exception('No name - Model not set', 400);
+        if (!isset($this->model)) throw new Exception('No name - Admin not set', 400);
         return $this->model->getName();
     }
 
     public function describe(){
-        if (!isset($this->repo)) throw new Exception('No description - Repo not set', 400);
+        if (!isset($this->repo)) throw new Exception('No description - Repository not set', 400);
         return $this->repo->describe();
-    }
-
-    public function getActions(){
-        $id = $this->id;
-        $urls['details'] = isset($id) ? "$this->detailsUrl?id=$id" : $this->detailsUrl;
-        $urls['browse'] = $this->browseUrl;
-        $urls['delete'] = isset($id) ? "$this->deleteUrl?id=$id" : $this->deleteUrl;
-        return $urls;
-    }
-
-    //SETTERS
-    public function setController($repo) {
-        if (!isset($this->controller)) $this->controller = Controller::factory($this->classname, $repo);
-        return $this->controller;
-    }
-
-    public function setModel() {
-        if (!isset($this->model)) $this->model = Model::factory($this->classname);
-        return $this->model;
-    }
-
-    public function setRepo() {
-        if (!isset($this->repo)) $this->repo = Repo::factory($this->classname."Repo");
-        return $this->repo;
-    }
-
-    public function setActions(){
-        $name = strtolower($this->classname);
-        $this->browseUrl = '/admin/'.$name."/browse";
-        $this->detailsUrl = '/admin/'.$name.'/details';
-        $this->deleteUrl = '/admin/'.$name.'/delete';
     }
 
 }

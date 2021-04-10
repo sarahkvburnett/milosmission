@@ -3,7 +3,6 @@
 
 namespace app\repository;
 
-
 use app\database\QueryBuilder\abstracts\iQueryBuilder;
 use app\database\QueryBuilder\PDO_MYSQL;
 use app\repository\abstracts\iFrontendRepo;
@@ -13,7 +12,7 @@ class FrontendRepo extends Repo implements iFrontendRepo {
 
     protected iQueryBuilder $db;
 
-    public function getQueryBuilder() {
+    public function setQueryBuilder() {
         return new PDO_MYSQL($this->dbConnections->get('mysql'));
     }
 

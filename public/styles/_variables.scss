@@ -10,12 +10,3 @@ $navHeight: 15vh;
 //admin
 $menuWidth: 140px;
 $contentWidth: calc(100vw - 140px);
-
-//mixins -- TODO: move to own file
-@mixin responsive-grid{
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    grid-gap: 20px;
-    align-items: stretch;
-    grid-template-rows: 1fr;
-}

@@ -11,7 +11,7 @@ class PDO implements iAdaptor {
     public $pdo;
 
     public function __construct($dbCredentials){
-        ['DSN' => $DSN, 'User' => $user, 'Password' => $password, 'Options' => $options] = $dbCredentials;
+        ['DSN' => $DSN, 'User' => $user, 'Password' => $password, 'AdminOptions' => $options] = $dbCredentials;
         $this->pdo = new \PDO($DSN, $user, $password, $options);
     }
 

@@ -137,7 +137,11 @@ class SQLBuilder extends QueryBuilder {
         if (!$this->hasWhere) {
             $sql .= "WHERE ";
         };
-        $sql .= "$column=$value, ";
+        if (is_string($value)){
+            $sql .= "$column='$value', ";
+        } else {
+            $sql .= "$column=$value, ";
+        }
         $this->query .= $this->trimSql($sql);
         $this->hasWhere = true;
         return $this;
@@ -169,7 +173,9 @@ class SQLBuilder extends QueryBuilder {
      */
     public function reset(){
         $page = Page::getInstance();
-        $this->table = $page->getTable();
+        if ($page->hasModel){
+            $this->table = $page->getTable();
+        }
         $this->hasWhere = false;
         $this->values = null;
         return $this;

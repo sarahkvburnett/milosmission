@@ -4,9 +4,13 @@ namespace app\classes;
 
 use app\classes\Middleware;
 use app\classes\Page;
-use app\database\Connections;
+use app\classes\Request;
+use app\database\Connection;
 use Error;
 use Exception;
+use Twig\Environment;
+use Twig\Extension\DebugExtension;
+use Twig\Loader\FilesystemLoader;
 
 class Router {
     public $getRoutes = [];
@@ -18,11 +22,7 @@ class Router {
 
     public bool $isAPIRoute;
 
-    public function __construct(){
-        $this->root = dirname(__FILE__).'../../';
-    }
-
-    /**
+     /**
      * Add get route to routes with route information [name of controller, method to call, middleware]
      * @param string $url
      * @param array $route - [string $controller, string $method, array $middleware]
@@ -77,18 +77,12 @@ class Router {
      * @param int $status
      */
     public function renderView($view, $data = [], $status = 200) {
-       $ROOT = $this->root;
-        foreach ($data as $key => $value){
-            $$key = $value;
-        }
-        ob_start();
-        include_once $ROOT."views/$view.php";
-        $content = ob_get_clean();
-        if (str_contains($view, "admin") and !str_contains($view, "login")) {
-            include_once $ROOT."views/admin/_layout.php";
-        } else {
-            include_once $ROOT."views/_layout.php";
-        }
+        $templateDir = __DIR__.'/../templates';
+        $loader = new FilesystemLoader([$templateDir, $templateDir.'/admin']);
+        $twig = new Environment($loader, ['debug' => true]);
+        $twig->addGlobal('_get', $_GET);
+        $twig->addExtension(new DebugExtension());
+        echo $twig->render("$view.twig", $data);
     }
 
     /**
@@ -122,7 +116,7 @@ class Router {
      */
     public function executeMiddleware() {
         $request = Request::getInstance();
-        //todo auth removed for api - cookie
+        //todo auth removed for api
         $route = $this->route;
         if (isset($route[2]) && !$request->isApi()) {
             $mw = $route[2];

@@ -6,6 +6,6 @@ namespace app\repository\abstracts;
 
 interface iRepo {
 
-    public function getQueryBuilder();
+    public function setQueryBuilder();
 
 }

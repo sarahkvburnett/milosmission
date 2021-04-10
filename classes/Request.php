@@ -48,6 +48,10 @@ class Request {
         return str_contains($_SERVER['REQUEST_URI'], '/api/');
     }
 
+    public function isAdmin(){
+        return str_contains($_SERVER['REQUEST_URI'], '/admin/');
+    }
+
     public function hasPost(){
         if ($this->isAPI()) $_POST = json_decode(file_get_contents('php://input'), true);
         return !empty($_POST);

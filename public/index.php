@@ -1,20 +1,19 @@
 <?php
 
 use app\classes\Router;
-use app\database\Connections;
-use app\database\Database;
+use app\database\Connection;
 
 require_once "../bootstrap.php";
 require_once "../routes.php";
 
-$dbConnections = Connections::setInstance($dbCredentials);
+$dbConnections = Connection::setInstance($dbCredentials);
 $dbConnections->add('mysql', 'PDO');
 //$dbConnections->add('sqlsrv', 'PDO');
 
 $router = new Router();
 foreach($routes as $route){
     [$method, $url, $controller] = $route;
-    $router->$method('/api'.$url, $controller);
+    $router->$method("/api$url", $controller);
     $router->$method($url, $controller);
 }
 

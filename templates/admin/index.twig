@@ -1,0 +1,18 @@
+{% extends 'layouts/admin.twig' %}
+
+{% block content %}
+    <div id="admin-home">
+        {% for card in cards %}
+            <div class="card">
+                <div class="card-header">
+                    <i class="fas fa-{{ card.icon }}"></i> {{ card.title }}
+                </div>
+                <ul class="list-group list-group-flush">
+                    {% for link in card.links %}
+                        <li class="list-group-item"><a href="{{ link[0] }}">{{ link[1] }}</a></li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

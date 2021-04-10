@@ -4,11 +4,8 @@
 namespace app\repository\abstracts;
 
 use app\classes\Page;
-use app\database\Connections;
 use app\database\QueryBuilder\abstracts\iQueryBuilder;
 use app\database\QueryBuilder\PDO_MYSQL;
-use app\repository\abstracts\Repo;
-use app\repository\abstracts\iAdminRepo;
 
 abstract class AdminRepo extends Repo implements iAdminRepo {
 
@@ -23,6 +20,10 @@ abstract class AdminRepo extends Repo implements iAdminRepo {
         $page->setModel();
         $this->idColumn = $page->getIdColumn();
         $this->db->table($page->getTable());
+    }
+
+    public function setQueryBuilder(){
+        return new PDO_MYSQL($this->dbConnections->get('mysql'));
     }
 
     public function findOne($id){
@@ -61,7 +62,7 @@ abstract class AdminRepo extends Repo implements iAdminRepo {
     }
 
     public function count($column = null, $where = null){
-        $data = $this->db->count($this->idColumn)->where($column, $where)->findAll();
+        $data = $this->db->count($this->idColumn)->where($column, $where)->findOne();
         return $data["COUNT($this->idColumn)"];
     }
 
@@ -71,10 +72,6 @@ abstract class AdminRepo extends Repo implements iAdminRepo {
     protected function toArray($data){
         if (!isset($data)) return [];
         return explode(",", $data);
-    }
-
-    public function getQueryBuilder(){
-        return new PDO_MYSQL($this->dbConnections->get('mysql'));
     }
 
     //don't delete this - needed for when table changed
