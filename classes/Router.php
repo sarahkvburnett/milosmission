@@ -46,68 +46,8 @@ class Router {
      * @throws Exception
      */
     public function resolve() {
-        [$class, $method] = $this->route;
-        $page = Page::setInstance($class);
-        $repo = $page->setRepo();
-        $controller = $page->setController($repo);
-        $controller->$method($this);
-    }
-
-    /**
-     * Handle sending of response - json vs view
-     * @param $url
-     * @param array $data
-     * @param int $status
-     * @throws Exception
-     */
-    public function sendResponse($url, $data = [], $status = 200){
-        $currentURL = $this->uri ? $this->uri : $url;
-        $request = Request::getInstance();
-        if ($request->isApi()) {
-            $this->sendJSON($data, $status);
-        } else {
-            if (empty($url)) throw new Exception('Template not specified');
-            $this->renderView($url, $data, $status);
-        }
-    }
-
-    /**
-     * @param string $view
-     * @param array $data
-     * @param int $status
-     */
-    public function renderView($view, $data = [], $status = 200) {
-        $templateDir = __DIR__.'/../templates';
-        $loader = new FilesystemLoader([$templateDir, $templateDir.'/admin']);
-        $twig = new Environment($loader, ['debug' => true]);
-        $twig->addGlobal('_get', $_GET);
-        $twig->addExtension(new DebugExtension());
-        echo $twig->render("$view.twig", $data);
-    }
-
-    /**
-     * Redirect
-     * @param string $url
-     */
-    public function redirect($url) {
-        $request = Request::getInstance();
-        if ($request->isApi()) {
-            $this->sendJSON([], 302);
-        } else {
-            header("Location: " . $url);
-            exit;
-        }
-    }
-
-    /**
-     * Send response as JSON
-     * @param array $data
-     * @param int $status
-     */
-    public function sendJSON($data, $status = 200) {
-        header('Content-type: application/json', true, $status);
-        echo json_encode($data);
-        exit;
+        $page = Page::getInstance();
+        $page->dispatch($this->route);
     }
 
     /**
@@ -124,20 +64,6 @@ class Router {
                 Middleware::$fn();
             }
         }
-    }
-
-    /**
-     * Send error response
-     * @param Exception $e
-     */
-    public function handleException($e) {
-        $data = ['errors' => [
-            'status' => $e->getCode(),
-            'message' => $e->getMessage(),
-            'file' => $e->getFile(),
-            'line' => $e->getLine(),
-        ]];
-        $this->sendResponse('error', $data, $e->getCode());
     }
 
     /**

@@ -6,10 +6,7 @@ namespace app\controller\abstracts;
 use app\classes\FailedValidation;
 use app\classes\Page;
 use app\classes\Request;
-use app\classes\Router;
-use app\controller\abstracts\iController;
-use app\model\abstracts\iModel;
-use app\repository\abstracts\iRepo;
+use app\classes\Response;
 use \Exception;
 use app\classes\Validator;
 
@@ -29,31 +26,31 @@ abstract class Admin extends Controller implements iController {
 
     /**
      * Execute browse route
-     * @param Router $router
+     * @param Response $response
      */
-    public function browse($router){
+    public function browse($response){
         $this->setBrowseData($this->search);
-        $router->sendResponse('/admin/browse', $this->getData());
+        $response->send('/admin/browse', $this->getData());
     }
 
     /**
      * Execute details route
-     * @param Router $router
+     * @param Response $response
      * @throws Exception
      */
-     public function details($router){
+     public function details($response){
          $this->setDetailsData();
          $request = Request::getInstance();
          if ($request->hasPost()) {
              try {
                  $this->save($request->getPost());
-                 $router->redirect($this->actions['browse']);
+                 $response->redirect($this->actions['browse']);
                  return;
              } catch (FailedValidation $e) {
                  $this->errors = $e->getErrors();
              }
         }
-        $router->sendResponse('/admin/details', $this->getData());
+        $response->send('/admin/details', $this->getData());
     }
 
     /**
@@ -69,11 +66,11 @@ abstract class Admin extends Controller implements iController {
 
     /**
      * Execute delete route
-     * @param Router $router
+     * @param Response $response
      */
-    public function delete($router){
+    public function delete($response){
         $this->repo->delete($this->id);
-        $router->redirect($this->actions['browse']);
+        $response->redirect($this->actions['browse']);
     }
 
     /**

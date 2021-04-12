@@ -4,9 +4,9 @@
 namespace app\database\Adaptor;
 
 
-use app\database\Adaptor\abstracts\iAdaptor;
+use app\database\Adaptor\abstracts\iPDO;
 
-class PDO implements iAdaptor {
+class PDO implements iPDO {
 
     public $pdo;
 
@@ -41,13 +41,7 @@ class PDO implements iAdaptor {
     }
 
     //Specific PDO methods
-
-    public function query($sql){
-        $this->sql = $sql;
-    }
-
     public function lastInsertId(){
         return $this->pdo->lastInsertId();
     }
-
 }

@@ -20,6 +20,7 @@ abstract class Admin extends Model implements iAdminModel {
     protected array $labels;
     protected array $columns;
     protected array $counts;
+    protected array $menu;
 
     public function getTable(){
         return $this->table;
@@ -31,6 +32,10 @@ abstract class Admin extends Model implements iAdminModel {
 
     public function getName(){
         return $this->name;
+    }
+
+    public function setMenu(){
+        $this->menu = $this->repo->findMenu('adminMain');
     }
 
     public function setActions(){

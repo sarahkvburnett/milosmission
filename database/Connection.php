@@ -8,26 +8,24 @@ use app\classes\Database;
 
 class Connection {
 
-    protected array $connections;
-    protected array $credentials;
+    protected $connections;
+    protected $credentials;
 
-    public static Connection $instance;
-
-    public static function setInstance($credentials){
-        if (!isset(self::$instance)) self::$instance = new Connection($credentials);
-        return self::$instance;
-    }
+    public static $instance;
 
     public static function getInstance(){
+        if (!isset(self::$instance)) self::$instance = new Connection();
         return self::$instance;
     }
 
-    protected function __construct($credentials){
+    public function init($credentials){
         $this->credentials = $credentials;
+        return self::$instance;
     }
 
     public function add($name, $adaptor){
         $this->connections[$name] = Database::factory($adaptor, $this->credentials[$name]);
+        return self::$instance;
     }
 
     public function get($name){

@@ -8,13 +8,30 @@ use app\classes\Page;
 
 class SQLBuilder extends QueryBuilder {
 
-    protected ?string $query;
-    protected ?string $table;
-    protected ?array $values;
-    protected bool $hasWhere = false;
+    protected $query;
+    protected $table;
+    protected $hasWhere = false;
+
+    //Methods to call db driver
+    public function findOne() {
+        $data = $this->db->findOne($this->query);
+        $this->reset();
+        return $data;
+    }
+
+    public function findAll() {
+        $data = $this->db->findAll($this->query);
+        $this->reset();
+        return $data;
+    }
+
+    public function save(){
+        $data = $this->db->save($this->query, $this->values);
+        $this->reset();
+        return $data;
+    }
 
     //Methods to build initial sql statement
-
     /**
      * Write sql select statement for provided table
      * @param array $columns - provide list of columns else uses '*'

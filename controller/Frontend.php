@@ -7,9 +7,9 @@ use \app\controller\abstracts\Controller;
 
 class Frontend extends Controller {
 
-    public function index($router){
+    public function index($response){
         $animals = $this->repo->findAnimals();
-        $router->sendResponse('/index', ['animals' => $animals]);
+        $response->send('/index', ['animals' => $animals]);
     }
 
 }

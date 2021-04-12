@@ -6,7 +6,8 @@
             {% if _get.id %}
                 {% set browseUrl = actions.browse~'?id='~_get.id %}
                 {% set detailsUrl = actions.details~'?id='~_get.id %}
-                Update {{ className }}{% if fields.name %}: <span class="text-primary">{{ fields.name }}</span> todo get name back  {% endif %}
+                Update {{ className }}{% if fields.name %}: <span class="text-primary">{{ fields.name }}</span>{% endif %}
+                {#todo get name back#}
             {% else %}
                 Create New {{ className}}
             {% endif %}

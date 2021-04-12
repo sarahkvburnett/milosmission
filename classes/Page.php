@@ -20,47 +20,20 @@ class Page {
 
     public static Page $instance;
 
-    public static function setInstance($page){
-        if (!isset(self::$instance)) self::$instance = new Page($page);
-        return self::$instance;
-    }
-
     public static function getInstance(){
+        if (!isset(self::$instance)) self::$instance = new Page();
         return self::$instance;
     }
 
-
-    public function __construct($page) {
-        $this->classname = $page;
-        $request = Request::getInstance();
-        if ($request->hasId()) $this->id = $request->getId();
-    }
-
-    //SETTERS
-    public function setController($repo) {
-        if (!isset($this->controller)) $this->controller = Controller::factory($this->classname, $repo);
-        return $this->controller;
-    }
-
-    public function setModel() {
-        if (!isset($this->model)) {
-            $this->model = Model::factory($this->classname);
+    public function dispatch($route){
+        [$class, $method] = $route;
+        if (Model::factory($class)) {
+            $this->model = Model::factory($class);
             $this->hasModel = true;
         }
-        return $this->model;
-    }
-
-    public function setRepo() {
-        if (!isset($this->repo)) $this->repo = Repository::factory($this->classname."Repo");
-        return $this->repo;
-    }
-
-
-    //GETTERS
-
-    public function getController($repo) {
-        if (!isset($this->controller)) throw new Exception('Controller not set', 400);
-        return $this->controller;
+        $this->repo = Repository::factory($class."Repo");
+        $this->controller = Controller::factory($class, $this->repo);
+        $this->controller->$method(Response::getInstance());
     }
 
     public function getModel() {

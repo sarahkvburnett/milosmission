@@ -18,7 +18,7 @@ abstract class Factory {
                 return new $class($params);
             }
         }
-        throw new Exception(static::$classname." Not Found", 404);
+        throw new Exception(static::$classname." '$class' Not Found", 404);
     }
 
 }

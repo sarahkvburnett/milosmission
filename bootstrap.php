@@ -17,6 +17,15 @@ $dbCredentials = [
             PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
         ]
     ],
+    'pgsql' => [
+        'DSN' => $_ENV['PGSQL_DSN'],
+        'User' => $_ENV['PGSQL_USER'],
+        'Password' => $_ENV['PGSQL_PASSWORD'],
+        'AdminOptions' => [
+            PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+            PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
+        ]
+    ],
     'sqlsrv' => [
         'DSN' => $_ENV['SQLSRV_DSN'],
         'User' => $_ENV['SQLSRV_USER'],
@@ -25,5 +34,8 @@ $dbCredentials = [
             PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
             PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
         ]
+    ],
+    'mongo' => [
+        'uri' => $_ENV['MONGO_URI']
     ]
 ];

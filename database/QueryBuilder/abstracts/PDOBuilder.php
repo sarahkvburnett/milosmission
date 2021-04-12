@@ -4,7 +4,7 @@
 namespace app\database\QueryBuilder\abstracts;
 
 
-use app\database\Database;
+use app\classes\Database;
 
 class PDOBuilder extends SQLBuilder {
 

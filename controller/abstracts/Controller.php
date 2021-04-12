@@ -14,17 +14,6 @@ abstract class Controller implements iController {
     protected ?iRepo $repo;
     protected ?iModel $model;
 
-    protected array $menu = [
-        ['url' => '/admin', 'icon' => 'home', 'page' => 'Home'],
-        ['url' => '/admin/animal/browse', 'icon' => 'paw', 'page' => 'Animals'],
-        ['url' => '/admin/owner/browse', 'icon' => 'user-friends', 'page' => 'Owners'],
-        ['url' => '/admin/media/browse', 'icon' => 'photo-video', 'page' => 'Media'],
-        ['url' => '/admin/room/browse', 'icon' => 'warehouse', 'page' => 'Rooms'],
-        ['url' => '/admin/user/browse', 'icon' => 'user', 'page' => 'Users'],
-        ['url' => '/admin/rehoming/browse', 'icon' => 'house-user', 'page' => 'Rehomings'],
-        ['url' => '/admin/logout', 'icon' => 'sign-out-alt', 'page' => 'Logout'],
-    ];
-
     /**
      * Constructor.
      * @param $repo

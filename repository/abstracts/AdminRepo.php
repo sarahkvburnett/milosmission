@@ -17,7 +17,6 @@ abstract class AdminRepo extends Repo implements iAdminRepo {
     public function __construct(){
         parent::__construct();
         $page = Page::getInstance();
-        $page->setModel();
         $this->idColumn = $page->getIdColumn();
         $this->db->table($page->getTable());
     }

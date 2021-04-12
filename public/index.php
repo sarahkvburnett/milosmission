@@ -2,13 +2,17 @@
 
 use app\classes\Router;
 use app\database\Connection;
+use \app\classes\Response;
 
 require_once "../bootstrap.php";
 require_once "../routes.php";
 
-$dbConnections = Connection::setInstance($dbCredentials);
-$dbConnections->add('mysql', 'PDO');
-//$dbConnections->add('sqlsrv', 'PDO');
+$dbConnections = Connection::getInstance();
+$dbConnections->init($dbCredentials)
+    ->add('mysql', 'PDO')
+//    ->add('sqlsrv', 'PDO')
+    ->add('pgsql', 'PDO')
+    ->add('mongo', 'Mongo');
 
 $router = new Router();
 foreach($routes as $route){
@@ -25,5 +29,6 @@ try {
     $router->resolve();
 }
 catch (Error | Exception $e){
-    $router->handleException($e);
+    $response = Response::getInstance();
+    $response->error($e);
 }
