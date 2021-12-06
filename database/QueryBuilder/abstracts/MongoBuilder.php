@@ -4,7 +4,7 @@ namespace app\database\QueryBuilder\abstracts;
 
 use app\classes\Page;
 
-class MongoBuilder extends QueryBuilder {
+abstract class MongoBuilder extends QueryBuilder {
 
     protected $collection;
     protected $filter;
@@ -25,53 +25,31 @@ class MongoBuilder extends QueryBuilder {
 
     //Methods to call db driver
     public function findOne() {
-        $data = $this->db->findOne($this->collection, $this->filter);
-        $this->reset();
-        return $data;
+        return $this->db->findOne($this->collection, $this->filter);
     }
 
     public function findAll() {
-        $data = $this->db->findAll($this->collection, $this->filter);
-        $this->reset();
-        return $data;
+        return $this->db->findAll($this->collection, $this->filter);
     }
 
-
     public function insertMany(){
-        $data = $this->db->insertMany($this->collection, $this->values, $this->filter);
-        $this->reset();
-        return $data;
+        return $this->db->insertMany($this->collection, $this->values, $this->filter);
     }
 
     public function updateOne(){
-        $data = $this->db->updateOne($this->collection, $this->values, $this->filter);
-        $this->reset();
-        return $data;
+        return $this->db->updateOne($this->collection, $this->values, $this->filter);
     }
 
     public function updateMany(){
-        $data = $this->db->updateMany($this->collection, $this->values, $this->filter);
-        $this->reset();
-        return $data;
+        return $this->db->updateMany($this->collection, $this->values, $this->filter);
     }
 
     public function deleteOne(){
-        $data = $this->db->deleteOne($this->collection, $this->filter);
-        $this->reset();
-        return $data;
+        return $this->db->deleteOne($this->collection, $this->filter);
     }
 
     public function deleteMany(){
-        $data = $this->db->deleteMany($this->collection, $this->filter);
-        $this->reset();
-        return $data;
+       return $this->db->deleteMany($this->collection, $this->filter);
     }
 
-
-    public function reset() {
-        $page = Page::getInstance();
-        if ($page->hasModel){
-            $this->collection = $page->getTable();
-        }
-    }
 }

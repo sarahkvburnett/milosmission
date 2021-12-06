@@ -1,13 +1,13 @@
 <?php
 
 
-namespace app\database\Adaptor;
+namespace app\database\Driver;
 
 
-use app\database\Adaptor\abstracts\iMongo;
+use app\database\Driver\abstracts\iMongoDriver;
 use MongoDB\Client;
 
-class Mongo implements iMongo {
+class Mongo implements iMongoDriver {
 
     protected $client;
 

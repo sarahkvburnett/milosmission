@@ -3,7 +3,7 @@
 
 namespace app\repository\admin;
 
-use app\repository\abstracts\AdminRepo;
+use app\repository\admin\AdminRepo;
 
 class AnimalRepo extends AdminRepo {
 

@@ -21,49 +21,30 @@ class Page {
     public static Page $instance;
 
     public static function getInstance(){
-        if (!isset(self::$instance)) self::$instance = new Page();
+        if (!isset(self::$instance)) self::$instance = new self;
         return self::$instance;
     }
 
     public function dispatch($route){
-        [$class, $method] = $route;
-        if (Model::factory($class)) {
-            $this->model = Model::factory($class);
+        $model = $route->model;
+        $controller = $route->controller;
+        $repo = $route->repo;
+        $event = $route->event;
+        if (!empty($model)) {
+            $this->model = Model::factory($model);
             $this->hasModel = true;
         }
-        $this->repo = Repository::factory($class."Repo");
-        $this->controller = Controller::factory($class, $this->repo);
-        $this->controller->$method(Response::getInstance());
+        $this->repo = Repository::factory($repo);
+        $this->controller = Controller::factory($controller, $this->repo);
+        $this->controller->$event(Response::getInstance());
     }
 
     public function getModel() {
-        if (!isset($this->model)) throw new Exception('Model not set', 400);
-        return $this->model;
+        return $this->hasModel ? $this->model : null;
     }
 
     public function getRepo() {
-        if (!isset($this->repo)) throw new Exception('Repository not set', 400);
         return $this->repo;
-    }
-
-    public function getTable() {
-        if (!isset($this->model)) throw new Exception('No table - Admin not set', 400);
-        return $this->model->getTable();
-    }
-
-    public function getIdColumn() {
-        if (!isset($this->model)) throw new Exception('No id column - Admin not set', 400);
-        return $this->model->getIdColumn();
-    }
-
-    public function getName() {
-        if (!isset($this->model)) throw new Exception('No name - Admin not set', 400);
-        return $this->model->getName();
-    }
-
-    public function describe(){
-        if (!isset($this->repo)) throw new Exception('No description - Repository not set', 400);
-        return $this->repo->describe();
     }
 
 }

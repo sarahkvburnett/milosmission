@@ -5,7 +5,7 @@ namespace app\repository\admin;
 
 
 
-use app\repository\abstracts\AdminGroupAnimalRepo;
+use app\repository\admin\AdminGroupAnimalRepo;
 
 class RehomingRepo extends AdminGroupAnimalRepo {
 

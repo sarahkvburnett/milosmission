@@ -10,10 +10,8 @@ use app\repository\abstracts\Repo;
 
 class FrontendRepo extends Repo implements iFrontendRepo {
 
-    protected iQueryBuilder $db;
-
-    public function setQueryBuilder() {
-        return new PDO_MYSQL($this->dbConnections->get('mysql'));
+    public function __construct() {
+        $this->init('PDO_MYSQL', 'mysql');
     }
 
     public function findAnimals($condition = null) {

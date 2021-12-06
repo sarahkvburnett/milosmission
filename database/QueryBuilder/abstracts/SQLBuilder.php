@@ -6,13 +6,16 @@ namespace app\database\QueryBuilder\abstracts;
 
 use app\classes\Page;
 
-class SQLBuilder extends QueryBuilder {
+abstract class SQLBuilder extends QueryBuilder {
 
     protected $query;
     protected $table;
+    protected $tempTable;
+    protected $values;
     protected $hasWhere = false;
 
     //Methods to call db driver
+
     public function findOne() {
         $data = $this->db->findOne($this->query);
         $this->reset();
@@ -38,7 +41,7 @@ class SQLBuilder extends QueryBuilder {
      * @return $this
      */
     public function select($columns = '*'){
-        $this->query = "SELECT $columns FROM $this->table t1";
+        $this->query = "SELECT $columns FROM ".$this->getTable()." t1";
         return $this;
     }
 
@@ -58,7 +61,7 @@ class SQLBuilder extends QueryBuilder {
      * @return $this
      */
     public function count($id) {
-        $this->query = "SELECT COUNT($id) FROM $this->table";
+        $this->query = "SELECT COUNT($id) FROM ".$this->getTable();
         return $this;
     }
 
@@ -67,7 +70,7 @@ class SQLBuilder extends QueryBuilder {
      * @return $this
      */
     public function describe() {
-        $this->query = "DESCRIBE $this->table";
+        $this->query = "DESCRIBE ".$this->getTable();
         return $this;
     }
 
@@ -77,7 +80,7 @@ class SQLBuilder extends QueryBuilder {
      * @return $this
      */
     public function insert($values) {
-        $insertSQL = "INSERT INTO $this->table (";
+        $insertSQL = "INSERT INTO ".$this->getTable()." (";
         $valuesSQL = "VALUES (";
         foreach ($values as $key => $value) {
             $insertSQL .= "$key, ";
@@ -94,7 +97,7 @@ class SQLBuilder extends QueryBuilder {
      * @return $this
      */
     public function update($values) {
-        $sql = "UPDATE $this->table SET";
+        $sql = "UPDATE ".$this->getTable()." SET";
         foreach ($values as $key => $value) {
             if (isset($key)) {
                 $sql .= " $key=$value, ";
@@ -110,7 +113,7 @@ class SQLBuilder extends QueryBuilder {
      * @return $this
      */
     public function delete() {
-        $this->query = "DELETE FROM $this->table";
+        $this->query = "DELETE FROM ".$this->getTable();
         return $this;
     }
 
@@ -181,21 +184,31 @@ class SQLBuilder extends QueryBuilder {
      * @return $this
      */
     public function table($table){
-        $this->table = $table;
+        $this->tempTable = $table;
         return $this;
     }
 
     /**
      * Clean up after query
+     * @return $this
      */
     public function reset(){
-        $page = Page::getInstance();
-        if ($page->hasModel){
-            $this->table = $page->getTable();
-        }
+        $this->tempTable = null;
         $this->hasWhere = false;
         $this->values = null;
         return $this;
+    }
+
+    /**
+     * Determine whether to use table from setter or from query method
+     * @return string
+     */
+    public function getTable(){
+        return isset($this->tempTable) ? $this->tempTable : $this->table;
+    }
+
+    public function setTable($table){
+        $this->table = $table;
     }
 
 

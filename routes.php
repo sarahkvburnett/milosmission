@@ -17,7 +17,6 @@ $routes = [
     ['get','/admin/animal/browse', ['Animal', 'browse', ['isAuth']]],
     ['get','/admin/animal/details', ['Animal', 'details', ['isAuth']]],
     ['post','/admin/animal/details', ['Animal', 'details', ['isAuth']]],
-
     ['post','/admin/animal/delete', ['Animal', 'delete', ['isAuth']]],
 
     ['get','/admin/users', ['User', 'browse', ['isAuth']]],

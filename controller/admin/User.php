@@ -7,7 +7,7 @@ namespace app\controller\admin;
 use app\classes\FailedValidation;
 use app\classes\Request;
 use app\classes\Router;
-use app\controller\abstracts\Admin;
+use app\controller\admin\Admin;
 
 class User extends Admin {
 

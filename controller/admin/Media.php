@@ -5,10 +5,7 @@ namespace app\controller\admin;
 
 use app\classes\FileUploader;
 use app\classes\Request;
-use app\controller\abstracts\Admin;
 use app\controller\abstracts\iController;
-use app\database\Database;
-use app\classes\Validator;
 
 class Media extends Admin implements iController{
 

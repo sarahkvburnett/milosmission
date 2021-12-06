@@ -8,10 +8,7 @@ use app\classes\Page;
 
 abstract class Admin extends Model implements iAdminModel {
 
-    protected string $table;
-    protected string $idColumn;
     protected string $className;
-    protected string $name;
 
     protected array $actions;
     protected array $rules;
@@ -21,18 +18,6 @@ abstract class Admin extends Model implements iAdminModel {
     protected array $columns;
     protected array $counts;
     protected array $menu;
-
-    public function getTable(){
-        return $this->table;
-    }
-
-    public function getIdColumn(){
-        return $this->idColumn;
-    }
-
-    public function getName(){
-        return $this->name;
-    }
 
     public function setMenu(){
         $this->menu = $this->repo->findMenu('adminMain');

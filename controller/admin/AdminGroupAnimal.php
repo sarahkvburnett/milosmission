@@ -1,14 +1,14 @@
 <?php
 
 
-namespace app\controller\abstracts;
+namespace app\controller\admin;
 
 
 use app\classes\Request;
 use app\database\Database;
 use app\Router;
 
-abstract class AdminGroupAnimal extends Admin {
+class AdminGroupAnimal extends Admin {
 
     public function save($data){
         $id = parent::save($data);

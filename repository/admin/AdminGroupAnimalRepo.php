@@ -1,7 +1,7 @@
 <?php
 
 
-namespace app\repository\abstracts;
+namespace app\repository\admin;
 
 
 class AdminGroupAnimalRepo extends AdminRepo {
@@ -46,16 +46,16 @@ class AdminGroupAnimalRepo extends AdminRepo {
 
     public function changeAnimals($id, $animalsToAdd, $animalsToRemove) {
         foreach($animalsToAdd as $animalId){
-            $this->db->table('animals')->update([$this->idColumn => $id])->where('animal_id', $animalId)->save();
+            $this->db->update([$this->idColumn => $id])->where('animal_id', $animalId)->save();
         }
 
         foreach($animalsToRemove as $animalId){
-            $this->db->table('animals')->update([$this->idColumn => NULL])->where('animal_id', $animalId)->save();
+            $this->db->update([$this->idColumn => NULL])->where('animal_id', $animalId)->save();
         }
     }
 
     public function removeAnimals($id) {
-        $$this->db->table('animals')->update([$this->idColumn => NULL])->where($this->idColumn, $id)->save();
+        $this->db->table('animals')->update([$this->idColumn => NULL])->where($this->idColumn, $id)->save();
     }
 
 

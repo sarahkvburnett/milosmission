@@ -1,10 +1,10 @@
 <?php
 
 
-namespace app\database\Adaptor\abstracts;
+namespace app\database\Driver\abstracts;
 
 
-interface iPDO extends iAdaptor {
+interface iPDODriver extends iDriver {
 
     public function findOne($query);
     public function findAll($query);

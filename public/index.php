@@ -1,16 +1,16 @@
 <?php
 
 use app\classes\Router;
-use app\database\Connection;
+use app\database\Connections;
 use \app\classes\Response;
 
 require_once "../bootstrap.php";
 require_once "../routes.php";
 
-$dbConnections = Connection::getInstance();
+$dbConnections = Connections::getInstance();
 $dbConnections->init($dbCredentials)
     ->add('mysql', 'PDO')
-//    ->add('sqlsrv', 'PDO')
+    // ->add('sqlsrv', 'PDO')
     ->add('pgsql', 'PDO')
     ->add('mongo', 'Mongo');
 

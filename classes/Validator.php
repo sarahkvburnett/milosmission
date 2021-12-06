@@ -58,8 +58,7 @@ class Validator {
      * Return sanitised fields on model
      */
     public function getFields(){
-        $page = Page::getInstance();
-        $model = $page->describe();
+        $model = Page::getInstance()->getRepo()->describe();
         $fields = [];
         foreach ($model as $key => $value){
             if (isset($this->fields[$key])) {

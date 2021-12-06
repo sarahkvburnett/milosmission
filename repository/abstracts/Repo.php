@@ -4,17 +4,20 @@
 namespace app\repository\abstracts;
 
 
-use app\database\Connection;
+use app\classes\QueryBuilder;
+use app\database\Connections;
 use app\database\QueryBuilder\abstracts\iQueryBuilder;
 
 abstract class Repo implements iRepo {
 
     protected iQueryBuilder $db;
-    protected Connection $dbConnections;
 
-    public function __construct(){
-        $this->dbConnections = Connection::getInstance();
-        $this->db = $this->setQueryBuilder();
+    public function init($queryBuilder, $connection){
+        $this->db = QueryBuilder::factory($queryBuilder, $connection);
+    }
+
+    public function setTable($table){
+        $this->db->setTable($table);
     }
 
     public function findMenu($menu){

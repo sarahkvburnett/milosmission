@@ -6,7 +6,7 @@ namespace app\database;
 
 use app\classes\Database;
 
-class Connection {
+class Connections {
 
     protected $connections;
     protected $credentials;
@@ -14,7 +14,7 @@ class Connection {
     public static $instance;
 
     public static function getInstance(){
-        if (!isset(self::$instance)) self::$instance = new Connection();
+        if (!isset(self::$instance)) self::$instance = new Connections();
         return self::$instance;
     }
 

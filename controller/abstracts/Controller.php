@@ -19,12 +19,9 @@ abstract class Controller implements iController {
      * @param $repo
      */
     public function __construct($repo){
-        $page = Page::getInstance();
         $this->repo = $repo;
-        if ($page->hasModel){
-            $this->model = $page->getModel();
-            $this->setModelData();
-        }
+        $this->model = Page::getInstance()->getModel();
+        if (!empty($this->model)) $this->setModelData();
     }
 
     /**

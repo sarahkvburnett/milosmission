@@ -5,7 +5,8 @@ namespace app\classes;
 use app\classes\Middleware;
 use app\classes\Page;
 use app\classes\Request;
-use app\database\Connection;
+use app\database\Connections;
+use app\repository\abstracts\Repo;
 use Error;
 use Exception;
 use Twig\Environment;
@@ -46,8 +47,9 @@ class Router {
      * @throws Exception
      */
     public function resolve() {
+        $route = new Route($this->route);
         $page = Page::getInstance();
-        $page->dispatch($this->route);
+        $page->dispatch($route);
     }
 
     /**
@@ -74,11 +76,14 @@ class Router {
      * @throws Exception
      */
     public function findRoute($uri, $method){
-        $route = $method === 'get' ? $this->getRoutes[$uri] ?? [] : $this->postRoutes[$uri] ?? [];
+        $repo = Repository::factory('RouterRepo');
+        $route = $repo->findRoute($uri);
+        //todo check the method against db
+        //todo api
         $this->uri = $uri;
         $this->method = $method;
         $this->route = $route;
-        if (!$route) {
+        if (empty($route)) {
             throw new Exception('Route Not Found', 404);
         }
     }

@@ -6,12 +6,12 @@ namespace app\database\QueryBuilder\abstracts;
 
 use app\classes\Database;
 
-class PDOBuilder extends SQLBuilder {
+abstract class PDOBuilder extends SQLBuilder {
 
     // Add ':' for bind values
 
     public function insert($values) {
-        $insertSQL = "INSERT INTO $this->table (";
+        $insertSQL = "INSERT INTO ".$this->getTable()." (";
         $valuesSQL = "VALUES (";
         foreach ($values as $key => $value) {
             $insertSQL .= "$key, ";
@@ -23,7 +23,7 @@ class PDOBuilder extends SQLBuilder {
     }
 
     public function update($values) {
-        $sql = "UPDATE $this->table SET";
+        $sql = "UPDATE ".$this->getTable()." SET";
         foreach ($values as $key => $value) {
             if (isset($key)) {
                 $sql .= " $key=:$key, ";

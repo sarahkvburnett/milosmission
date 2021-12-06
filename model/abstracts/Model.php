@@ -8,9 +8,24 @@ use app\classes\Page;
 
 abstract class Model implements iModel {
 
+    protected string $table;
+    protected string $idColumn;
+    protected string $name;
+
+    public function getTable(){
+        return $this->table;
+    }
+
+    public function getIdColumn(){
+        return $this->idColumn;
+    }
+
+    public function getName(){
+        return $this->name;
+    }
+
     public function setData(){
-        $page = Page::getInstance();
-        $this->repo = $page->getRepo();
+        $this->repo = Page::getInstance()->getRepo();
         $this->callSetters();
     }
 
@@ -40,5 +55,4 @@ abstract class Model implements iModel {
             if ($setter !== 'setActions') $this->$setter();
         }
     }
-
 }

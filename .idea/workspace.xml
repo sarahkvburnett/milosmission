@@ -2,42 +2,62 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="62c3d5e8-cebe-44e0-b413-726d6197501c" name="Default Changelist" comment="new version - only animal back up so far">
-      <change afterPath="$PROJECT_DIR$/classes/Response.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/database/Adaptor/Mongo.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/database/Adaptor/abstracts/iMongo.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/database/Adaptor/abstracts/iPDO.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/database/QueryBuilder/Mongo.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/database/QueryBuilder/PDO_PGSQL.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/database/QueryBuilder/abstracts/MongoBuilder.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/devel-files/devilbox-sqlsrv.sh" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/model/Admin.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/model/Frontend.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/classes/QueryBuilder.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/classes/Route.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/controller/admin/Auth.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/controller/admin/Home.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/devel-files/routes.sql" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/repository/RouterRepo.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/repository/admin/AuthRepo.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/repository/admin/HomeRepo.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/bootstrap.php" beforeDir="false" afterPath="$PROJECT_DIR$/bootstrap.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/classes/Factory.php" beforeDir="false" afterPath="$PROJECT_DIR$/classes/Factory.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/classes/Model.php" beforeDir="false" afterPath="$PROJECT_DIR$/classes/Model.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/classes/Database.php" beforeDir="false" afterPath="$PROJECT_DIR$/classes/Database.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/classes/Page.php" beforeDir="false" afterPath="$PROJECT_DIR$/classes/Page.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/classes/Router.php" beforeDir="false" afterPath="$PROJECT_DIR$/classes/Router.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/composer.json" beforeDir="false" afterPath="$PROJECT_DIR$/composer.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/composer.lock" beforeDir="false" afterPath="$PROJECT_DIR$/composer.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/controller/Frontend.php" beforeDir="false" afterPath="$PROJECT_DIR$/controller/Frontend.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/controller/abstracts/Admin.php" beforeDir="false" afterPath="$PROJECT_DIR$/controller/abstracts/Admin.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/classes/Validator.php" beforeDir="false" afterPath="$PROJECT_DIR$/classes/Validator.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/controller/abstracts/Admin.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/controller/abstracts/AdminGroupAnimal.php" beforeDir="false" afterPath="$PROJECT_DIR$/controller/admin/AdminGroupAnimal.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/controller/abstracts/Controller.php" beforeDir="false" afterPath="$PROJECT_DIR$/controller/abstracts/Controller.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/controller/admin/Admin.php" beforeDir="false" afterPath="$PROJECT_DIR$/controller/admin/Admin.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/Adaptor/PDO.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/Adaptor/PDO.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/Adaptor/abstracts/iAdaptor.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/Adaptor/abstracts/iAdaptor.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/Connection.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/Connection.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/controller/admin/Animal.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/controller/admin/Media.php" beforeDir="false" afterPath="$PROJECT_DIR$/controller/admin/Media.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/controller/admin/Owner.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/controller/admin/Rehoming.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/controller/admin/Room.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/controller/admin/User.php" beforeDir="false" afterPath="$PROJECT_DIR$/controller/admin/User.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/Adaptor/Mongo.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/Driver/Mongo.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/Adaptor/PDO.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/Driver/PDO.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/Adaptor/abstracts/iAdaptor.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/Driver/abstracts/iDriver.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/Adaptor/abstracts/iMongo.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/Driver/abstracts/iMongoDriver.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/Adaptor/abstracts/iPDO.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/Driver/abstracts/iPDODriver.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/Connection.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/Connections.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/QueryBuilder/PDO_PGSQL.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/QueryBuilder/PDO_PGSQL.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/QueryBuilder/abstracts/MongoBuilder.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/QueryBuilder/abstracts/MongoBuilder.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/database/QueryBuilder/abstracts/PDOBuilder.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/QueryBuilder/abstracts/PDOBuilder.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/database/QueryBuilder/abstracts/QueryBuilder.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/QueryBuilder/abstracts/QueryBuilder.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/database/QueryBuilder/abstracts/SQLBuilder.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/QueryBuilder/abstracts/SQLBuilder.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/database/QueryBuilder/abstracts/iQueryBuilder.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/QueryBuilder/abstracts/iQueryBuilder.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/devel-files/devilbox-sqlsrv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/model/abstracts/Admin.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/devel-files/devilbox-sqlsrv.sh" beforeDir="false" afterPath="$PROJECT_DIR$/devel-files/devilbox-sqlsrv.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/model/Admin.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/model/Frontend.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/model/abstracts/Admin.php" beforeDir="false" afterPath="$PROJECT_DIR$/model/abstracts/Admin.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/model/abstracts/Model.php" beforeDir="false" afterPath="$PROJECT_DIR$/model/abstracts/Model.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/model/abstracts/iModel.php" beforeDir="false" afterPath="$PROJECT_DIR$/model/abstracts/iModel.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/public/index.php" beforeDir="false" afterPath="$PROJECT_DIR$/public/index.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/repository/abstracts/AdminRepo.php" beforeDir="false" afterPath="$PROJECT_DIR$/repository/abstracts/AdminRepo.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/repository/FrontendRepo.php" beforeDir="false" afterPath="$PROJECT_DIR$/repository/FrontendRepo.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/repository/abstracts/AdminGroupAnimalRepo.php" beforeDir="false" afterPath="$PROJECT_DIR$/repository/admin/AdminGroupAnimalRepo.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/repository/abstracts/AdminRepo.php" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/repository/abstracts/Repo.php" beforeDir="false" afterPath="$PROJECT_DIR$/repository/abstracts/Repo.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/repository/abstracts/iRepo.php" beforeDir="false" afterPath="$PROJECT_DIR$/repository/abstracts/iRepo.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/repository/admin/AdminRepo.php" beforeDir="false" afterPath="$PROJECT_DIR$/repository/admin/AdminRepo.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/repository/admin/AnimalRepo.php" beforeDir="false" afterPath="$PROJECT_DIR$/repository/admin/AnimalRepo.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/repository/admin/MediaRepo.php" beforeDir="false" afterPath="$PROJECT_DIR$/repository/admin/MediaRepo.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/repository/admin/OwnerRepo.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/repository/admin/RehomingRepo.php" beforeDir="false" afterPath="$PROJECT_DIR$/repository/admin/RehomingRepo.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/repository/admin/RoomRepo.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/repository/admin/UserRepo.php" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/routes.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/admin/details.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/admin/details.twig" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -104,11 +124,11 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/database/QueryBuilder" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../isis_ex_quote" />
     <property name="list.type.of.created.stylesheet" value="SCSS" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="php.override.implement.member.chooser.php.doc" value="NONE" />
-    <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
+    <property name="settings.editor.selected.configurable" value="web-ide.project.structure" />
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
   <component name="RecentsManager">
@@ -120,11 +140,11 @@
       <recent name="C:\devilbox\data\www\milosmission\pages\page\admin" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\devilbox\data\www\milosmission\repository\admin" />
+      <recent name="C:\devilbox\data\www\milosmission\controller\admin" />
       <recent name="C:\devilbox\data\www\milosmission\database\QueryBuilder\abstracts" />
       <recent name="C:\devilbox\data\www\milosmission\templates\admin" />
       <recent name="C:\devilbox\data\www\milosmission\templates\includes" />
-      <recent name="C:\devilbox\data\www\milosmission\classes" />
-      <recent name="C:\devilbox\data\www\milosmission\public" />
     </key>
   </component>
   <component name="ServiceViewManager">
@@ -213,7 +233,21 @@
       <workItem from="1617140274623" duration="11827000" />
       <workItem from="1617655057076" duration="1131000" />
       <workItem from="1618000966967" duration="39199000" />
-      <workItem from="1618214484096" duration="19355000" />
+      <workItem from="1618214484096" duration="33107000" />
+      <workItem from="1618298719128" duration="106000" />
+      <workItem from="1618299127350" duration="6184000" />
+      <workItem from="1618325268417" duration="16662000" />
+      <workItem from="1618386728985" duration="1386000" />
+      <workItem from="1618406993004" duration="84000" />
+      <workItem from="1618866939366" duration="1344000" />
+      <workItem from="1619078564278" duration="167000" />
+      <workItem from="1619528718931" duration="1031000" />
+      <workItem from="1620163788749" duration="346000" />
+      <workItem from="1620225830600" duration="2851000" />
+      <workItem from="1621265246047" duration="24000" />
+      <workItem from="1621277344589" duration="853000" />
+      <workItem from="1621325141583" duration="32000" />
+      <workItem from="1621325993099" duration="38000" />
     </task>
     <task id="LOCAL-00001" summary="new version - only animal back up so far">
       <created>1613273632520</created>

@@ -1,0 +1,15 @@
+CREATE TABLE `milosmission`.`routes` (
+    `id` INT NOT NULL AUTO_INCREMENT ,
+    `url` VARCHAR(100) NOT NULL ,
+    `title` VARCHAR(255) NOT NULL ,
+    `model` VARCHAR(100) NULL ,
+    `controller` VARCHAR(100) NOT NULL ,
+    `repo` VARCHAR(100) NOT NULL ,
+    `connection` VARCHAR(100) NOT NULL ,
+    `get` BOOLEAN NOT NULL ,
+    `post` BOOLEAN NOT NULL ,
+    `delete` BOOLEAN NOT NULL ,
+    `event` VARCHAR(100) NOT NULL ,
+    `template` VARCHAR(100) NULL ,
+    `alias` VARCHAR(100) NULL ,
+    PRIMARY KEY (`id`)) ENGINE = InnoDB CHARSET=utf8mb4 COLLATE utf8mb4_unicode_ci;

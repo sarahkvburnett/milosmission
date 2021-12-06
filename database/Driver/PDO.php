@@ -1,17 +1,17 @@
 <?php
 
 
-namespace app\database\Adaptor;
+namespace app\database\Driver;
 
 
-use app\database\Adaptor\abstracts\iPDO;
+use app\database\Driver\abstracts\iPDODriver;
 
-class PDO implements iPDO {
+class PDO implements iPDODriver {
 
     public $pdo;
 
     public function __construct($dbCredentials){
-        ['DSN' => $DSN, 'User' => $user, 'Password' => $password, 'AdminOptions' => $options] = $dbCredentials;
+        ['DSN' => $DSN, 'User' => $user, 'Password' => $password, 'Options' => $options] = $dbCredentials;
         $this->pdo = new \PDO($DSN, $user, $password, $options);
     }
 

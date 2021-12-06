@@ -1,10 +1,10 @@
 <?php
 
 
-namespace app\database\Adaptor\abstracts;
+namespace app\database\Driver\abstracts;
 
 
-interface iMongo extends iAdaptor {
+interface iMongoDriver extends iDriver {
 
     public function findOne($collection, $filter = []);
     public function findAll($collection, $filter = []);

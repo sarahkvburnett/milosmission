@@ -6,6 +6,6 @@ namespace app\repository\abstracts;
 
 interface iRepo {
 
-    public function setQueryBuilder();
+    public function init($queryBuilder, $connection);
 
 }
